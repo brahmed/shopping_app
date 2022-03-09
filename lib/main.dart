@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../config/appTheme.dart';
+import '../config/constants.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -10,11 +13,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      title: kAppTitle,
+      theme: AppTheme.light(),
+      home: const MyHomePage(title: kAppTitle),
     );
   }
 }
@@ -31,7 +32,7 @@ class MyHomePage extends StatelessWidget {
         title: Text(title),
       ),
       body: const Center(
-        child:  Text(
+        child: Text(
           'Hello World!!',
         ),
       ),
