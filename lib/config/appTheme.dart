@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/config/colors.dart';
 
 class AppTheme {
   // App light theme
@@ -6,6 +7,7 @@ class AppTheme {
     return ThemeData(
       brightness: Brightness.light,
       primarySwatch: Colors.pink,
+      scaffoldBackgroundColor:  appBackgroundColorLight,
     );
   }
 
@@ -13,7 +15,8 @@ class AppTheme {
   static ThemeData dark() {
     return ThemeData(
       brightness: Brightness.dark,
-      primarySwatch: Colors.pink,
+      primarySwatch: appPrimarySwatchDark,
+      scaffoldBackgroundColor:  appBackgroundColorDark,
     );
   }
 }
