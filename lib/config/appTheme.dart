@@ -7,7 +7,7 @@ class AppTheme {
     return ThemeData(
       brightness: Brightness.light,
       primarySwatch: Colors.pink,
-      scaffoldBackgroundColor:  appBackgroundColorLight,
+      scaffoldBackgroundColor:  appBackgroundColorLight
     );
   }
 
