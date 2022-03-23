@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/navigation/routes.dart';
 
 import '../../config/images.dart';
 import '../../widgets/account_item_card.dart';
@@ -120,12 +121,13 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// Help
-              const AccountItemCard(
+              AccountItemCard(
                 text: "Help",
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,
                 iconData: Icons.help,
+                onTap: () => Navigator.pushNamed(context, Routes.help),
               ),
 
               /// Log out

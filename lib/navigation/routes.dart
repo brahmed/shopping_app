@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:shopping_app/screens/profile/help_page.dart';
 
 import '../../screens/login.dart';
 import '../../screens/tab_pages/bookmarks_page.dart';
@@ -14,6 +15,8 @@ class Routes {
   static String bookmarks = "/bookmarks";
   static String profile = "/profile";
 
+  static String help = "/help";
+
   static String login = "/login";
   static String register = "/register";
 
@@ -24,6 +27,9 @@ class Routes {
         search: (context) => const SearchPage(),
         bookmarks: (context) => const BookmarksPage(),
         profile: (context) => const ProfilePage(),
+
+        /// Profile
+        help: (context) => const HelpPage(),
 
         /// Auth
         login: (context) => const LoginPage(),
