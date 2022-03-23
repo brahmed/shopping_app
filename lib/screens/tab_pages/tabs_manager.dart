@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/screens/tab_pages/profile_page.dart';
-import 'package:shopping_app/screens/tab_pages/bookmarks_page.dart';
-import 'package:shopping_app/screens/tab_pages/home_page.dart';
-import 'package:shopping_app/screens/tab_pages/search_page.dart';
 
+import '../../config/colors.dart';
+import '../../screens/tab_pages/bookmarks_page.dart';
+import '../../screens/tab_pages/home_page.dart';
+import '../../screens/tab_pages/profile_page.dart';
+import '../../screens/tab_pages/search_page.dart';
 import 'home_page.dart';
 
 class TabsManager extends StatefulWidget {
@@ -58,7 +59,9 @@ class _TabsManagerState extends State<TabsManager> {
           _tabPages.length,
           (index) => Container(
             decoration: BoxDecoration(
-              color: _selectedIndex == index ? Colors.pink : Colors.white,
+              color: _selectedIndex == index
+                  ? Theme.of(context).primaryColor
+                  : null,
               borderRadius: BorderRadius.circular(12.0),
             ),
             child: IconButton(
@@ -89,7 +92,7 @@ class AppBottomNavigationBar extends StatelessWidget {
       height: 60,
       padding: const EdgeInsets.all(8.0),
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: appContainersBackgroundColorLight,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(40),
           topRight: Radius.circular(40),
