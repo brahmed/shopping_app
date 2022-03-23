@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/config/colors.dart';
+import '../config/colors.dart';
 
 class AppTheme {
   /// App light theme

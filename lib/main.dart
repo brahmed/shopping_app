@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../config/appTheme.dart';
+import '../config/app_theme.dart';
 import '../config/constants.dart';
 import '../screens/tab_pages/tabs_manager.dart';
 
