@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../widgets/arrow_icon.dart';
 
-class PageAppBar extends StatelessWidget {
+class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
   const PageAppBar({
@@ -24,4 +24,7 @@ class PageAppBar extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
