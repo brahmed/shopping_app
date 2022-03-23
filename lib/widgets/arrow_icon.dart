@@ -4,6 +4,7 @@ import '../../config/colors.dart';
 
 class ArrowIcon extends StatelessWidget {
   final double padding;
+  final double margin;
   final double iconSize;
   final Color iconColor;
   final Color backgroundColor;
@@ -11,6 +12,7 @@ class ArrowIcon extends StatelessWidget {
 
   const ArrowIcon({
     this.padding = 4.0,
+    this.margin = 4.0,
     this.iconSize = 18.0,
     this.iconColor = ColorsSet.grayDark,
     this.backgroundColor = ColorsSet.grayLighter,
@@ -22,6 +24,7 @@ class ArrowIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(padding),
+      margin: EdgeInsets.all(margin),
       decoration: BoxDecoration(
         color: backgroundColor,
         shape: BoxShape.circle,
