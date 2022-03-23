@@ -19,7 +19,8 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: GestureDetector(
         onTap: () => Navigator.of(context).pop(),
         child: const ArrowIcon(
-          icon: Icons.chevron_left,
+          icon: Icons.arrow_back_ios_rounded,
+          margin: 12,
         ),
       ),
     );
