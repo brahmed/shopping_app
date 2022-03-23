@@ -10,6 +10,7 @@ class AccountItemCard extends StatelessWidget {
   final IconData? iconData;
   final double iconSize;
   final String text;
+  final VoidCallback? onTap;
 
   const AccountItemCard({
     this.margin = 8.0,
@@ -18,35 +19,39 @@ class AccountItemCard extends StatelessWidget {
     this.iconSize = 35,
     this.iconData,
     required this.text,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AppCard(
-      margin: margin,
-      padding: padding,
-      radius: radius,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          /// Icon
-          if (iconData != null) Icon(iconData!, size: iconSize),
+    return GestureDetector(
+      onTap: onTap,
+      child: AppCard(
+        margin: margin,
+        padding: padding,
+        radius: radius,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            /// Icon
+            if (iconData != null) Icon(iconData!, size: iconSize),
 
-          /// spacing
-          if (iconData != null) const SizedBox(width: 15),
+            /// spacing
+            if (iconData != null) const SizedBox(width: 15),
 
-          /// Title
-          Text(
-            text,
-            style: Theme.of(context).textTheme.bodyText1,
-          ),
+            /// Title
+            Text(
+              text,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
 
-          const Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox()),
 
-          /// Arrow Icon
-          const ArrowIcon(),
-        ],
+            /// Arrow Icon
+            const ArrowIcon(),
+          ],
+        ),
       ),
     );
   }
