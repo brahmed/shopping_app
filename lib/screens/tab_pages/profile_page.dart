@@ -103,12 +103,13 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// Settings
-              const AccountItemCard(
+              AccountItemCard(
                 text: "Settings",
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,
                 iconData: Icons.settings,
+                onTap: () => Navigator.pushNamed(context, Routes.settings),
               ),
 
               /// Contact Us
