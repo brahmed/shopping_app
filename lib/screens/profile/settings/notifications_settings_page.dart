@@ -12,18 +12,16 @@ class NotificationsSettingsPage extends StatefulWidget {
 }
 
 class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
-
   /// notification switches state values
   bool _accountActive = false;
   bool _shipmentsActive = false;
   bool _recommendationsActive = false;
   bool _dealsActive = false;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PageAppBar(title: "Help"),
+      appBar: const PageAppBar(title: "Notification"),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -60,7 +58,8 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
                     "Find out when your packages are shipped",
                   ),
                   value: _shipmentsActive,
-                  onChanged: (value) => setState(() => _shipmentsActive = value),
+                  onChanged: (value) =>
+                      setState(() => _shipmentsActive = value),
                 ),
               ),
 
@@ -78,7 +77,8 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
                     "Receive recommendations based on your shopping activity",
                   ),
                   value: _recommendationsActive,
-                  onChanged: (value) => setState(() => _recommendationsActive = value),
+                  onChanged: (value) =>
+                      setState(() => _recommendationsActive = value),
                 ),
               ),
 

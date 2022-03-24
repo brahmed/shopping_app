@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/config/app_theme.dart';
 import 'package:shopping_app/navigation/routes.dart';
 
+import '../../../main.dart';
 import '../../../widgets/account_item_card.dart';
 import '../../../widgets/page_app_bar.dart';
 
@@ -31,16 +33,21 @@ class SettingsPage extends StatelessWidget {
                 padding: 10.0,
                 radius: 10.0,
                 iconData: Icons.notifications_none_outlined,
-                onTap: () => Navigator.pushNamed(context, Routes.notificationSettings),
+                onTap: () =>
+                    Navigator.pushNamed(context, Routes.notificationSettings),
               ),
 
               /// Theme mode card
-              const AccountItemCard(
+              AccountItemCard(
                 text: "Switch mode",
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,
-                iconData: Icons.light_mode,
+                iconData: MyApp.themeNotifier.value == AppTheme.dark() ? Icons.light_mode : Icons.dark_mode,
+                onTap: () => MyApp.themeNotifier.value =
+                    MyApp.themeNotifier.value == AppTheme.light()
+                        ? AppTheme.dark()
+                        : AppTheme.light(),
               ),
             ],
           ),

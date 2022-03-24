@@ -11,14 +11,23 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  // Using "static" so that we can easily access it later
+  static final ValueNotifier<ThemeData> themeNotifier =
+      ValueNotifier(AppTheme.light());
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: kAppTitle,
-      theme: AppTheme.light(),
-      initialRoute: Routes.tabs,
-      routes: Routes.routes(),
+    return ValueListenableBuilder<ThemeData>(
+      valueListenable: themeNotifier,
+      builder: (_, ThemeData currentTheme, __) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: kAppTitle,
+          theme: currentTheme,
+          initialRoute: Routes.tabs,
+          routes: Routes.routes(),
+        );
+      },
     );
   }
 }
