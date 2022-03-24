@@ -112,12 +112,13 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// Contact Us
-              const AccountItemCard(
+              AccountItemCard(
                 text: "Contact Us",
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,
                 iconData: Icons.headset_mic_rounded,
+                onTap: () => Navigator.pushNamed(context, Routes.contact),
               ),
 
               /// Help

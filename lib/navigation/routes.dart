@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:shopping_app/screens/profile/contact_us_page.dart';
 import 'package:shopping_app/screens/profile/help_page.dart';
 
 import '../../screens/login.dart';
@@ -16,6 +17,7 @@ class Routes {
   static String profile = "/profile";
 
   static String help = "/help";
+  static String contact = "/contact";
 
   static String login = "/login";
   static String register = "/register";
@@ -30,6 +32,7 @@ class Routes {
 
         /// Profile
         help: (context) => const HelpPage(),
+        contact: (context) => const ContactUsPage(),
 
         /// Auth
         login: (context) => const LoginPage(),
