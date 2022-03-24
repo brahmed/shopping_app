@@ -131,12 +131,13 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// Log out
-              const AccountItemCard(
+              AccountItemCard(
                 text: "Log out",
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,
                 iconData: Icons.logout,
+                onTap: () => Navigator.pushNamed(context, Routes.login),
               ),
             ],
           ),
