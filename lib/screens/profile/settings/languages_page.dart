@@ -1,49 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/navigation/routes.dart';
 
+import '../../../main.dart';
 import '../../../widgets/account_item_card.dart';
 import '../../../widgets/page_app_bar.dart';
 
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+class LanguagesPage extends StatelessWidget {
+  const LanguagesPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PageAppBar(title: "Help"),
+      appBar: const PageAppBar(title: "Languages"),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
               /// Language
               AccountItemCard(
-                text: "Language",
+                text: "Français",
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,
                 iconData: Icons.g_translate,
-                onTap: () =>
-                    Navigator.pushNamed(context, Routes.languages),
+
+                /// update MaterialApp with new locale
+                onTap: () => MyApp.setLocale(context, const Locale("fr", "FR")),
               ),
 
               /// Notification
               AccountItemCard(
-                text: "Notification",
+                text: "English",
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,
-                iconData: Icons.notifications_none_outlined,
-                onTap: () =>
-                    Navigator.pushNamed(context, Routes.notificationSettings),
+                iconData: Icons.g_translate,
+
+                /// update MaterialApp with new locale
+                onTap: () => MyApp.setLocale(context, const Locale("en", "US")),
               ),
 
               /// Theme mode card
-              const AccountItemCard(
-                text: "Switch mode",
+              AccountItemCard(
+                text: "العربية",
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,
-                iconData: Icons.dark_mode,
+                iconData: Icons.g_translate,
+
+                /// update MaterialApp with new locale
+                onTap: () => MyApp.setLocale(context, const Locale("ar", "TN")),
               ),
             ],
           ),
