@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-import '../screens/login.dart';
+import '../screens/profile/authentication/login_page.dart';
+import '../screens/profile/authentication/register_page.dart';
 import '../screens/profile/contact_us_page.dart';
 import '../screens/profile/help_page.dart';
 import '../screens/profile/settings/languages_page.dart';
@@ -43,7 +44,8 @@ class Routes {
         notificationSettings: (context) => const NotificationsSettingsPage(),
         languages: (context) => const LanguagesPage(),
 
-        /// Auth
+        /// Authentication
         login: (context) => const LoginPage(),
+        register: (context) => const RegisterPage(),
       };
 }
