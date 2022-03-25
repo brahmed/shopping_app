@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../main.dart';
-import '../../../widgets/account_item_card.dart';
+import '../../../widgets/cards/app_list_tile.dart';
 import '../../../widgets/page_app_bar.dart';
 
 class LanguagesPage extends StatelessWidget {
@@ -16,7 +16,7 @@ class LanguagesPage extends StatelessWidget {
           child: Column(
             children: [
               /// Language
-              AccountItemCard(
+              AppListTile(
                 text: "Français",
                 margin: 10.0,
                 padding: 10.0,
@@ -28,7 +28,7 @@ class LanguagesPage extends StatelessWidget {
               ),
 
               /// Notification
-              AccountItemCard(
+              AppListTile(
                 text: "English",
                 margin: 10.0,
                 padding: 10.0,
@@ -40,7 +40,7 @@ class LanguagesPage extends StatelessWidget {
               ),
 
               /// Theme mode card
-              AccountItemCard(
+              AppListTile(
                 text: "العربية",
                 margin: 10.0,
                 padding: 10.0,

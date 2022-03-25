@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_app/navigation/routes.dart';
 
-import '../../../widgets/account_item_card.dart';
+import '../../../widgets/cards/app_list_tile.dart';
 import '../../../widgets/page_app_bar.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -16,7 +16,7 @@ class SettingsPage extends StatelessWidget {
           child: Column(
             children: [
               /// Language
-              AccountItemCard(
+              AppListTile(
                 text: "Language",
                 margin: 10.0,
                 padding: 10.0,
@@ -27,7 +27,7 @@ class SettingsPage extends StatelessWidget {
               ),
 
               /// Notification
-              AccountItemCard(
+              AppListTile(
                 text: "Notification",
                 margin: 10.0,
                 padding: 10.0,
@@ -38,7 +38,7 @@ class SettingsPage extends StatelessWidget {
               ),
 
               /// Theme mode card
-              const AccountItemCard(
+              const AppListTile(
                 text: "Switch mode",
                 margin: 10.0,
                 padding: 10.0,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../widgets/app_card.dart';
+import '../../../widgets/cards/app_card.dart';
 import '../../../widgets/page_app_bar.dart';
 
 class NotificationsSettingsPage extends StatefulWidget {

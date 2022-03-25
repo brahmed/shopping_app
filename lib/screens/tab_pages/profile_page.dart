@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shopping_app/navigation/routes.dart';
 
 import '../../config/images.dart';
-import '../../widgets/account_item_card.dart';
-import '../../widgets/app_card.dart';
+import '../../widgets/cards/app_list_tile.dart';
+import '../../widgets/cards/app_card.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -67,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// Orders
-              const AccountItemCard(
+              const AppListTile(
                 text: "Orders",
                 margin: 10.0,
                 padding: 10.0,
@@ -76,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// Addresses
-              const AccountItemCard(
+              const AppListTile(
                 text: "Addresses",
                 margin: 10.0,
                 padding: 10.0,
@@ -85,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// Mobile Number
-              const AccountItemCard(
+              const AppListTile(
                 text: "Mobile Number",
                 margin: 10.0,
                 padding: 10.0,
@@ -94,7 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// Wishlist
-              const AccountItemCard(
+              const AppListTile(
                 text: "Wishlist",
                 margin: 10.0,
                 padding: 10.0,
@@ -103,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// Settings
-              AccountItemCard(
+              AppListTile(
                 text: "Settings",
                 margin: 10.0,
                 padding: 10.0,
@@ -113,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// Contact Us
-              AccountItemCard(
+              AppListTile(
                 text: "Contact Us",
                 margin: 10.0,
                 padding: 10.0,
@@ -123,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// Help
-              AccountItemCard(
+              AppListTile(
                 text: "Help",
                 margin: 10.0,
                 padding: 10.0,
@@ -133,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// Log out
-              AccountItemCard(
+              AppListTile(
                 text: "Log out",
                 margin: 10.0,
                 padding: 10.0,

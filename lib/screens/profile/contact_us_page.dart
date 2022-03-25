@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/account_item_card.dart';
+import '../../widgets/cards/app_list_tile.dart';
 import '../../widgets/page_app_bar.dart';
 
 class ContactUsPage extends StatelessWidget {
@@ -15,7 +15,7 @@ class ContactUsPage extends StatelessWidget {
           child: Column(
             children: const [
               /// Call us card
-              AccountItemCard(
+              AppListTile(
                 text: "Settings",
                 margin: 10.0,
                 padding: 10.0,
@@ -24,7 +24,7 @@ class ContactUsPage extends StatelessWidget {
               ),
 
               /// Email card
-              AccountItemCard(
+              AppListTile(
                 text: "Email",
                 margin: 10.0,
                 padding: 10.0,
@@ -33,7 +33,7 @@ class ContactUsPage extends StatelessWidget {
               ),
 
               /// Chat with us card
-              AccountItemCard(
+              AppListTile(
                 text: "Chat with us",
                 margin: 10.0,
                 padding: 10.0,
@@ -42,7 +42,7 @@ class ContactUsPage extends StatelessWidget {
               ),
 
               /// Facebook card
-              AccountItemCard(
+              AppListTile(
                 text: "Facebook",
                 margin: 10.0,
                 padding: 10.0,

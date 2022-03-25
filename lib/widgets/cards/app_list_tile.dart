@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'app_card.dart';
-import 'arrow_icon.dart';
+import '../arrow_icon.dart';
 
-class AccountItemCard extends StatelessWidget {
+class AppListTile extends StatelessWidget {
   final double margin;
   final double padding;
   final double radius;
@@ -12,7 +12,7 @@ class AccountItemCard extends StatelessWidget {
   final String text;
   final VoidCallback? onTap;
 
-  const AccountItemCard({
+  const AppListTile({
     this.margin = 8.0,
     this.padding = 8.0,
     this.radius = 8.0,

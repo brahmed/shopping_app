@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_app/models/help_question_model.dart';
 import 'package:shopping_app/utils/show_bottom_sheet.dart';
-import 'package:shopping_app/widgets/account_item_card.dart';
+import 'package:shopping_app/widgets/cards/app_list_tile.dart';
 import 'package:shopping_app/widgets/page_app_bar.dart';
 
 class HelpPage extends StatefulWidget {
@@ -29,7 +29,7 @@ class _HelpPageState extends State<HelpPage> {
       body: SafeArea(
         child: ListView.builder(
           itemCount: _questions.length,
-          itemBuilder: (context, index) => AccountItemCard(
+          itemBuilder: (context, index) => AppListTile(
             margin: 12,
             padding: 12,
             text: _questions.elementAt(index).question,
