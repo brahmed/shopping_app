@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// A Text Widget that handles user clicks
 class GestureText extends StatelessWidget {
   final VoidCallback onTap;
   final String text;

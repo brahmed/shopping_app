@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'gesture_text.dart';
 
+/// This widget takes two string inputs
+/// and redirect user when second string is clicked
 class AuthRedirectionText extends StatelessWidget {
   final String staticText;
   final String clickableText;
@@ -20,7 +22,7 @@ class AuthRedirectionText extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "$staticText ",
+          staticText,
           textAlign: TextAlign.right,
           softWrap: false,
           style: Theme.of(context).textTheme.bodyText2,
@@ -28,7 +30,7 @@ class AuthRedirectionText extends StatelessWidget {
         GestureText(
           onTap: () =>
               Navigator.of(context).pushReplacementNamed(redirectionRouteName),
-          text: clickableText,
+          text: " $clickableText",
         ),
       ],
     );
