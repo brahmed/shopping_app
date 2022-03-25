@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/cards/app_page_container.dart';
+
 /// Helper function that displays a given content inside a Modal bottom sheet
 
 Future<void> showAppBottomSheet({
@@ -10,12 +12,7 @@ Future<void> showAppBottomSheet({
       context: context,
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        return Container(
-          margin: const EdgeInsets.only(top: 100),
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(40),),
-            color: Theme.of(context).backgroundColor,
-          ),
+        return AppPageContainer(
           child: widget,
         );
       },
