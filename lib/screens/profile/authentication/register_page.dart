@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/navigation/routes.dart';
-import 'package:shopping_app/widgets/form/auth_redirection_text.dart';
 
+import '../../../config/constants.dart';
+import '../../../navigation/routes.dart';
+import '../../../utils/token_prefs_helpers.dart';
 import '../../../widgets/app/app_logo.dart';
 import '../../../widgets/buttons/app_filled_button.dart';
 import '../../../widgets/cards/app_page_container.dart';
 import '../../../widgets/form/app_text_field.dart';
+import '../../../widgets/form/auth_redirection_text.dart';
 import '../../../widgets/page_app_bar.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -139,9 +141,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   /// Spacing
                   const SizedBox(height: 20),
 
-                  /// Login Button
+                  /// Register Button
                   AppButtonFilled(
-                    onClick: () {},
+                    onClick: () => saveUserToken(userToken),
                     text: "Register",
                   ),
 
@@ -165,31 +167,4 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
-
-  /// Divider widget
-  Widget dividerRow() => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          Expanded(
-            child: Divider(
-              color: Colors.grey,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              "or",
-              style: TextStyle(
-                color: Colors.grey,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Divider(
-              color: Colors.grey,
-            ),
-          ),
-        ],
-      );
 }

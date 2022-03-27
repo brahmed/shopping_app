@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../config/constants.dart';
 import '../../../config/images.dart';
 import '../../../navigation/routes.dart';
+import '../../../utils/token_prefs_helpers.dart';
 import '../../../widgets/app/app_logo.dart';
 import '../../../widgets/buttons/app_filled_button.dart';
 import '../../../widgets/buttons/app_outlined_button.dart';
@@ -113,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   /// Login Button
                   AppButtonFilled(
-                    onClick: () {},
+                    onClick: () => saveUserToken(userToken),
                     text: "Login",
                   ),
 
