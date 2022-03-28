@@ -12,6 +12,7 @@ dependencies:
   flutter_localizations: # Add this line
     sdk: flutter
   cupertino_icons: ^1.0.2
+  cached_network_image: ^3.2.0
   shared_preferences: ^2.0.13
   provider: ^6.0.2
 
