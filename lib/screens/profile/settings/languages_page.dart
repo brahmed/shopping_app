@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopping_app/providers/user_provider.dart';
 
-import '../../../main.dart';
 import '../../../widgets/cards/app_list_tile.dart';
 import '../../../widgets/page_app_bar.dart';
 
@@ -9,6 +10,7 @@ class LanguagesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: const PageAppBar(title: "Languages"),
       body: SafeArea(
@@ -24,7 +26,7 @@ class LanguagesPage extends StatelessWidget {
                 iconData: Icons.g_translate,
 
                 /// update MaterialApp with new locale
-                onTap: () => MyApp.setLocale(context, const Locale("fr", "FR")),
+                onTap: () => provider.changeLocale(const Locale("fr", "FR")),
               ),
 
               /// Notification
@@ -36,7 +38,7 @@ class LanguagesPage extends StatelessWidget {
                 iconData: Icons.g_translate,
 
                 /// update MaterialApp with new locale
-                onTap: () => MyApp.setLocale(context, const Locale("en", "US")),
+                onTap: () => provider.changeLocale(const Locale("en", "US")),
               ),
 
               /// Theme mode card
@@ -48,7 +50,7 @@ class LanguagesPage extends StatelessWidget {
                 iconData: Icons.g_translate,
 
                 /// update MaterialApp with new locale
-                onTap: () => MyApp.setLocale(context, const Locale("ar", "TN")),
+                onTap: () => provider.changeLocale(const Locale("ar", "TN")),
               ),
             ],
           ),

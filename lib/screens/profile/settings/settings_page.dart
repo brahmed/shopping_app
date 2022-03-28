@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/navigation/routes.dart';
+import 'package:provider/provider.dart';
 
+import '../../../navigation/routes.dart';
+import '../../../providers/user_provider.dart';
 import '../../../widgets/cards/app_list_tile.dart';
 import '../../../widgets/page_app_bar.dart';
 
@@ -9,6 +11,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: const PageAppBar(title: "Help"),
       body: SafeArea(
@@ -22,8 +25,7 @@ class SettingsPage extends StatelessWidget {
                 padding: 10.0,
                 radius: 10.0,
                 iconData: Icons.g_translate,
-                onTap: () =>
-                    Navigator.pushNamed(context, Routes.languages),
+                onTap: () => Navigator.pushNamed(context, Routes.languages),
               ),
 
               /// Notification
@@ -38,12 +40,15 @@ class SettingsPage extends StatelessWidget {
               ),
 
               /// Theme mode card
-              const AppListTile(
+              AppListTile(
                 text: "Switch mode",
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,
-                iconData: Icons.dark_mode,
+                iconData: userProvider.isLightTheme
+                    ? Icons.dark_mode
+                    : Icons.light_mode,
+                onTap: () => userProvider.switchThemeMode(),
               ),
             ],
           ),
