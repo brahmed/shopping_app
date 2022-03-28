@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopping_app/providers/user_provider.dart';
 
 import '../../config/colors.dart';
 import '../../screens/tab_pages/bookmarks_page.dart';
@@ -21,20 +23,30 @@ class _TabsManagerState extends State<TabsManager> {
   /// Current page index
   int _selectedIndex = 0;
 
-  /// Tab pages
-  final List<Widget> _tabPages = [
+  /// Logged in user Tabs
+  final List<Widget> _loggedUserTabsPages = [
     const HomePage(),
     const SearchPage(),
     const BookmarksPage(),
     const ProfilePage()
   ];
-
-  /// Tab page icons
-  final List<IconData> _tabIcons = [
+  final List<IconData> _loggedUserTabsIcons = [
     Icons.home_outlined,
     Icons.search,
     Icons.favorite_outline,
-    Icons.person_outline,
+    Icons.person_outline
+  ];
+
+  /// Logged in user Tab pages
+  final List<Widget> _unLoggedUserTabsPages = [
+    const HomePage(),
+    const SearchPage(),
+    const ProfilePage()
+  ];
+  final List<IconData> _unLoggedUserTabsIcons = [
+    Icons.home_outlined,
+    Icons.search,
+    Icons.person_outline
   ];
 
   /// On Item Tapped Handler
@@ -47,16 +59,27 @@ class _TabsManagerState extends State<TabsManager> {
 
   @override
   Widget build(BuildContext context) {
+    final isUserLogged = Provider.of<UserProvider>(context).isUserLogged;
     return Scaffold(
-      body: PageView.builder(
-        itemBuilder: (context, index) => _tabPages.elementAt(index),
+      body: isUserLogged
+          ? tabsPageView(_loggedUserTabsPages)
+          : tabsPageView(_unLoggedUserTabsPages),
+      bottomNavigationBar: isUserLogged
+          ? tabsNavigationBar(_loggedUserTabsIcons)
+          : tabsNavigationBar(_unLoggedUserTabsIcons),
+    );
+  }
+
+  Widget tabsPageView(List<Widget> pages) => PageView.builder(
+        itemBuilder: (context, index) => pages.elementAt(index),
         onPageChanged: _onItemTapped,
-        itemCount: _tabPages.length,
+        itemCount: pages.length,
         controller: _pageController,
-      ),
-      bottomNavigationBar: AppBottomNavigationBar(
+      );
+
+  Widget tabsNavigationBar(List<IconData> tabsIcons) => AppBottomNavigationBar(
         navigationItems: List.generate(
-          _tabPages.length,
+          tabsIcons.length,
           (index) => Container(
             decoration: BoxDecoration(
               color: _selectedIndex == index
@@ -67,16 +90,14 @@ class _TabsManagerState extends State<TabsManager> {
             child: IconButton(
               onPressed: () => _onItemTapped(index),
               icon: Icon(
-                _tabIcons.elementAt(index),
+                tabsIcons.elementAt(index),
                 color: _selectedIndex == index ? Colors.white : Colors.grey,
                 size: 30,
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 /// Custom Bottom Navigation Bar

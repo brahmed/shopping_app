@@ -1,9 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopping_app/providers/user_provider.dart';
 
-import '../../../config/constants.dart';
 import '../../../config/images.dart';
 import '../../../navigation/routes.dart';
-import '../../../utils/token_prefs_helpers.dart';
 import '../../../widgets/app/app_logo.dart';
 import '../../../widgets/buttons/app_filled_button.dart';
 import '../../../widgets/buttons/app_outlined_button.dart';
@@ -115,8 +116,12 @@ class _LoginPageState extends State<LoginPage> {
 
                   /// Login Button
                   AppButtonFilled(
-                    onClick: () => saveUserToken(userToken),
                     text: "Login",
+                    onClick: () {
+                      Provider.of<UserProvider>(context, listen: false)
+                          .loginUser();
+                      Navigator.pushNamedAndRemoveUntil(context, Routes.tabs, (route) => false);
+                    },
                   ),
 
                   /// Spacing
@@ -142,9 +147,10 @@ class _LoginPageState extends State<LoginPage> {
                   AppButtonOutlined(
                     onClick: () {},
                     text: "Continue with Facebook",
-                    icon: Image.network(
-                      facebookLogo,
-                      height: 30,
+                    icon: CachedNetworkImage(
+                      imageUrl: facebookLogo,
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.email_outlined),
                     ),
                   ),
 
@@ -155,9 +161,10 @@ class _LoginPageState extends State<LoginPage> {
                   AppButtonOutlined(
                     onClick: () {},
                     text: "Continue with Google",
-                    icon: Image.network(
-                      googleLogo,
-                      height: 30,
+                    icon: CachedNetworkImage(
+                      imageUrl: googleLogo,
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.email_outlined),
                     ),
                   ),
                 ],

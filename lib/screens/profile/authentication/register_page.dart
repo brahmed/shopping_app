@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopping_app/providers/user_provider.dart';
 
-import '../../../config/constants.dart';
 import '../../../navigation/routes.dart';
-import '../../../utils/token_prefs_helpers.dart';
 import '../../../widgets/app/app_logo.dart';
 import '../../../widgets/buttons/app_filled_button.dart';
 import '../../../widgets/cards/app_page_container.dart';
@@ -143,8 +143,13 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   /// Register Button
                   AppButtonFilled(
-                    onClick: () => saveUserToken(userToken),
                     text: "Register",
+                    onClick: () {
+                      Provider.of<UserProvider>(context, listen: false)
+                          .loginUser();
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, Routes.tabs, (route) => false);
+                    },
                   ),
 
                   /// Spacing
