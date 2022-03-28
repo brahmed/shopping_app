@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// App Outlined Button custom widget
 class AppButtonOutlined extends StatelessWidget {
   final double height;
   final double width;
@@ -9,6 +10,7 @@ class AppButtonOutlined extends StatelessWidget {
   final double radius;
   final Color? outlineColor;
   final Widget? icon;
+  final bool centerContent;
   final String text;
   final TextStyle? textStyle;
   final VoidCallback onClick;
@@ -23,6 +25,7 @@ class AppButtonOutlined extends StatelessWidget {
     this.radius = 8.0,
     this.outlineColor,
     this.icon,
+    this.centerContent = false,
     this.text = "",
     this.textStyle,
     required this.onClick,
@@ -31,7 +34,7 @@ class AppButtonOutlined extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onClick,
+      onTap: onClick,
       child: Container(
         height: height,
         width: width,
@@ -45,7 +48,9 @@ class AppButtonOutlined extends StatelessWidget {
           ),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: centerContent
+              ? MainAxisAlignment.center
+              : MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (icon != null) icon!,
