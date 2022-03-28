@@ -16,7 +16,7 @@ Future<String?> getUserToken() async {
 }
 
 /// Delete user token
-void deleteToken() async {
+void deleteUserToken() async {
   final prefs = await SharedPreferences.getInstance();
   prefs.remove(prefUserTokenKey);
 }
