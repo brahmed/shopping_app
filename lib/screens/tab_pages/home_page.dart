@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../config/colors.dart';
 import '../../config/images.dart';
+import '../../widgets/buttons/app_filled_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,6 +12,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  /// Number of items in cart
+  int cartItemsCount = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,15 +35,32 @@ class _HomePageState extends State<HomePage> {
                     appImage,
                     color: Theme.of(context).iconTheme.color,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: IconButton(
-                      onPressed: null,
-                      icon: Icon(
-                        Icons.shopping_cart,
+
+                  /// Cart icon
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: AppButtonFilled(
+                      height: 60,
+                      width: 60,
+                      radius: 15,
+                      icon: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.shopping_cart_sharp,
+                              color: appBackgroundColorLight),
+                          Text(
+                            "$cartItemsCount",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                ?.copyWith(color: appBackgroundColorLight),
+                          ),
+                        ],
                       ),
+                      onClick: () {},
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
