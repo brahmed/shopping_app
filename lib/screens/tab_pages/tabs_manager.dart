@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopping_app/providers/user_provider.dart';
 
 import '../../config/colors.dart';
+import '../../providers/user_provider.dart';
 import '../../screens/tab_pages/bookmarks_page.dart';
 import '../../screens/tab_pages/home_page.dart';
 import '../../screens/tab_pages/profile_page.dart';
@@ -30,6 +30,7 @@ class _TabsManagerState extends State<TabsManager> {
     const BookmarksPage(),
     const ProfilePage()
   ];
+
   final List<IconData> _loggedUserTabsIcons = [
     Icons.home_outlined,
     Icons.search,
