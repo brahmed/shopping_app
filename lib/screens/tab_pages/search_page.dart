@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../config/colors.dart';
 import '../../../widgets/cards/app_card.dart';
+import '../../config/images.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -71,6 +73,11 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 ],
               ),
+            ),
+
+            /// No result found Image
+            SvgPicture.asset(
+              emptyBoxImage,
             ),
           ],
         ),

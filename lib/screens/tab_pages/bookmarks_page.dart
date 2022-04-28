@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+
+import '../../config/images.dart';
 
 class BookmarksPage extends StatefulWidget {
   const BookmarksPage({Key? key}) : super(key: key);
@@ -10,10 +13,12 @@ class BookmarksPage extends StatefulWidget {
 class _BookmarksPageState extends State<BookmarksPage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
         child: Center(
-          child: Text("Bookmarks Page"),
+          child: SvgPicture.asset(
+            emptyShelfImage,
+          ),
         ),
       ),
     );
