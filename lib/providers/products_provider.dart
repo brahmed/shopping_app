@@ -70,7 +70,7 @@ class ProductsProvider with ChangeNotifier {
     double? minRating,
     bool? inStockOnly,
   }) {
-    var filtered = (products ?? _products).where((_) => true);
+    Iterable<Product> filtered = products ?? _products;
 
     if (category != null && category.isNotEmpty) {
       filtered = filtered.where((p) => p.category == category);

@@ -115,49 +115,37 @@ class _SearchPageState extends State<SearchPage> {
                     Row(
                       children: [
                         Expanded(
-                          child: Builder(
-                            builder: (context) {
-                              final minPriceController = TextEditingController(
-                                text: _minPrice != null ? _minPrice!.toString() : '',
-                              );
-                              return TextField(
-                                decoration: const InputDecoration(
-                                  labelText: 'Min Price',
-                                  prefixText: '\$',
-                                  border: OutlineInputBorder(),
-                                ),
-                                keyboardType: TextInputType.number,
-                                controller: minPriceController,
-                                onChanged: (value) {
-                                  setModalState(() {
-                                    _minPrice = double.tryParse(value);
-                                  });
-                                },
-                              );
+                          child: TextFormField(
+                            key: ValueKey('minPrice_${_minPrice}'),
+                            initialValue: _minPrice?.toString() ?? '',
+                            decoration: const InputDecoration(
+                              labelText: 'Min Price',
+                              prefixText: '\$',
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              setModalState(() {
+                                _minPrice = double.tryParse(value);
+                              });
                             },
                           ),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
-                          child: Builder(
-                            builder: (context) {
-                              final maxPriceController = TextEditingController(
-                                text: _maxPrice != null ? _maxPrice!.toString() : '',
-                              );
-                              return TextField(
-                                decoration: const InputDecoration(
-                                  labelText: 'Max Price',
-                                  prefixText: '\$',
-                                  border: OutlineInputBorder(),
-                                ),
-                                keyboardType: TextInputType.number,
-                                controller: maxPriceController,
-                                onChanged: (value) {
-                                  setModalState(() {
-                                    _maxPrice = double.tryParse(value);
-                                  });
-                                },
-                              );
+                          child: TextFormField(
+                            key: ValueKey('maxPrice_${_maxPrice}'),
+                            initialValue: _maxPrice?.toString() ?? '',
+                            decoration: const InputDecoration(
+                              labelText: 'Max Price',
+                              prefixText: '\$',
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              setModalState(() {
+                                _maxPrice = double.tryParse(value);
+                              });
                             },
                           ),
                         ),
