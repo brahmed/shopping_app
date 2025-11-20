@@ -6,6 +6,7 @@ import '../../models/product_model.dart';
 import '../../providers/cart_provider.dart';
 import '../../providers/favorites_provider.dart';
 import '../../widgets/buttons/app_filled_button.dart';
+import '../cart/cart_page.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final Product product;
@@ -173,7 +174,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         // Product Name
                         Text(
                           widget.product.name,
-                          style: Theme.of(context).textTheme.headline2,
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         const SizedBox(height: 8),
 
@@ -235,7 +236,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         if (widget.product.sizes.isNotEmpty) ...[
                           Text(
                             'Size',
-                            style: Theme.of(context).textTheme.headline3,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                           const SizedBox(height: 12),
                           Wrap(
@@ -260,7 +261,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         if (widget.product.colors.isNotEmpty) ...[
                           Text(
                             'Color',
-                            style: Theme.of(context).textTheme.headline3,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                           const SizedBox(height: 12),
                           Wrap(
@@ -284,7 +285,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         // Quantity
                         Text(
                           'Quantity',
-                          style: Theme.of(context).textTheme.headline3,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                         const SizedBox(height: 12),
                         Row(
@@ -301,7 +302,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             ),
                             Text(
                               '$_quantity',
-                              style: Theme.of(context).textTheme.headline3,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                             IconButton(
                               icon: const Icon(Icons.add_circle_outline),
@@ -318,7 +319,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         // Description
                         Text(
                           'Description',
-                          style: Theme.of(context).textTheme.headline3,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                         const SizedBox(height: 12),
                         Text(
@@ -381,13 +382,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ? () {
                         final cartProvider =
                             Provider.of<CartProvider>(context, listen: false);
-                        for (int i = 0; i < _quantity; i++) {
-                          cartProvider.addItem(
-                            widget.product,
-                            size: _selectedSize,
-                            color: _selectedColor,
-                          );
-                        }
+                        cartProvider.addItemWithQuantity(
+                          widget.product,
+                          quantity: _quantity,
+                          size: _selectedSize,
+                          color: _selectedColor,
+                        );
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
@@ -397,7 +397,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             action: SnackBarAction(
                               label: 'VIEW CART',
                               onPressed: () {
-                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const CartPage(),
+                                  ),
+                                );
                               },
                             ),
                           ),
