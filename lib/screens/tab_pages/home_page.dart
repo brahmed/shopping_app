@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../config/colors.dart';
 import '../../config/images.dart';
+import '../../providers/cart_provider.dart';
+import '../../providers/products_provider.dart';
+import '../../screens/cart/cart_page.dart';
 import '../../widgets/buttons/app_filled_button.dart';
+import '../../widgets/cards/category_card.dart';
+import '../../widgets/cards/product_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,8 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  /// Number of items in cart
-  int cartItemsCount = 0;
+  String? selectedCategory;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +26,7 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            /// Add the app bar to the CustomScrollView.
+            /// App bar
             SliverAppBar(
               floating: true,
               expandedHeight: 100.0,
@@ -31,35 +36,49 @@ class _HomePageState extends State<HomePage> {
               flexibleSpace: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset(
-                    appImage,
-                    color: Theme.of(context).iconTheme.color,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(
+                      appImage,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
                   ),
 
                   /// Cart icon
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: AppButtonFilled(
-                      height: 60,
-                      width: 60,
-                      radius: 15,
-                      icon: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.shopping_cart_sharp,
-                              color: appBackgroundColorLight),
-                          Text(
-                            "$cartItemsCount",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                ?.copyWith(color: appBackgroundColorLight),
+                  Consumer<CartProvider>(
+                    builder: (context, cartProvider, child) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: AppButtonFilled(
+                          height: 60,
+                          width: 60,
+                          radius: 15,
+                          icon: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.shopping_cart_sharp,
+                                  color: appBackgroundColorLight),
+                              Text(
+                                "${cartProvider.totalItemsCount}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(color: appBackgroundColorLight),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      onClick: () {},
-                    ),
+                          onClick: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CartPage(),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
                   )
                 ],
               ),
@@ -69,16 +88,139 @@ class _HomePageState extends State<HomePage> {
               child: Divider(),
             ),
 
-            /// List
-            SliverList(
-              // Use a delegate to build items as they're scrolled on screen.
-              delegate: SliverChildBuilderDelegate(
-                // The builder function returns a ListTile with a title that
-                // displays the index of the current item.
-                (context, index) => ListTile(title: Text('Item #$index')),
-                // Builds 1000 ListTiles
-                childCount: 1000,
+            /// Categories
+            SliverToBoxAdapter(
+              child: Consumer<ProductsProvider>(
+                builder: (context, productsProvider, child) {
+                  if (productsProvider.categories.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(
+                          'Categories',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 110,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: productsProvider.categories.length,
+                          itemBuilder: (context, index) {
+                            final category = productsProvider.categories[index];
+                            return CategoryCard(
+                              category: category,
+                              onTap: () {
+                                setState(() {
+                                  selectedCategory =
+                                      selectedCategory == category.id
+                                          ? null
+                                          : category.id;
+                                });
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  );
+                },
               ),
+            ),
+
+            /// Products Section Header
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      selectedCategory != null ? 'Filtered Products' : 'All Products',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    if (selectedCategory != null)
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            selectedCategory = null;
+                          });
+                        },
+                        child: const Text('Clear Filter'),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+
+            /// Products Grid
+            Consumer<ProductsProvider>(
+              builder: (context, productsProvider, child) {
+                if (productsProvider.isLoading) {
+                  return const SliverFillRemaining(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+
+                if (productsProvider.error != null) {
+                  return SliverFillRemaining(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                          const SizedBox(height: 16),
+                          Text('Error: ${productsProvider.error}'),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () => productsProvider.loadProducts(),
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+
+                final products = selectedCategory != null
+                    ? productsProvider.getProductsByCategory(selectedCategory!)
+                    : productsProvider.products;
+
+                if (products.isEmpty) {
+                  return const SliverFillRemaining(
+                    child: Center(
+                      child: Text('No products available'),
+                    ),
+                  );
+                }
+
+                return SliverPadding(
+                  padding: const EdgeInsets.all(16),
+                  sliver: SliverGrid(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.65,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        return ProductCard(product: products[index]);
+                      },
+                      childCount: products.length,
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),

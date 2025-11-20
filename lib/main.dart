@@ -5,6 +5,9 @@ import 'package:provider/provider.dart';
 import 'config/app_theme.dart';
 import 'config/constants.dart';
 import 'navigation/routes.dart';
+import 'providers/cart_provider.dart';
+import 'providers/favorites_provider.dart';
+import 'providers/products_provider.dart';
 import 'providers/user_provider.dart';
 
 void main() {
@@ -31,6 +34,9 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => ProductsProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
       ],
       child: Consumer<UserProvider>(
         builder: (context, userProvider, child) => MaterialApp(
