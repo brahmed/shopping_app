@@ -63,34 +63,35 @@ class ProductsProvider with ChangeNotifier {
   }
 
   List<Product> filterProducts({
+    List<Product>? products,
     String? category,
     double? minPrice,
     double? maxPrice,
     double? minRating,
     bool? inStockOnly,
   }) {
-    var filtered = _products;
+    Iterable<Product> filtered = products ?? _products;
 
     if (category != null && category.isNotEmpty) {
-      filtered = filtered.where((p) => p.category == category).toList();
+      filtered = filtered.where((p) => p.category == category);
     }
 
     if (minPrice != null) {
-      filtered = filtered.where((p) => p.price >= minPrice).toList();
+      filtered = filtered.where((p) => p.price >= minPrice);
     }
 
     if (maxPrice != null) {
-      filtered = filtered.where((p) => p.price <= maxPrice).toList();
+      filtered = filtered.where((p) => p.price <= maxPrice);
     }
 
     if (minRating != null) {
-      filtered = filtered.where((p) => p.rating >= minRating).toList();
+      filtered = filtered.where((p) => p.rating >= minRating);
     }
 
     if (inStockOnly == true) {
-      filtered = filtered.where((p) => p.inStock).toList();
+      filtered = filtered.where((p) => p.inStock);
     }
 
-    return filtered;
+    return filtered.toList();
   }
 }

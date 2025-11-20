@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                                 "${cartProvider.totalItemsCount}",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
+                                    .bodyLarge
                                     ?.copyWith(color: appBackgroundColorLight),
                               ),
                             ],
@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.all(16.0),
                         child: Text(
                           'Categories',
-                          style: Theme.of(context).textTheme.headline2,
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ),
                       SizedBox(
@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       selectedCategory != null ? 'Filtered Products' : 'All Products',
-                      style: Theme.of(context).textTheme.headline2,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     if (selectedCategory != null)
                       TextButton(

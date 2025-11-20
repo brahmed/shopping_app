@@ -63,7 +63,7 @@ class CartPage extends StatelessWidget {
                   const SizedBox(height: 24),
                   Text(
                     'Your cart is empty',
-                    style: Theme.of(context).textTheme.headline2,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 16),
                   AppButtonFilled(
@@ -126,7 +126,7 @@ class CartPage extends StatelessWidget {
                                 children: [
                                   Text(
                                     product.name,
-                                    style: Theme.of(context).textTheme.headline3,
+                                    style: Theme.of(context).textTheme.titleMedium,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -187,7 +187,11 @@ class CartPage extends StatelessWidget {
                                                     color: cartItem.selectedColor,
                                                   );
                                                 } else {
-                                                  cartProvider.removeItem(product.id);
+                                                  cartProvider.removeItem(
+                                                    product.id,
+                                                    size: cartItem.selectedSize,
+                                                    color: cartItem.selectedColor,
+                                                  );
                                                 }
                                               },
                                             ),
@@ -217,7 +221,11 @@ class CartPage extends StatelessWidget {
                                         icon: const Icon(Icons.delete_outline),
                                         color: Colors.red,
                                         onPressed: () {
-                                          cartProvider.removeItem(product.id);
+                                          cartProvider.removeItem(
+                                            product.id,
+                                            size: cartItem.selectedSize,
+                                            color: cartItem.selectedColor,
+                                          );
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             const SnackBar(
                                               content: Text('Item removed from cart'),

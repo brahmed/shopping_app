@@ -132,7 +132,7 @@ class ProductCard extends StatelessWidget {
                     product.name,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.headline3,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
 
                   const SizedBox(height: 4),

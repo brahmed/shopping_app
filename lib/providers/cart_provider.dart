@@ -8,6 +8,7 @@ import '../models/product_model.dart';
 class CartProvider with ChangeNotifier {
   List<CartItem> _items = [];
   static const String _cartKey = 'shopping_cart';
+  bool _isInitialized = false;
 
   List<CartItem> get items => _items;
 
@@ -23,8 +24,16 @@ class CartProvider with ChangeNotifier {
 
   bool get isEmpty => _items.isEmpty;
 
+  bool get isInitialized => _isInitialized;
+
   CartProvider() {
-    _loadCart();
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    await _loadCart();
+    _isInitialized = true;
+    notifyListeners();
   }
 
   Future<void> _loadCart() async {
@@ -74,8 +83,39 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void removeItem(String productId) {
-    _items.removeWhere((item) => item.product.id == productId);
+  void addItemWithQuantity(
+    Product product, {
+    required int quantity,
+    String? size,
+    String? color,
+  }) {
+    final existingIndex = _items.indexWhere(
+      (item) =>
+          item.product.id == product.id &&
+          item.selectedSize == size &&
+          item.selectedColor == color,
+    );
+
+    if (existingIndex >= 0) {
+      _items[existingIndex].quantity += quantity;
+    } else {
+      _items.add(CartItem(
+        product: product,
+        quantity: quantity,
+        selectedSize: size,
+        selectedColor: color,
+      ));
+    }
+
+    _saveCart();
+    notifyListeners();
+  }
+
+  void removeItem(String productId, {String? size, String? color}) {
+    _items.removeWhere((item) =>
+        item.product.id == productId &&
+        item.selectedSize == size &&
+        item.selectedColor == color);
     _saveCart();
     notifyListeners();
   }
@@ -109,23 +149,23 @@ class CartProvider with ChangeNotifier {
     return _items.any((item) => item.product.id == productId);
   }
 
-  int getProductQuantity(String productId) {
-    final item = _items.firstWhere(
-      (item) => item.product.id == productId,
-      orElse: () => CartItem(
-        product: Product(
-          id: '',
-          name: '',
-          description: '',
-          price: 0,
-          imageUrl: '',
-          images: [],
-          category: '',
-          brand: '',
-        ),
-        quantity: 0,
-      ),
-    );
-    return item.quantity;
+  int getProductQuantity(String productId, {String? size, String? color}) {
+    try {
+      final item = _items.firstWhere(
+        (item) =>
+            item.product.id == productId &&
+            item.selectedSize == size &&
+            item.selectedColor == color,
+      );
+      return item.quantity;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  int getTotalProductQuantity(String productId) {
+    return _items
+        .where((item) => item.product.id == productId)
+        .fold(0, (sum, item) => sum + item.quantity);
   }
 }
