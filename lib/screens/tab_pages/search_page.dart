@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
-import '../../../config/colors.dart';
-import '../../../widgets/cards/app_card.dart';
+import '../../config/colors.dart';
 import '../../config/images.dart';
+import '../../models/product_model.dart';
+import '../../providers/products_provider.dart';
+import '../../widgets/cards/app_card.dart';
+import '../../widgets/cards/product_card.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -13,18 +17,167 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  /// Search controller
   final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+  String? _selectedCategory;
+  double? _minPrice;
+  double? _maxPrice;
 
-  /// Car code scan search result
-  String _scanBarcode = "";
+  void _onTextChangedSearch(String text) {
+    setState(() {
+      _searchQuery = text;
+    });
+  }
 
-  /// On text changed
-  void _onTextChangedSearch(String text) {}
-
-  /// Reset search
   void _cancelSearch() {
-    _searchController.text = "";
+    setState(() {
+      _searchController.clear();
+      _searchQuery = '';
+      _selectedCategory = null;
+      _minPrice = null;
+      _maxPrice = null;
+    });
+  }
+
+  void _showFilterDialog() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            final productsProvider = Provider.of<ProductsProvider>(context, listen: false);
+
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Filters',
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setModalState(() {
+                              _selectedCategory = null;
+                              _minPrice = null;
+                              _maxPrice = null;
+                            });
+                            setState(() {});
+                          },
+                          child: const Text('Clear All'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Category Filter
+                    Text(
+                      'Category',
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8,
+                      children: productsProvider.categories.map((category) {
+                        final isSelected = _selectedCategory == category.id;
+                        return FilterChip(
+                          label: Text(category.name),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            setModalState(() {
+                              _selectedCategory = selected ? category.id : null;
+                            });
+                          },
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Price Range
+                    Text(
+                      'Price Range',
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              labelText: 'Min Price',
+                              prefixText: '\$',
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              setModalState(() {
+                                _minPrice = double.tryParse(value);
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              labelText: 'Max Price',
+                              prefixText: '\$',
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              setModalState(() {
+                                _maxPrice = double.tryParse(value);
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Apply Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {});
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Apply Filters'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  List<Product> _getFilteredProducts(ProductsProvider productsProvider) {
+    List<Product> products = productsProvider.searchProducts(_searchQuery);
+
+    return productsProvider.filterProducts(
+      category: _selectedCategory,
+      minPrice: _minPrice,
+      maxPrice: _maxPrice,
+    ).where((p) => products.any((sp) => sp.id == p.id)).toList();
   }
 
   @override
@@ -32,19 +185,18 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// Search bar
             AppCard(
+              margin: 12,
+              padding: 8,
+              radius: 12,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// Back arrow
-                  IconButton(
-                    onPressed: _cancelSearch,
-                    icon: const Icon(Icons.search_off_sharp),
+                  /// Search Icon
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Icon(Icons.search, color: ColorsSet.grayLight),
                   ),
 
                   /// Search TextField
@@ -54,7 +206,7 @@ class _SearchPageState extends State<SearchPage> {
                       onChanged: _onTextChangedSearch,
                       textInputAction: TextInputAction.search,
                       decoration: const InputDecoration(
-                        hintText: "Search",
+                        hintText: "Search products...",
                         hintStyle: TextStyle(color: ColorsSet.grayLight),
                         border: InputBorder.none,
                         focusedBorder: InputBorder.none,
@@ -66,22 +218,116 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
 
-                  /// Qrcode Search Icon
+                  /// Clear Icon
+                  if (_searchQuery.isNotEmpty)
+                    IconButton(
+                      onPressed: _cancelSearch,
+                      icon: const Icon(Icons.clear),
+                    ),
+
+                  /// Filter Icon
                   IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.qr_code_scanner),
+                    onPressed: _showFilterDialog,
+                    icon: Icon(
+                      Icons.filter_list,
+                      color: (_selectedCategory != null || _minPrice != null || _maxPrice != null)
+                          ? Theme.of(context).primaryColor
+                          : null,
+                    ),
                   ),
                 ],
               ),
             ),
 
-            /// No result found Image
-            SvgPicture.asset(
-              emptyBoxImage,
+            /// Search Results
+            Expanded(
+              child: Consumer<ProductsProvider>(
+                builder: (context, productsProvider, child) {
+                  if (productsProvider.isLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  final filteredProducts = _getFilteredProducts(productsProvider);
+
+                  if (_searchQuery.isEmpty && _selectedCategory == null) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            emptyBoxImage,
+                            width: 200,
+                          ),
+                          const SizedBox(height: 24),
+                          Text(
+                            'Search for products',
+                            style: Theme.of(context).textTheme.headline2,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Find exactly what you\'re looking for',
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  if (filteredProducts.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            emptyBoxImage,
+                            width: 200,
+                          ),
+                          const SizedBox(height: 24),
+                          Text(
+                            'No products found',
+                            style: Theme.of(context).textTheme.headline2,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Try adjusting your search or filters',
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return GridView.builder(
+                    padding: const EdgeInsets.all(16),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.65,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                    ),
+                    itemCount: filteredProducts.length,
+                    itemBuilder: (context, index) {
+                      return ProductCard(product: filteredProducts[index]);
+                    },
+                  );
+                },
+              ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 }
