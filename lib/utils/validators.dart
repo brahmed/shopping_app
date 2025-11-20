@@ -24,7 +24,7 @@ class Validators {
     final hasUppercase = value.contains(RegExp(r'[A-Z]'));
     final hasLowercase = value.contains(RegExp(r'[a-z]'));
     final hasDigit = value.contains(RegExp(r'[0-9]'));
-    final hasSpecialChar = value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+    final hasSpecialChar = value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>\-_+=\[\];~`/\\]'));
 
     if (!hasUppercase) {
       return 'Password must contain at least one uppercase letter';

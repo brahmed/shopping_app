@@ -149,14 +149,23 @@ class CartProvider with ChangeNotifier {
     return _items.any((item) => item.product.id == productId);
   }
 
-  int getProductQuantity(String productId) {
+  int getProductQuantity(String productId, {String? size, String? color}) {
     try {
       final item = _items.firstWhere(
-        (item) => item.product.id == productId,
+        (item) =>
+            item.product.id == productId &&
+            item.selectedSize == size &&
+            item.selectedColor == color,
       );
       return item.quantity;
     } catch (e) {
       return 0;
     }
+  }
+
+  int getTotalProductQuantity(String productId) {
+    return _items
+        .where((item) => item.product.id == productId)
+        .fold(0, (sum, item) => sum + item.quantity);
   }
 }
