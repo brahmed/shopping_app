@@ -66,7 +66,7 @@ class _SearchPageState extends State<SearchPage> {
                       children: [
                         Text(
                           'Filters',
-                          style: Theme.of(context).textTheme.titleLarge,
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         TextButton(
                           onPressed: () {
@@ -280,7 +280,7 @@ class _SearchPageState extends State<SearchPage> {
                           const SizedBox(height: 24),
                           Text(
                             'Search for products',
-                            style: Theme.of(context).textTheme.titleLarge,
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           const SizedBox(height: 8),
                           Text(
@@ -306,7 +306,7 @@ class _SearchPageState extends State<SearchPage> {
                           const SizedBox(height: 24),
                           Text(
                             'No products found',
-                            style: Theme.of(context).textTheme.titleLarge,
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           const SizedBox(height: 8),
                           Text(
