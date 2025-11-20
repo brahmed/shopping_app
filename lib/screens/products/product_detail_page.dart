@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/product_model.dart';
-import '../../providers/cart_provider.dart';
-import '../../providers/favorites_provider.dart';
+import '../../providers/cart_provider_riverpod.dart';
+import '../../providers/favorites_provider_riverpod.dart';
 import '../../widgets/buttons/app_filled_button.dart';
 
-class ProductDetailPage extends StatefulWidget {
+class ProductDetailPage extends ConsumerStatefulWidget {
   final Product product;
 
   const ProductDetailPage({
@@ -16,10 +16,10 @@ class ProductDetailPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ProductDetailPage> createState() => _ProductDetailPageState();
+  ConsumerState<ProductDetailPage> createState() => _ProductDetailPageState();
 }
 
-class _ProductDetailPageState extends State<ProductDetailPage> {
+class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
   int _currentImageIndex = 0;
   String? _selectedSize;
   String? _selectedColor;
@@ -38,31 +38,29 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isFavorite =
+        ref.read(favoritesProvider.notifier).isFavorite(widget.product.id);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.product.name),
         actions: [
-          Consumer<FavoritesProvider>(
-            builder: (context, favProvider, child) {
-              final isFavorite = favProvider.isFavorite(widget.product.id);
-              return IconButton(
-                icon: Icon(
-                  isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: isFavorite ? Colors.red : null,
+          IconButton(
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: isFavorite ? Colors.red : null,
+            ),
+            onPressed: () {
+              ref.read(favoritesProvider.notifier).toggleFavorite(widget.product);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    isFavorite
+                        ? 'Removed from favorites'
+                        : 'Added to favorites',
+                  ),
+                  duration: const Duration(seconds: 1),
                 ),
-                onPressed: () {
-                  favProvider.toggleFavorite(widget.product);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        isFavorite
-                            ? 'Removed from favorites'
-                            : 'Added to favorites',
-                      ),
-                      duration: const Duration(seconds: 1),
-                    ),
-                  );
-                },
               );
             },
           ),
@@ -138,7 +136,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             children: List.generate(
                               widget.product.images.length,
                               (index) => Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 4),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 4),
                                 width: 8,
                                 height: 8,
                                 decoration: BoxDecoration(
@@ -379,14 +378,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 text: widget.product.inStock ? 'Add to Cart' : 'Out of Stock',
                 onClick: widget.product.inStock
                     ? () {
-                        final cartProvider =
-                            Provider.of<CartProvider>(context, listen: false);
                         for (int i = 0; i < _quantity; i++) {
-                          cartProvider.addItem(
-                            widget.product,
-                            size: _selectedSize,
-                            color: _selectedColor,
-                          );
+                          ref.read(cartProvider.notifier).addItem(
+                                widget.product,
+                                size: _selectedSize,
+                                color: _selectedColor,
+                              );
                         }
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

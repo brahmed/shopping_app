@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../config/colors.dart';
 import '../../models/product_model.dart';
-import '../../providers/favorites_provider.dart';
-import '../../screens/products/product_detail_page.dart';
+import '../../navigation/app_router.dart';
+import '../../providers/favorites_provider_riverpod.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends ConsumerWidget {
   final Product product;
 
   const ProductCard({
@@ -16,15 +16,15 @@ class ProductCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favoritesState = ref.watch(favoritesProvider);
+    final isFavorite =
+        ref.read(favoritesProvider.notifier).isFavorite(product.id);
+
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductDetailPage(product: product),
-          ),
-        );
+        context.push(AppRoutes.productDetail.replaceAll(':id', product.id),
+            extra: product);
       },
       child: Card(
         elevation: 2,
@@ -89,33 +89,28 @@ class ProductCard extends StatelessWidget {
                 Positioned(
                   top: 8,
                   right: 8,
-                  child: Consumer<FavoritesProvider>(
-                    builder: (context, favProvider, child) {
-                      final isFavorite = favProvider.isFavorite(product.id);
-                      return GestureDetector(
-                        onTap: () {
-                          favProvider.toggleFavorite(product);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 4,
-                              ),
-                            ],
-                          ),
-                          child: Icon(
-                            isFavorite ? Icons.favorite : Icons.favorite_border,
-                            color: isFavorite ? Colors.red : Colors.grey,
-                            size: 20,
-                          ),
-                        ),
-                      );
+                  child: GestureDetector(
+                    onTap: () {
+                      ref.read(favoritesProvider.notifier).toggleFavorite(product);
                     },
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: isFavorite ? Colors.red : Colors.grey,
+                        size: 20,
+                      ),
+                    ),
                   ),
                 ),
               ],

@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
 
 import '../../config/colors.dart';
 import '../../config/images.dart';
 import '../../models/product_model.dart';
-import '../../providers/products_provider.dart';
+import '../../providers/products_provider_riverpod.dart';
 import '../../widgets/cards/app_card.dart';
 import '../../widgets/cards/product_card.dart';
 
-class SearchPage extends StatefulWidget {
+class SearchPage extends ConsumerStatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
 
   @override
-  State<SearchPage> createState() => _SearchPageState();
+  ConsumerState<SearchPage> createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _SearchPageState extends ConsumerState<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   String? _selectedCategory;
@@ -49,7 +49,7 @@ class _SearchPageState extends State<SearchPage> {
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setModalState) {
-            final productsProvider = Provider.of<ProductsProvider>(context, listen: false);
+            final productsState = ref.read(productsProvider);
 
             return Padding(
               padding: EdgeInsets.only(
@@ -91,7 +91,7 @@ class _SearchPageState extends State<SearchPage> {
                     const SizedBox(height: 8),
                     Wrap(
                       spacing: 8,
-                      children: productsProvider.categories.map((category) {
+                      children: productsState.categories.map((category) {
                         final isSelected = _selectedCategory == category.id;
                         return FilterChip(
                           label: Text(category.name),
@@ -170,18 +170,24 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  List<Product> _getFilteredProducts(ProductsProvider productsProvider) {
-    List<Product> products = productsProvider.searchProducts(_searchQuery);
+  List<Product> _getFilteredProducts(ProductsState productsState) {
+    final productsNotifier = ref.read(productsProvider.notifier);
+    List<Product> products = productsNotifier.searchProducts(_searchQuery);
 
-    return productsProvider.filterProducts(
-      category: _selectedCategory,
-      minPrice: _minPrice,
-      maxPrice: _maxPrice,
-    ).where((p) => products.any((sp) => sp.id == p.id)).toList();
+    return productsNotifier
+        .filterProducts(
+          category: _selectedCategory,
+          minPrice: _minPrice,
+          maxPrice: _maxPrice,
+        )
+        .where((p) => products.any((sp) => sp.id == p.id))
+        .toList();
   }
 
   @override
   Widget build(BuildContext context) {
+    final productsState = ref.watch(productsProvider);
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -230,7 +236,9 @@ class _SearchPageState extends State<SearchPage> {
                     onPressed: _showFilterDialog,
                     icon: Icon(
                       Icons.filter_list,
-                      color: (_selectedCategory != null || _minPrice != null || _maxPrice != null)
+                      color: (_selectedCategory != null ||
+                              _minPrice != null ||
+                              _maxPrice != null)
                           ? Theme.of(context).primaryColor
                           : null,
                     ),
@@ -241,15 +249,15 @@ class _SearchPageState extends State<SearchPage> {
 
             /// Search Results
             Expanded(
-              child: Consumer<ProductsProvider>(
-                builder: (context, productsProvider, child) {
-                  if (productsProvider.isLoading) {
+              child: Builder(
+                builder: (context) {
+                  if (productsState.isLoading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
 
-                  final filteredProducts = _getFilteredProducts(productsProvider);
+                  final filteredProducts = _getFilteredProducts(productsState);
 
                   if (_searchQuery.isEmpty && _selectedCategory == null) {
                     return Center(
@@ -305,7 +313,8 @@ class _SearchPageState extends State<SearchPage> {
 
                   return GridView.builder(
                     padding: const EdgeInsets.all(16),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 0.65,
                       crossAxisSpacing: 16,
