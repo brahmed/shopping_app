@@ -23,7 +23,7 @@ class GestureText extends StatelessWidget {
         textAlign: TextAlign.right,
         softWrap: false,
         style: textStyle ??
-            theme.textTheme.bodyText1?.copyWith(color: theme.iconTheme.color),
+            theme.textTheme.bodyLarge?.copyWith(color: theme.iconTheme.color),
       ),
     );
   }

@@ -126,7 +126,7 @@ class ProfilePage extends ConsumerWidget {
             ),
             title: Text(
               "Amine Brahmi",
-              style: Theme.of(context).textTheme.headline3,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
             subtitle: const Text(
               "mail@gmail.com",

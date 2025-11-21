@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'gesture_text.dart';
 
@@ -25,11 +26,10 @@ class AuthRedirectionText extends StatelessWidget {
           staticText,
           textAlign: TextAlign.right,
           softWrap: false,
-          style: Theme.of(context).textTheme.bodyText2,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
         GestureText(
-          onTap: () =>
-              Navigator.of(context).pushReplacementNamed(redirectionRouteName),
+          onTap: () => context.go(redirectionRouteName),
           text: " $clickableText",
         ),
       ],

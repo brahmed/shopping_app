@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shopping_app/providers/user_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../navigation/routes.dart';
+import '../../../navigation/app_router.dart';
+import '../../../providers/user_provider_riverpod.dart';
 import '../../../widgets/app/app_logo.dart';
 import '../../../widgets/buttons/app_filled_button.dart';
 import '../../../widgets/cards/app_page_container.dart';
@@ -10,14 +11,14 @@ import '../../../widgets/form/app_text_field.dart';
 import '../../../widgets/form/auth_redirection_text.dart';
 import '../../../widgets/page_app_bar.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  ConsumerState<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageState extends ConsumerState<RegisterPage> {
   /// Global variables
   late GlobalKey<FormState> _formKey;
   late GlobalKey _firstNameFieldKey;
@@ -145,10 +146,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   AppButtonFilled(
                     text: "Register",
                     onClick: () {
-                      Provider.of<UserProvider>(context, listen: false)
-                          .loginUser();
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, Routes.tabs, (route) => false);
+                      ref.read(userProvider.notifier).loginUser();
+                      context.go(AppRoutes.tabs);
                     },
                   ),
 
@@ -159,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   AuthRedirectionText(
                     staticText: "Do you have an account?",
                     clickableText: "log in",
-                    redirectionRouteName: Routes.login,
+                    redirectionRouteName: AppRoutes.login,
                   ),
 
                   /// Spacing

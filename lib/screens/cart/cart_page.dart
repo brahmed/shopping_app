@@ -122,7 +122,7 @@ class CartPage extends ConsumerWidget {
                                     Text(
                                       product.name,
                                       style:
-                                          Theme.of(context).textTheme.headline3,
+                                          Theme.of(context).textTheme.headlineMedium,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),

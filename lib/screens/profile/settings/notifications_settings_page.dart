@@ -34,7 +34,7 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
                 child: SwitchListTile(
                   title: Text(
                     "Your Account",
-                    style: Theme.of(context).textTheme.headline3,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   subtitle: const Text(
                     "Get notified for account",
@@ -52,7 +52,7 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
                 child: SwitchListTile(
                   title: Text(
                     "Your Shipments",
-                    style: Theme.of(context).textTheme.headline3,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   subtitle: const Text(
                     "Find out when your packages are shipped",
@@ -71,7 +71,7 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
                 child: SwitchListTile(
                   title: Text(
                     "Your recommendations",
-                    style: Theme.of(context).textTheme.headline3,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   subtitle: const Text(
                     "Receive recommendations based on your shopping activity",
@@ -90,7 +90,7 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
                 child: SwitchListTile(
                   title: Text(
                     "Your watched and waitlisted deals",
-                    style: Theme.of(context).textTheme.headline3,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   subtitle: const Text(
                     "Find out when lightning deals happen",
