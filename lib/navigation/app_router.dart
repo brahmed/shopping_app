@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../models/order_model_enhanced.dart';
 import '../models/product_model.dart';
 import '../screens/cart/cart_page.dart';
+import '../screens/notifications/notifications_page.dart';
+import '../screens/orders/order_details_page.dart';
+import '../screens/orders/orders_list_page.dart';
 import '../screens/products/product_detail_page.dart';
 import '../screens/profile/authentication/login_page.dart';
 import '../screens/profile/authentication/register_page.dart';
@@ -29,6 +33,18 @@ class AppRoutes {
   static const String languages = '/languages';
   static const String login = '/login';
   static const String register = '/register';
+  // New routes
+  static const String orders = '/orders';
+  static const String orderDetails = '/order-details';
+  static const String notifications = '/notifications';
+  static const String addresses = '/addresses';
+  static const String addAddress = '/add-address';
+  static const String editAddress = '/edit-address/:id';
+  static const String wishlists = '/wishlists';
+  static const String comparison = '/comparison';
+  static const String subscriptions = '/subscriptions';
+  static const String checkout = '/checkout';
+  static const String coupons = '/coupons';
 }
 
 // GoRouter configuration
@@ -117,6 +133,42 @@ final appRouter = GoRouter(
         child: const RegisterPage(),
       ),
     ),
+
+    // Orders
+    GoRoute(
+      path: AppRoutes.orders,
+      pageBuilder: (context, state) => MaterialPage(
+        key: state.pageKey,
+        child: const OrdersListPage(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.orderDetails,
+      pageBuilder: (context, state) {
+        final order = state.extra as OrderEnhanced;
+        return MaterialPage(
+          key: state.pageKey,
+          child: OrderDetailsPage(order: order),
+        );
+      },
+    ),
+
+    // Notifications
+    GoRoute(
+      path: AppRoutes.notifications,
+      pageBuilder: (context, state) => MaterialPage(
+        key: state.pageKey,
+        child: const NotificationsPage(),
+      ),
+    ),
+
+    // TODO: Add remaining routes as screens are implemented
+    // - Addresses management
+    // - Wishlists management
+    // - Product comparison
+    // - Subscriptions
+    // - Checkout
+    // - Coupons
   ],
   errorPageBuilder: (context, state) => MaterialPage(
     key: state.pageKey,
