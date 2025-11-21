@@ -11,12 +11,50 @@ dependencies:
     sdk: flutter
   flutter_localizations: # Add this line
     sdk: flutter
+
+  # UI & Core
   cupertino_icons: ^1.0.2
   cached_network_image: ^3.2.0
-  shared_preferences: ^2.0.13
-  flutter_riverpod: ^2.3.6
-  go_router: ^9.0.0
   flutter_svg: ^1.0.3
+
+  # State Management
+  flutter_riverpod: ^2.3.6
+
+  # Navigation
+  go_router: ^9.0.0
+
+  # Local Storage (for offline support)
+  shared_preferences: ^2.0.13
+
+  # Firebase Core
+  firebase_core: ^2.24.0
+
+  # Firebase Services
+  firebase_auth: ^4.15.0
+  cloud_firestore: ^4.13.0
+  firebase_storage: ^11.5.0
+  firebase_messaging: ^14.7.0
+  firebase_analytics: ^10.7.0
+  firebase_crashlytics: ^3.4.0
+  firebase_performance: ^0.9.3+0
+
+  # Firebase UI (optional - for auth UI)
+  firebase_ui_auth: ^1.10.0
+
+  # Google Sign In
+  google_sign_in: ^6.1.5
+
+  # Apple Sign In
+  sign_in_with_apple: ^5.0.0
+
+  # Image Handling
+  image_picker: ^1.0.4
+  image_cropper: ^5.0.0
+
+  # Utilities
+  intl: ^0.18.0
+  uuid: ^4.2.1
+  connectivity_plus: ^5.0.1
 
 dev_dependencies:
   flutter_test:

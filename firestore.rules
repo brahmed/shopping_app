@@ -1,0 +1,230 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ========================================================================
+    // HELPER FUNCTIONS
+    // ========================================================================
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.role == 'admin';
+    }
+
+    function isVendor() {
+      return isSignedIn() && request.auth.token.role == 'vendor';
+    }
+
+    function isVerified() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function hasLoyaltyTier(tier) {
+      return isSignedIn() && request.auth.token.loyaltyTier == tier;
+    }
+
+    // ========================================================================
+    // USERS COLLECTION
+    // ========================================================================
+
+    match /users/{userId} {
+      // Allow users to read their own profile, admins can read all
+      allow read: if isOwner(userId) || isAdmin();
+
+      // Allow users to create their own profile during sign up
+      allow create: if isOwner(userId) &&
+                      request.resource.data.uid == userId &&
+                      request.resource.data.email == request.auth.token.email;
+
+      // Allow users to update their own profile, admins can update any
+      allow update: if isOwner(userId) || isAdmin();
+
+      // Only admins can delete users
+      allow delete: if isAdmin();
+
+      // Subcollections
+      match /addresses/{addressId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      match /wishlists/{wishlistId} {
+        // Allow reading if owner or if wishlist is not private
+        allow read: if isOwner(userId) ||
+                      (!resource.data.isPrivate && isSignedIn());
+        allow write: if isOwner(userId);
+      }
+
+      match /subscriptions/{subscriptionId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      match /recentlyViewed/{productId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // ========================================================================
+    // PRODUCTS COLLECTION
+    // ========================================================================
+
+    match /products/{productId} {
+      // Anyone can read published products
+      allow read: if resource.data.status == 'published' || isAdmin() || isVendor();
+
+      // Only admins and vendors can create/update/delete products
+      allow create: if isAdmin() || isVendor();
+      allow update: if isAdmin() || isVendor();
+      allow delete: if isAdmin();
+
+      // Reviews subcollection
+      match /reviews/{reviewId} {
+        // Anyone can read reviews
+        allow read: if true;
+
+        // Only verified users can create reviews
+        allow create: if isSignedIn() &&
+                        isVerified() &&
+                        request.resource.data.userId == request.auth.uid;
+
+        // Users can update/delete their own reviews, admins can do everything
+        allow update: if isOwner(resource.data.userId) || isAdmin();
+        allow delete: if isOwner(resource.data.userId) || isAdmin();
+      }
+
+      // Questions subcollection
+      match /questions/{questionId} {
+        // Anyone can read questions
+        allow read: if true;
+
+        // Signed-in users can ask questions
+        allow create: if isSignedIn() &&
+                        request.resource.data.userId == request.auth.uid;
+
+        // Users can update/delete their own questions
+        allow update, delete: if isOwner(resource.data.userId) || isAdmin();
+
+        // Answers nested collection
+        match /answers/{answerId} {
+          // Anyone can read answers
+          allow read: if true;
+
+          // Signed-in users can answer
+          allow create: if isSignedIn() &&
+                          request.resource.data.userId == request.auth.uid;
+
+          // Users can update/delete their own answers
+          allow update, delete: if isOwner(resource.data.userId) || isAdmin();
+        }
+      }
+    }
+
+    // ========================================================================
+    // CATEGORIES COLLECTION
+    // ========================================================================
+
+    match /categories/{categoryId} {
+      // Anyone can read categories
+      allow read: if true;
+
+      // Only admins can modify categories
+      allow write: if isAdmin();
+    }
+
+    // ========================================================================
+    // ORDERS COLLECTION
+    // ========================================================================
+
+    match /orders/{orderId} {
+      // Users can read their own orders, admins can read all
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+
+      // Users can create orders for themselves
+      allow create: if isSignedIn() &&
+                      request.resource.data.userId == request.auth.uid;
+
+      // Only admins can update orders (status changes, etc.)
+      allow update: if isAdmin();
+
+      // Only admins can delete orders
+      allow delete: if isAdmin();
+    }
+
+    // ========================================================================
+    // COUPONS COLLECTION
+    // ========================================================================
+
+    match /coupons/{couponId} {
+      // Signed-in users can view active coupons
+      allow read: if isSignedIn();
+
+      // Only admins can create/update/delete coupons
+      allow write: if isAdmin();
+    }
+
+    // ========================================================================
+    // NOTIFICATIONS COLLECTION
+    // ========================================================================
+
+    match /notifications/{userId}/messages/{notificationId} {
+      // Users can only access their own notifications
+      allow read: if isOwner(userId);
+
+      // Users can update to mark as read
+      allow update: if isOwner(userId) &&
+                      request.resource.data.diff(resource.data).affectedKeys()
+                        .hasOnly(['isRead', 'readAt']);
+
+      // Only system/admins can create notifications
+      allow create: if isAdmin();
+
+      // Users can delete their own notifications
+      allow delete: if isOwner(userId);
+    }
+
+    // ========================================================================
+    // CART COLLECTION
+    // ========================================================================
+
+    match /cart/{userId} {
+      // Users can only access their own cart
+      allow read, write: if isOwner(userId);
+    }
+
+    // ========================================================================
+    // ADMIN COLLECTION
+    // ========================================================================
+
+    match /admin/{document=**} {
+      // Only admins can access admin data
+      allow read, write: if isAdmin();
+    }
+
+    // ========================================================================
+    // METADATA COLLECTION
+    // ========================================================================
+
+    match /metadata/{document} {
+      // Anyone can read app metadata (version, features, etc.)
+      allow read: if true;
+
+      // Only admins can update metadata
+      allow write: if isAdmin();
+    }
+
+    // ========================================================================
+    // ANALYTICS COLLECTION (Read-only for users)
+    // ========================================================================
+
+    match /analytics/{document=**} {
+      allow read: if isAdmin();
+      allow write: if false;  // Only server-side writes
+    }
+  }
+}

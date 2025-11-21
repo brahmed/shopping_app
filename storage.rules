@@ -1,0 +1,129 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ========================================================================
+    // HELPER FUNCTIONS
+    // ========================================================================
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return request.auth.token.role == 'admin';
+    }
+
+    function isVendor() {
+      return request.auth.token.role == 'vendor';
+    }
+
+    function isImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+
+    function isValidImageSize() {
+      return request.resource.size < 5 * 1024 * 1024;  // 5MB max
+    }
+
+    function isValidFileSize() {
+      return request.resource.size < 10 * 1024 * 1024;  // 10MB max
+    }
+
+    // ========================================================================
+    // PRODUCT IMAGES
+    // ========================================================================
+
+    match /product-images/{productId}/{fileName} {
+      // Anyone can read product images
+      allow read: if true;
+
+      // Only admins and vendors can upload/update product images
+      allow write: if (isAdmin() || isVendor()) &&
+                      isImage() &&
+                      isValidImageSize();
+
+      // Thumbnails subfolder
+      match /thumbnails/{thumbName} {
+        allow read: if true;
+        allow write: if false;  // Only server-side thumbnail generation
+      }
+    }
+
+    // ========================================================================
+    // USER AVATARS
+    // ========================================================================
+
+    match /user-avatars/{userId}/{fileName} {
+      // Anyone can read avatars
+      allow read: if true;
+
+      // Users can upload their own avatar
+      allow write: if isOwner(userId) &&
+                      isImage() &&
+                      isValidImageSize();
+    }
+
+    // ========================================================================
+    // REVIEW IMAGES
+    // ========================================================================
+
+    match /review-images/{userId}/{reviewId}/{fileName} {
+      // Anyone can read review images
+      allow read: if true;
+
+      // Users can upload images for their own reviews
+      allow write: if isOwner(userId) &&
+                      isImage() &&
+                      isValidImageSize();
+    }
+
+    // ========================================================================
+    // CATEGORY IMAGES
+    // ========================================================================
+
+    match /category-images/{categoryId}/{fileName} {
+      // Anyone can read category images
+      allow read: if true;
+
+      // Only admins can upload category images
+      allow write: if isAdmin() &&
+                      isImage() &&
+                      isValidImageSize();
+    }
+
+    // ========================================================================
+    // GENERAL UPLOADS (for future use)
+    // ========================================================================
+
+    match /uploads/{userId}/{allPaths=**} {
+      // Users can read their own uploads
+      allow read: if isOwner(userId);
+
+      // Users can upload their own files
+      allow write: if isOwner(userId) &&
+                      isValidFileSize();
+    }
+
+    // ========================================================================
+    // ADMIN FILES
+    // ========================================================================
+
+    match /admin/{allPaths=**} {
+      // Only admins can access admin files
+      allow read, write: if isAdmin();
+    }
+
+    // ========================================================================
+    // DENY ALL OTHER PATHS
+    // ========================================================================
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
