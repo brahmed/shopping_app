@@ -60,7 +60,7 @@ class BookmarksPage extends ConsumerWidget {
                     const SizedBox(height: 24),
                     Text(
                       'No favorites yet',
-                      style: Theme.of(context).textTheme.headline2,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     const SizedBox(height: 8),
                     Text(

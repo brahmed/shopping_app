@@ -66,7 +66,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                       children: [
                         Text(
                           'Filters',
-                          style: Theme.of(context).textTheme.headline2,
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         TextButton(
                           onPressed: () {
@@ -86,7 +86,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                     // Category Filter
                     Text(
                       'Category',
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: 8),
                     Wrap(
@@ -109,13 +109,15 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                     // Price Range
                     Text(
                       'Price Range',
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: 8),
                     Row(
                       children: [
                         Expanded(
-                          child: TextField(
+                          child: TextFormField(
+                            key: ValueKey('minPrice_${_minPrice}'),
+                            initialValue: _minPrice?.toString() ?? '',
                             decoration: const InputDecoration(
                               labelText: 'Min Price',
                               prefixText: '\$',
@@ -131,7 +133,9 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                         ),
                         const SizedBox(width: 16),
                         Expanded(
-                          child: TextField(
+                          child: TextFormField(
+                            key: ValueKey('maxPrice_${_maxPrice}'),
+                            initialValue: _maxPrice?.toString() ?? '',
                             decoration: const InputDecoration(
                               labelText: 'Max Price',
                               prefixText: '\$',
@@ -271,7 +275,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                           const SizedBox(height: 24),
                           Text(
                             'Search for products',
-                            style: Theme.of(context).textTheme.headline2,
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           const SizedBox(height: 8),
                           Text(
@@ -297,7 +301,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                           const SizedBox(height: 24),
                           Text(
                             'No products found',
-                            style: Theme.of(context).textTheme.headline2,
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           const SizedBox(height: 8),
                           Text(

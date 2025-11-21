@@ -59,7 +59,7 @@ class CartPage extends ConsumerWidget {
                   const SizedBox(height: 24),
                   Text(
                     'Your cart is empty',
-                    style: Theme.of(context).textTheme.headline2,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 16),
                   AppButtonFilled(

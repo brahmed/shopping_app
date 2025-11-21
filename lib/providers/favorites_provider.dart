@@ -7,6 +7,7 @@ import '../models/product_model.dart';
 class FavoritesProvider with ChangeNotifier {
   List<Product> _favorites = [];
   static const String _favoritesKey = 'favorites';
+  bool _isInitialized = false;
 
   List<Product> get favorites => _favorites;
 
@@ -14,8 +15,16 @@ class FavoritesProvider with ChangeNotifier {
 
   bool get isEmpty => _favorites.isEmpty;
 
+  bool get isInitialized => _isInitialized;
+
   FavoritesProvider() {
-    _loadFavorites();
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    await _loadFavorites();
+    _isInitialized = true;
+    notifyListeners();
   }
 
   Future<void> _loadFavorites() async {
