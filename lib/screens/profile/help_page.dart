@@ -64,12 +64,12 @@ class QuestionDetail extends StatelessWidget {
         children: [
           Text(
             questionModel.question,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
           const SizedBox(height: 10),
           Text(
             questionModel.answer,
-            style: Theme.of(context).textTheme.bodyText2,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 30),
         ],

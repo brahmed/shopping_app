@@ -40,31 +40,31 @@ class AppTheme {
 
   /// App Text Theme
   static TextTheme lightTextTheme = const TextTheme(
-    bodyText1: TextStyle(
+    bodyLarge: TextStyle(
       fontFamily: "OpenSans",
       fontSize: 14.0,
       fontWeight: FontWeight.w700,
       color: appTextColorLight,
     ),
-    headline1: TextStyle(
+    displayLarge: TextStyle(
       fontFamily: "OpenSans",
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
       color: appTextColorLight,
     ),
-    headline2: TextStyle(
+    displayMedium: TextStyle(
       fontFamily: "OpenSans",
       fontSize: 21.0,
       fontWeight: FontWeight.w700,
       color: appTextColorLight,
     ),
-    headline3: TextStyle(
+    headlineMedium: TextStyle(
       fontFamily: "OpenSans",
       fontSize: 16.0,
       fontWeight: FontWeight.w600,
       color: appTextColorLight,
     ),
-    headline6: TextStyle(
+    titleLarge: TextStyle(
       fontFamily: "OpenSans",
       fontSize: 20.0,
       fontWeight: FontWeight.w600,
@@ -73,31 +73,31 @@ class AppTheme {
   );
 
   static TextTheme darkTextTheme = const TextTheme(
-    bodyText1: TextStyle(
+    bodyLarge: TextStyle(
       fontFamily: "OpenSans",
       fontSize: 14.0,
       fontWeight: FontWeight.w700,
       color: appTextColorDark,
     ),
-    headline1: TextStyle(
+    displayLarge: TextStyle(
       fontFamily: "OpenSans",
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
       color: appTextColorDark,
     ),
-    headline2: TextStyle(
+    displayMedium: TextStyle(
       fontFamily: "OpenSans",
       fontSize: 21.0,
       fontWeight: FontWeight.w700,
       color: appTextColorDark,
     ),
-    headline3: TextStyle(
+    headlineMedium: TextStyle(
       fontFamily: "OpenSans",
       fontSize: 16.0,
       fontWeight: FontWeight.w600,
       color: appTextColorDark,
     ),
-    headline6: TextStyle(
+    titleLarge: TextStyle(
       fontFamily: "OpenSans",
       fontSize: 20.0,
       fontWeight: FontWeight.w600,

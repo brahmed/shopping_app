@@ -65,7 +65,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                             "${cartState.totalItemsCount}",
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText1
+                                .bodyLarge
                                 ?.copyWith(color: appBackgroundColorLight),
                           ),
                         ],

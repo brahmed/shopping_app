@@ -43,7 +43,7 @@ class AppListTile extends StatelessWidget {
             /// Title
             Text(
               text,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
 
             const Expanded(child: SizedBox()),

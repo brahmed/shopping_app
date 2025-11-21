@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../models/product_model.dart';
+import '../../navigation/app_router.dart';
 import '../../providers/cart_provider_riverpod.dart';
 import '../../providers/favorites_provider_riverpod.dart';
 import '../../widgets/buttons/app_filled_button.dart';
-import '../cart/cart_page.dart';
 
 class ProductDetailPage extends ConsumerStatefulWidget {
   final Product product;
@@ -395,12 +396,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                             action: SnackBarAction(
                               label: 'VIEW CART',
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const CartPage(),
-                                  ),
-                                );
+                                context.push(AppRoutes.cart);
                               },
                             ),
                           ),

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../navigation/routes.dart';
-import '../../../providers/user_provider.dart';
+import '../../../navigation/app_router.dart';
+import '../../../providers/user_provider_riverpod.dart';
 import '../../../widgets/cards/app_list_tile.dart';
 import '../../../widgets/page_app_bar.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends ConsumerWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userState = ref.watch(userProvider);
     return Scaffold(
       appBar: const PageAppBar(title: "Help"),
       body: SafeArea(
@@ -25,7 +26,7 @@ class SettingsPage extends StatelessWidget {
                 padding: 10.0,
                 radius: 10.0,
                 iconData: Icons.g_translate,
-                onTap: () => Navigator.pushNamed(context, Routes.languages),
+                onTap: () => context.push(AppRoutes.languages),
               ),
 
               /// Notification
@@ -35,8 +36,7 @@ class SettingsPage extends StatelessWidget {
                 padding: 10.0,
                 radius: 10.0,
                 iconData: Icons.notifications_none_outlined,
-                onTap: () =>
-                    Navigator.pushNamed(context, Routes.notificationSettings),
+                onTap: () => context.push(AppRoutes.notificationSettings),
               ),
 
               /// Theme mode card
@@ -45,10 +45,10 @@ class SettingsPage extends StatelessWidget {
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,
-                iconData: userProvider.isLightTheme
+                iconData: userState.isLightTheme
                     ? Icons.dark_mode
                     : Icons.light_mode,
-                onTap: () => userProvider.switchThemeMode(),
+                onTap: () => ref.read(userProvider.notifier).switchThemeMode(),
               ),
             ],
           ),
