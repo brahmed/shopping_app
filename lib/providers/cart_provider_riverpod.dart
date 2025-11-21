@@ -84,7 +84,12 @@ class CartNotifier extends StateNotifier<CartState> {
     );
 
     if (existingIndex >= 0) {
-      items[existingIndex].quantity++;
+      items[existingIndex] = CartItem(
+        product: items[existingIndex].product,
+        quantity: items[existingIndex].quantity + 1,
+        selectedSize: items[existingIndex].selectedSize,
+        selectedColor: items[existingIndex].selectedColor,
+      );
     } else {
       items.add(CartItem(
         product: product,
@@ -117,7 +122,12 @@ class CartNotifier extends StateNotifier<CartState> {
       if (quantity <= 0) {
         items.removeAt(index);
       } else {
-        items[index].quantity = quantity;
+        items[index] = CartItem(
+          product: items[index].product,
+          quantity: quantity,
+          selectedSize: items[index].selectedSize,
+          selectedColor: items[index].selectedColor,
+        );
       }
       state = state.copyWith(items: items);
       _saveCart();

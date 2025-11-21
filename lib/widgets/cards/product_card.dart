@@ -17,14 +17,14 @@ class ProductCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final favoritesState = ref.watch(favoritesProvider);
-    final isFavorite =
-        ref.read(favoritesProvider.notifier).isFavorite(product.id);
+    final isFavorite = ref.watch(
+      favoritesProvider.select((state) => 
+        state.favorites.any((p) => p.id == product.id)),
+    );
 
     return GestureDetector(
       onTap: () {
-        context.push(AppRoutes.productDetail.replaceAll(':id', product.id),
-            extra: product);
+        context.push('/product/${product.id}', extra: product);
       },
       child: Card(
         elevation: 2,

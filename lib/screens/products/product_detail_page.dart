@@ -38,8 +38,10 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isFavorite =
-        ref.read(favoritesProvider.notifier).isFavorite(widget.product.id);
+    final isFavorite = ref.watch(
+      favoritesProvider.select((state) => 
+        state.favorites.any((p) => p.id == widget.product.id)),
+    );
 
     return Scaffold(
       appBar: AppBar(
