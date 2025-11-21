@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../config/colors.dart';
-import '../../providers/user_provider.dart';
-import '../../screens/tab_pages/bookmarks_page.dart';
-import '../../screens/tab_pages/home_page.dart';
+import '../../providers/user_provider_riverpod.dart';
+import '../../screens/tab_pages/bookmarks_page_riverpod.dart';
+import '../../screens/tab_pages/home_page_riverpod.dart';
 import '../../screens/tab_pages/profile_page.dart';
-import '../../screens/tab_pages/search_page.dart';
-import 'home_page.dart';
+import '../../screens/tab_pages/search_page_riverpod.dart';
 
-class TabsManager extends StatefulWidget {
+class TabsManager extends ConsumerStatefulWidget {
   const TabsManager({Key? key}) : super(key: key);
 
   @override
-  State<TabsManager> createState() => _TabsManagerState();
+  ConsumerState<TabsManager> createState() => _TabsManagerState();
 }
 
-class _TabsManagerState extends State<TabsManager> {
+class _TabsManagerState extends ConsumerState<TabsManager> {
   /// Page controller
   final PageController _pageController = PageController(initialPage: 0);
 
@@ -60,7 +59,9 @@ class _TabsManagerState extends State<TabsManager> {
 
   @override
   Widget build(BuildContext context) {
-    final isUserLogged = Provider.of<UserProvider>(context).isUserLogged;
+    final userState = ref.watch(userProvider);
+    final isUserLogged = userState.isUserLogged;
+
     return Scaffold(
       body: isUserLogged
           ? tabsPageView(_loggedUserTabsPages)

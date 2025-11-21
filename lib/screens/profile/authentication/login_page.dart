@@ -1,27 +1,28 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shopping_app/providers/user_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../config/images.dart';
-import '../../../navigation/routes.dart';
+import '../../../navigation/app_router.dart';
+import '../../../providers/user_provider_riverpod.dart';
 import '../../../widgets/app/app_logo.dart';
 import '../../../widgets/buttons/app_filled_button.dart';
 import '../../../widgets/buttons/app_outlined_button.dart';
 import '../../../widgets/cards/app_page_container.dart';
 import '../../../widgets/form/app_text_field.dart';
-import '../../../widgets/form/auth_redirection_text.dart';
-import '../../../widgets/form/gesture_text.dart';
+import '../../../widgets/form/auth_redirection_text_riverpod.dart';
+import '../../../widgets/form/gesture_text_riverpod.dart';
 import '../../../widgets/page_app_bar.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   /// Global variables
   late GlobalKey<FormState> _formKey;
   late GlobalKey _emailFieldKey;
@@ -105,10 +106,9 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 20),
 
                   /// Forget password text
-                  GestureText(
+                  GestureTextRiverpod(
                     text: "Forgot your password ?",
-                    onTap: () => Navigator.of(context)
-                        .pushReplacementNamed(Routes.register),
+                    onTap: () => context.go(AppRoutes.register),
                   ),
 
                   /// Spacings
@@ -118,9 +118,8 @@ class _LoginPageState extends State<LoginPage> {
                   AppButtonFilled(
                     text: "Login",
                     onClick: () {
-                      Provider.of<UserProvider>(context, listen: false)
-                          .loginUser();
-                      Navigator.pushNamedAndRemoveUntil(context, Routes.tabs, (route) => false);
+                      ref.read(userProvider.notifier).loginUser();
+                      context.go(AppRoutes.tabs);
                     },
                   ),
 
@@ -128,10 +127,10 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 20),
 
                   /// Create a new account section
-                  AuthRedirectionText(
+                  AuthRedirectionTextRiverpod(
                     staticText: "New on this App?",
                     clickableText: "Create an account",
-                    redirectionRouteName: Routes.register,
+                    redirectionRoute: AppRoutes.register,
                   ),
 
                   /// Spacing

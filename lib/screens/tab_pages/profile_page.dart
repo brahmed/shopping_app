@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../config/images.dart';
-import '../../navigation/routes.dart';
-import '../../providers/user_provider.dart';
+import '../../navigation/app_router.dart';
+import '../../providers/user_provider_riverpod.dart';
 import '../../widgets/buttons/app_filled_button.dart';
 import '../../widgets/buttons/app_outlined_button.dart';
 import '../../widgets/cards/app_card.dart';
 import '../../widgets/cards/app_list_tile.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends ConsumerWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userState = ref.watch(userProvider);
 
-class _ProfilePageState extends State<ProfilePage> {
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       /// App Bar
       appBar: AppBar(
@@ -48,9 +46,9 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: Provider.of<UserProvider>(context).isUserLogged
-                  ? _userLoggedInProfile()
-                  : _userNotLoggedInProfile(),
+              children: userState.isUserLogged
+                  ? _userLoggedInProfile(context, ref)
+                  : _userNotLoggedInProfile(context),
             ),
           ),
         ),
@@ -58,14 +56,14 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  List<Widget> _userNotLoggedInProfile() => [
+  List<Widget> _userNotLoggedInProfile(BuildContext context) => [
         // Log In
         AppButtonFilled(
           margin: 10.0,
           padding: 10.0,
           radius: 10.0,
           text: "Login",
-          onClick: () => Navigator.pushNamed(context, Routes.login),
+          onClick: () => context.push(AppRoutes.login),
         ),
 
         // spacing
@@ -78,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
           radius: 10.0,
           text: "Register",
           centerContent: true,
-          onClick: () => Navigator.pushNamed(context, Routes.register),
+          onClick: () => context.push(AppRoutes.register),
         ),
 
         // Spacing
@@ -91,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
           padding: 10.0,
           radius: 10.0,
           iconData: Icons.settings,
-          onTap: () => Navigator.pushNamed(context, Routes.settings),
+          onTap: () => context.push(AppRoutes.settings),
         ),
 
         // Contact Us
@@ -101,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
           padding: 10.0,
           radius: 10.0,
           iconData: Icons.headset_mic_rounded,
-          onTap: () => Navigator.pushNamed(context, Routes.contact),
+          onTap: () => context.push(AppRoutes.contact),
         ),
 
         // Help
@@ -111,11 +109,11 @@ class _ProfilePageState extends State<ProfilePage> {
           padding: 10.0,
           radius: 10.0,
           iconData: Icons.help,
-          onTap: () => Navigator.pushNamed(context, Routes.help),
+          onTap: () => context.push(AppRoutes.help),
         ),
       ];
 
-  List<Widget> _userLoggedInProfile() => [
+  List<Widget> _userLoggedInProfile(BuildContext context, WidgetRef ref) => [
         // User Info
         AppCard(
           margin: 10.0,
@@ -180,7 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
           padding: 10.0,
           radius: 10.0,
           iconData: Icons.settings,
-          onTap: () => Navigator.pushNamed(context, Routes.settings),
+          onTap: () => context.push(AppRoutes.settings),
         ),
 
         // Contact Us
@@ -190,7 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
           padding: 10.0,
           radius: 10.0,
           iconData: Icons.headset_mic_rounded,
-          onTap: () => Navigator.pushNamed(context, Routes.contact),
+          onTap: () => context.push(AppRoutes.contact),
         ),
 
         // Help
@@ -200,7 +198,7 @@ class _ProfilePageState extends State<ProfilePage> {
           padding: 10.0,
           radius: 10.0,
           iconData: Icons.help,
-          onTap: () => Navigator.pushNamed(context, Routes.help),
+          onTap: () => context.push(AppRoutes.help),
         ),
 
         // Log out
@@ -211,8 +209,8 @@ class _ProfilePageState extends State<ProfilePage> {
           radius: 10.0,
           iconData: Icons.logout,
           onTap: () {
-            Provider.of<UserProvider>(context, listen: false).logoutUser();
-            Navigator.pushNamed(context, Routes.login);
+            ref.read(userProvider.notifier).logoutUser();
+            context.go(AppRoutes.login);
           },
         ),
       ];

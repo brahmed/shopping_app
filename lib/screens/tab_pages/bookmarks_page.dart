@@ -1,64 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
 
 import '../../config/images.dart';
-import '../../providers/favorites_provider.dart';
+import '../../providers/favorites_provider_riverpod.dart';
 import '../../widgets/cards/product_card.dart';
 
-class BookmarksPage extends StatefulWidget {
+class BookmarksPage extends ConsumerWidget {
   const BookmarksPage({Key? key}) : super(key: key);
 
   @override
-  State<BookmarksPage> createState() => _BookmarksPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favoritesState = ref.watch(favoritesProvider);
 
-class _BookmarksPageState extends State<BookmarksPage> {
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Favorites'),
         actions: [
-          Consumer<FavoritesProvider>(
-            builder: (context, favProvider, child) {
-              if (favProvider.isEmpty) return const SizedBox.shrink();
-              return TextButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Clear Favorites'),
-                      content: const Text(
-                        'Are you sure you want to remove all favorites?',
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            favProvider.clearFavorites();
-                            Navigator.pop(context);
-                          },
-                          child: const Text('Clear'),
-                        ),
-                      ],
+          if (!favoritesState.isEmpty)
+            TextButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Clear Favorites'),
+                    content: const Text(
+                      'Are you sure you want to remove all favorites?',
                     ),
-                  );
-                },
-                child: const Text('Clear All'),
-              );
-            },
-          ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          ref.read(favoritesProvider.notifier).clearFavorites();
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Clear'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: const Text('Clear All'),
+            ),
         ],
       ),
       body: SafeArea(
-        child: Consumer<FavoritesProvider>(
-          builder: (context, favProvider, child) {
-            if (favProvider.isEmpty) {
-              return Center(
+        child: favoritesState.isEmpty
+            ? Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -81,24 +72,20 @@ class _BookmarksPageState extends State<BookmarksPage> {
                     ),
                   ],
                 ),
-              );
-            }
-
-            return GridView.builder(
-              padding: const EdgeInsets.all(16),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.65,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
+              )
+            : GridView.builder(
+                padding: const EdgeInsets.all(16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.65,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                ),
+                itemCount: favoritesState.favorites.length,
+                itemBuilder: (context, index) {
+                  return ProductCard(product: favoritesState.favorites[index]);
+                },
               ),
-              itemCount: favProvider.favorites.length,
-              itemBuilder: (context, index) {
-                return ProductCard(product: favProvider.favorites[index]);
-              },
-            );
-          },
-        ),
       ),
     );
   }

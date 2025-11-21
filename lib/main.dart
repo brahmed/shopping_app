@@ -1,78 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'config/app_theme.dart';
 import 'config/constants.dart';
-import 'navigation/routes.dart';
-import 'providers/cart_provider.dart';
-import 'providers/favorites_provider.dart';
-import 'providers/products_provider.dart';
-import 'providers/user_provider.dart';
+import 'navigation/app_router.dart';
+import 'providers/user_provider_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userState = ref.watch(userProvider);
 
-class _MyAppState extends State<MyApp> {
-  Locale? locale;
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      title: kAppTitle,
+      theme: userState.isLightTheme ? AppTheme.light() : AppTheme.dark(),
+      routerConfig: appRouter,
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => ProductsProvider()),
-        ChangeNotifierProvider(create: (_) => CartProvider()),
-        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
+      // Current app locale
+      locale: userState.currentLocale,
+      // Localizations delegates
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
-      child: Consumer<UserProvider>(
-        builder: (context, userProvider, child) => MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: kAppTitle,
-          theme: userProvider.isLightTheme ? AppTheme.light() : AppTheme.dark(),
-          initialRoute: Routes.tabs,
-          routes: Routes.routes(),
-
-          // Current app local
-          locale: userProvider.currentLocale,
-          // Localizations delegates
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          // Supported Locales
-          supportedLocales: const [
-            Locale('fr', 'FR'),
-            Locale('en', 'US'),
-            Locale('ar', 'TN'),
-          ],
-          // fetch current language values
-          localeResolutionCallback: (locale, supportedLocales) {
-            for (var supportedLocaleLanguage in supportedLocales) {
-              if (supportedLocaleLanguage.languageCode ==
-                      locale?.languageCode &&
-                  supportedLocaleLanguage.countryCode == locale?.countryCode) {
-                return supportedLocaleLanguage;
-              }
-            }
-            return supportedLocales.first;
-          },
-        ),
-      ),
+      // Supported Locales
+      supportedLocales: const [
+        Locale('fr', 'FR'),
+        Locale('en', 'US'),
+        Locale('ar', 'TN'),
+      ],
+      // fetch current language values
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocaleLanguage in supportedLocales) {
+          if (supportedLocaleLanguage.languageCode == locale?.languageCode &&
+              supportedLocaleLanguage.countryCode == locale?.countryCode) {
+            return supportedLocaleLanguage;
+          }
+        }
+        return supportedLocales.first;
+      },
     );
   }
 }
