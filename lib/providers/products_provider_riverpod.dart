@@ -2,7 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/category_model.dart';
 import '../models/product_model.dart';
-import '../services/product_service.dart';
+import '../repositories/products_repository.dart';
+import '../data/remote/api_client.dart';
 
 // Products State
 class ProductsState {
@@ -10,12 +11,16 @@ class ProductsState {
   final List<Category> categories;
   final bool isLoading;
   final String? error;
+  final bool isOfflineMode;
+  final DateTime? lastSync;
 
   const ProductsState({
     this.products = const [],
     this.categories = const [],
     this.isLoading = false,
     this.error,
+    this.isOfflineMode = false,
+    this.lastSync,
   });
 
   ProductsState copyWith({
@@ -23,41 +28,83 @@ class ProductsState {
     List<Category>? categories,
     bool? isLoading,
     String? error,
+    bool? isOfflineMode,
+    DateTime? lastSync,
   }) {
     return ProductsState(
       products: products ?? this.products,
       categories: categories ?? this.categories,
       isLoading: isLoading ?? this.isLoading,
       error: error,
+      isOfflineMode: isOfflineMode ?? this.isOfflineMode,
+      lastSync: lastSync ?? this.lastSync,
     );
   }
 }
 
-// Products Notifier
+// Products Notifier with offline-first support
 class ProductsNotifier extends StateNotifier<ProductsState> {
-  final ProductService _productService = ProductService();
+  final ProductsRepository _repository;
 
-  ProductsNotifier() : super(const ProductsState()) {
+  ProductsNotifier(this._repository) : super(const ProductsState()) {
     loadProducts();
   }
 
-  Future<void> loadProducts() async {
+  /// Load products with offline-first strategy
+  Future<void> loadProducts({bool forceRefresh = false}) async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final products = await _productService.getProducts();
-      final categories = await _productService.getCategories();
+      // Load products and categories using offline-first repository
+      final products = await _repository.getProducts(forceRefresh: forceRefresh);
+      final categories = await _repository.getCategories(forceRefresh: forceRefresh);
+
       state = ProductsState(
         products: products,
         categories: categories,
         isLoading: false,
+        isOfflineMode: false,
+        lastSync: DateTime.now(),
       );
-    } catch (e) {
+    } on OfflineException catch (e) {
+      // Offline and no cache available
       state = state.copyWith(
         isLoading: false,
-        error: e.toString(),
+        error: e.message,
+        isOfflineMode: true,
+      );
+    } on NetworkException catch (e) {
+      // Network error - try to use cached data
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Network error: ${e.message}',
+        isOfflineMode: true,
+      );
+    } on TimeoutException catch (e) {
+      // Timeout - try to use cached data
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Request timeout: ${e.message}',
+        isOfflineMode: true,
+      );
+    } on ServerException catch (e) {
+      // Server error
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Server error: ${e.message}',
+      );
+    } catch (e) {
+      // Generic error
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Error loading products: ${e.toString()}',
       );
     }
+  }
+
+  /// Force refresh from server (manual sync)
+  Future<void> refresh() async {
+    await loadProducts(forceRefresh: true);
   }
 
   List<Product> getProductsByCategory(String categoryId) {
@@ -117,7 +164,8 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
   }
 }
 
-// Provider
+// Provider with repository injection
 final productsProvider = StateNotifierProvider<ProductsNotifier, ProductsState>((ref) {
-  return ProductsNotifier();
+  final repository = ref.watch(productsRepositoryProvider);
+  return ProductsNotifier(repository);
 });
