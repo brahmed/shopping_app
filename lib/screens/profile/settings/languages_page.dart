@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../providers/user_provider_riverpod.dart';
 import '../../../widgets/cards/app_list_tile.dart';
@@ -10,15 +11,17 @@ class LanguagesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: const PageAppBar(title: "Languages"),
+      appBar: PageAppBar(title: l.languages),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              /// Language
+              /// French
               AppListTile(
-                text: "Français",
+                text: l.french,
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,
@@ -28,9 +31,9 @@ class LanguagesPage extends ConsumerWidget {
                 onTap: () => ref.read(userProvider.notifier).changeLocale(const Locale("fr", "FR")),
               ),
 
-              /// Notification
+              /// English
               AppListTile(
-                text: "English",
+                text: l.english,
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,
@@ -40,9 +43,9 @@ class LanguagesPage extends ConsumerWidget {
                 onTap: () => ref.read(userProvider.notifier).changeLocale(const Locale("en", "US")),
               ),
 
-              /// Theme mode card
+              /// Arabic
               AppListTile(
-                text: "العربية",
+                text: l.arabic,
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,
