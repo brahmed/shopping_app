@@ -27,17 +27,17 @@ class ProductsState {
     List<Product>? products,
     List<Category>? categories,
     bool? isLoading,
-    String? error,
+    String? Function()? error,
     bool? isOfflineMode,
-    DateTime? lastSync,
+    DateTime? Function()? lastSync,
   }) {
     return ProductsState(
       products: products ?? this.products,
       categories: categories ?? this.categories,
       isLoading: isLoading ?? this.isLoading,
-      error: error,
+      error: error != null ? error() : this.error,
       isOfflineMode: isOfflineMode ?? this.isOfflineMode,
-      lastSync: lastSync ?? this.lastSync,
+      lastSync: lastSync != null ? lastSync() : this.lastSync,
     );
   }
 }
@@ -52,7 +52,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 
   /// Load products with offline-first strategy
   Future<void> loadProducts({bool forceRefresh = false}) async {
-    state = state.copyWith(isLoading: true, error: null);
+    state = state.copyWith(isLoading: true, error: () => null);
 
     try {
       // Load products and categories using offline-first repository
@@ -70,34 +70,34 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       // Offline and no cache available
       state = state.copyWith(
         isLoading: false,
-        error: e.message,
+        error: () => e.message,
         isOfflineMode: true,
       );
     } on NetworkException catch (e) {
       // Network error - try to use cached data
       state = state.copyWith(
         isLoading: false,
-        error: 'Network error: ${e.message}',
+        error: () => 'Network error: ${e.message}',
         isOfflineMode: true,
       );
     } on TimeoutException catch (e) {
       // Timeout - try to use cached data
       state = state.copyWith(
         isLoading: false,
-        error: 'Request timeout: ${e.message}',
+        error: () => 'Request timeout: ${e.message}',
         isOfflineMode: true,
       );
     } on ServerException catch (e) {
       // Server error
       state = state.copyWith(
         isLoading: false,
-        error: 'Server error: ${e.message}',
+        error: () => 'Server error: ${e.message}',
       );
     } catch (e) {
       // Generic error
       state = state.copyWith(
         isLoading: false,
-        error: 'Error loading products: ${e.toString()}',
+        error: () => 'Error loading products: ${e.toString()}',
       );
     }
   }
