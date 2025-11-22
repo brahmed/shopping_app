@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../config/images.dart';
 import '../../providers/cart_provider_riverpod.dart';
@@ -14,10 +15,11 @@ class CartPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cartState = ref.watch(cartProvider);
+    final l = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Shopping Cart'),
+        title: Text(l.shoppingCart),
         actions: [
           if (!cartState.isEmpty)
             TextButton(
@@ -25,25 +27,25 @@ class CartPage extends ConsumerWidget {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: const Text('Clear Cart'),
-                    content: const Text('Are you sure you want to clear your cart?'),
+                    title: Text(l.clearCart),
+                    content: Text(l.clearCartConfirmation),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: const Text('Cancel'),
+                        child: Text(l.cancel),
                       ),
                       TextButton(
                         onPressed: () {
                           ref.read(cartProvider.notifier).clearCart();
                           Navigator.pop(context);
                         },
-                        child: const Text('Clear'),
+                        child: Text(l.clear),
                       ),
                     ],
                   ),
                 );
               },
-              child: const Text('Clear All'),
+              child: Text(l.clearAll),
             ),
         ],
       ),
@@ -58,12 +60,12 @@ class CartPage extends ConsumerWidget {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Your cart is empty',
+                    l.cartIsEmpty,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 16),
                   AppButtonFilled(
-                    text: 'Start Shopping',
+                    text: l.startShopping,
                     onClick: () => context.pop(),
                   ),
                 ],
@@ -137,14 +139,14 @@ class CartPage extends ConsumerWidget {
                                     if (cartItem.selectedSize != null) ...[
                                       const SizedBox(height: 4),
                                       Text(
-                                        'Size: ${cartItem.selectedSize}',
+                                        '${l.sizeWithColon} ${cartItem.selectedSize}',
                                         style: const TextStyle(fontSize: 12),
                                       ),
                                     ],
                                     if (cartItem.selectedColor != null) ...[
                                       const SizedBox(height: 4),
                                       Text(
-                                        'Color: ${cartItem.selectedColor}',
+                                        '${l.colorWithColon} ${cartItem.selectedColor}',
                                         style: const TextStyle(fontSize: 12),
                                       ),
                                     ],
@@ -234,10 +236,10 @@ class CartPage extends ConsumerWidget {
                                                 .removeItem(product.id);
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
-                                              const SnackBar(
+                                              SnackBar(
                                                 content: Text(
-                                                    'Item removed from cart'),
-                                                duration: Duration(seconds: 1),
+                                                    l.itemRemovedFromCart),
+                                                duration: const Duration(seconds: 1),
                                               ),
                                             );
                                           },
@@ -274,9 +276,9 @@ class CartPage extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              'Subtotal:',
-                              style: TextStyle(
+                            Text(
+                              l.subtotal,
+                              style: const TextStyle(
                                 fontSize: 16,
                               ),
                             ),
@@ -294,7 +296,7 @@ class CartPage extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Items:',
+                              l.items,
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey[600],
@@ -311,12 +313,12 @@ class CartPage extends ConsumerWidget {
                         ),
                         const SizedBox(height: 16),
                         AppButtonFilled(
-                          text: 'Proceed to Checkout',
+                          text: l.proceedToCheckout,
                           onClick: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
+                              SnackBar(
                                 content: Text(
-                                  'Checkout functionality coming soon!',
+                                  l.checkoutComingSoon,
                                 ),
                               ),
                             );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../config/colors.dart';
 import '../../config/images.dart';
@@ -25,6 +26,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final cartState = ref.watch(cartProvider);
     final productsState = ref.watch(productsProvider);
+    final l = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: SafeArea(
@@ -106,7 +108,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                             child: Semantics(
                               header: true,
                               child: Text(
-                                'Categories',
+                                l.categories,
                                 style: Theme.of(context).textTheme.headline2,
                               ),
                             ),
@@ -162,8 +164,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                             : 'All Products section',
                         child: Text(
                           selectedCategory != null
-                              ? 'Filtered Products'
-                              : 'All Products',
+                              ? l.filteredProducts
+                              : l.allProducts,
                           style: Theme.of(context).textTheme.headline2,
                         ),
                       ),
@@ -178,7 +180,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 selectedCategory = null;
                               });
                             },
-                            child: const Text('Clear Filter'),
+                            child: Text(l.clearFilter),
                           ),
                         ),
                     ],
@@ -213,8 +215,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                         ),
                         const SizedBox(height: 16),
                         Semantics(
-                          label: 'Error: ${productsState.error}',
-                          child: Text('Error: ${productsState.error}'),
+                          label: '${l.error}: ${productsState.error}',
+                          child: Text('${l.error}: ${productsState.error}'),
                         ),
                         const SizedBox(height: 16),
                         Semantics(
@@ -225,7 +227,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                             onPressed: () => ref
                                 .read(productsProvider.notifier)
                                 .loadProducts(),
-                            child: const Text('Retry'),
+                            child: Text(l.retry),
                           ),
                         ),
                       ],
@@ -247,8 +249,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                       child: Semantics(
                         label: 'No products available',
                         liveRegion: true,
-                        child: const Center(
-                          child: Text('No products available'),
+                        child: Center(
+                          child: Text(l.noProductsAvailable),
                         ),
                       ),
                     );

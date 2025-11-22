@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../navigation/app_router.dart';
 import '../../../providers/user_provider_riverpod.dart';
@@ -13,15 +14,17 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userState = ref.watch(userProvider);
+    final l = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: const PageAppBar(title: "Help"),
+      appBar: PageAppBar(title: l.settings),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
               /// Language
               AppListTile(
-                text: "Language",
+                text: l.language,
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,
@@ -31,7 +34,7 @@ class SettingsPage extends ConsumerWidget {
 
               /// Notification
               AppListTile(
-                text: "Notification",
+                text: l.notification,
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,
@@ -41,7 +44,7 @@ class SettingsPage extends ConsumerWidget {
 
               /// Theme mode card
               AppListTile(
-                text: "Switch mode",
+                text: l.switchMode,
                 margin: 10.0,
                 padding: 10.0,
                 radius: 10.0,

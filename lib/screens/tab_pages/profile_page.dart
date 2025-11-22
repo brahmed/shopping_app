@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../config/images.dart';
 import '../../navigation/app_router.dart';
@@ -16,6 +17,7 @@ class ProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userState = ref.watch(userProvider);
+    final l = AppLocalizations.of(context)!;
 
     return Scaffold(
       /// App Bar
@@ -28,7 +30,7 @@ class ProfilePage extends ConsumerWidget {
             /// Page Title
             Container(
               margin: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Text("My Account",
+              child: Text(l.myAccount,
                   style: Theme.of(context).textTheme.headline1),
             ),
             Image.asset(
@@ -56,13 +58,15 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  List<Widget> _userNotLoggedInProfile(BuildContext context) => [
+  List<Widget> _userNotLoggedInProfile(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    return [
         // Log In
         AppButtonFilled(
           margin: 10.0,
           padding: 10.0,
           radius: 10.0,
-          text: "Login",
+          text: l.login,
           onClick: () => context.push(AppRoutes.login),
         ),
 
@@ -74,7 +78,7 @@ class ProfilePage extends ConsumerWidget {
           margin: 10.0,
           padding: 10.0,
           radius: 10.0,
-          text: "Register",
+          text: l.register,
           centerContent: true,
           onClick: () => context.push(AppRoutes.register),
         ),
@@ -84,7 +88,7 @@ class ProfilePage extends ConsumerWidget {
 
         // Settings
         AppListTile(
-          text: "Settings",
+          text: l.settings,
           margin: 10.0,
           padding: 10.0,
           radius: 10.0,
@@ -94,7 +98,7 @@ class ProfilePage extends ConsumerWidget {
 
         // Contact Us
         AppListTile(
-          text: "Contact Us",
+          text: l.contactUs,
           margin: 10.0,
           padding: 10.0,
           radius: 10.0,
@@ -104,7 +108,7 @@ class ProfilePage extends ConsumerWidget {
 
         // Help
         AppListTile(
-          text: "Help",
+          text: l.help,
           margin: 10.0,
           padding: 10.0,
           radius: 10.0,
@@ -112,8 +116,11 @@ class ProfilePage extends ConsumerWidget {
           onTap: () => context.push(AppRoutes.help),
         ),
       ];
+  }
 
-  List<Widget> _userLoggedInProfile(BuildContext context, WidgetRef ref) => [
+  List<Widget> _userLoggedInProfile(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
+    return [
         // User Info
         AppCard(
           margin: 10.0,
@@ -136,8 +143,8 @@ class ProfilePage extends ConsumerWidget {
         ),
 
         // Orders
-        const AppListTile(
-          text: "Orders",
+        AppListTile(
+          text: l.orders,
           margin: 10.0,
           padding: 10.0,
           radius: 10.0,
@@ -145,8 +152,8 @@ class ProfilePage extends ConsumerWidget {
         ),
 
         // Addresses
-        const AppListTile(
-          text: "Addresses",
+        AppListTile(
+          text: l.addresses,
           margin: 10.0,
           padding: 10.0,
           radius: 10.0,
@@ -154,8 +161,8 @@ class ProfilePage extends ConsumerWidget {
         ),
 
         // Mobile Number
-        const AppListTile(
-          text: "Mobile Number",
+        AppListTile(
+          text: l.mobileNumber,
           margin: 10.0,
           padding: 10.0,
           radius: 10.0,
@@ -163,8 +170,8 @@ class ProfilePage extends ConsumerWidget {
         ),
 
         // Wishlist
-        const AppListTile(
-          text: "Wishlist",
+        AppListTile(
+          text: l.wishlist,
           margin: 10.0,
           padding: 10.0,
           radius: 10.0,
@@ -173,7 +180,7 @@ class ProfilePage extends ConsumerWidget {
 
         // Settings
         AppListTile(
-          text: "Settings",
+          text: l.settings,
           margin: 10.0,
           padding: 10.0,
           radius: 10.0,
@@ -183,7 +190,7 @@ class ProfilePage extends ConsumerWidget {
 
         // Contact Us
         AppListTile(
-          text: "Contact Us",
+          text: l.contactUs,
           margin: 10.0,
           padding: 10.0,
           radius: 10.0,
@@ -193,7 +200,7 @@ class ProfilePage extends ConsumerWidget {
 
         // Help
         AppListTile(
-          text: "Help",
+          text: l.help,
           margin: 10.0,
           padding: 10.0,
           radius: 10.0,
@@ -203,7 +210,7 @@ class ProfilePage extends ConsumerWidget {
 
         // Log out
         AppListTile(
-          text: "Log out",
+          text: l.logout,
           margin: 10.0,
           padding: 10.0,
           radius: 10.0,
@@ -214,4 +221,5 @@ class ProfilePage extends ConsumerWidget {
           },
         ),
       ];
+  }
 }

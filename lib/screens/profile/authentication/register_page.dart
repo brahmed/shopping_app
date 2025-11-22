@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../navigation/app_router.dart';
 import '../../../providers/user_provider_riverpod.dart';
@@ -74,10 +75,12 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+
     return Semantics(
       label: 'Register screen',
       child: Scaffold(
-        appBar: const PageAppBar(title: "Register"),
+        appBar: PageAppBar(title: l.register),
         body: SafeArea(
           child: AppPageContainer(
             child: SingleChildScrollView(
@@ -100,8 +103,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                         key: _firstNameFieldKey,
                         controller: _firstNameController,
                         focusNode: _firstNameFocusNode,
-                        label: const Text("First Name"),
-                        hintText: "First Name",
+                        label: Text(l.firstName),
+                        hintText: l.firstName,
                         semanticLabel: 'First name',
                         textInputAction: TextInputAction.next,
                         onFieldSubmitted: (_) {
@@ -112,13 +115,13 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       /// Spacing
                       const SizedBox(height: 20),
 
-                      /// LastName textField (Fixed obscureText bug)
+                      /// LastName textField
                       AppTextField(
                         key: _lastNameFieldKey,
                         controller: _lastNameController,
                         focusNode: _lastNameFocusNode,
-                        label: const Text("Last Name"),
-                        hintText: "Last Name",
+                        label: Text(l.lastName),
+                        hintText: l.lastName,
                         semanticLabel: 'Last name',
                         textInputAction: TextInputAction.next,
                         onFieldSubmitted: (_) {
@@ -134,8 +137,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                         key: _emailFieldKey,
                         controller: _emailController,
                         focusNode: _emailFocusNode,
-                        label: const Text("Email"),
-                        hintText: "Email",
+                        label: Text(l.email),
+                        hintText: l.email,
                         keyboardType: TextInputType.emailAddress,
                         semanticLabel: 'Email address',
                         textInputAction: TextInputAction.next,
@@ -152,8 +155,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                         key: _passwordFieldKey,
                         controller: _passwordController,
                         focusNode: _passwordFocusNode,
-                        label: const Text("Password"),
-                        hintText: "Password",
+                        label: Text(l.password),
+                        hintText: l.password,
                         obscureText: true,
                         semanticLabel: 'Password',
                         textInputAction: TextInputAction.done,
@@ -164,7 +167,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
                       /// Register Button
                       AppButtonFilled(
-                        text: "Register",
+                        text: l.register,
                         semanticLabel: "Register button",
                         semanticHint:
                             "Double tap to create account with provided information",
@@ -179,8 +182,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
                       /// Log in to your account section
                       AuthRedirectionText(
-                        staticText: "Do you have an account?",
-                        clickableText: "log in",
+                        staticText: l.doYouHaveAccount,
+                        clickableText: l.logIn,
                         redirectionRouteName: AppRoutes.login,
                       ),
 
