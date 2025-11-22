@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../navigation/app_router.dart';
 import '../../../providers/user_provider_riverpod.dart';
@@ -74,8 +75,10 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: const PageAppBar(title: "Register"),
+      appBar: PageAppBar(title: l.register),
       body: SafeArea(
         child: AppPageContainer(
           child: SingleChildScrollView(
@@ -96,8 +99,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     key: _firstNameFieldKey,
                     controller: _firstNameController,
                     focusNode: _firstNameFocusNode,
-                    label: const Text("First Name"),
-                    hintText: "First Name",
+                    label: Text(l.firstName),
+                    hintText: l.firstName,
                   ),
 
                   /// Spacing
@@ -108,8 +111,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     key: _lastNameFieldKey,
                     controller: _lastNameController,
                     focusNode: _lastNameFocusNode,
-                    label: const Text("Last Name"),
-                    hintText: "Last Name",
+                    label: Text(l.lastName),
+                    hintText: l.lastName,
                     obscureText: true,
                   ),
 
@@ -121,8 +124,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     key: _emailFieldKey,
                     controller: _emailController,
                     focusNode: _emailFocusNode,
-                    label: const Text("Email"),
-                    hintText: "Email",
+                    label: Text(l.email),
+                    hintText: l.email,
                     keyboardType: TextInputType.emailAddress,
                   ),
 
@@ -134,8 +137,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     key: _passwordFieldKey,
                     controller: _passwordController,
                     focusNode: _passwordFocusNode,
-                    label: const Text("Password"),
-                    hintText: "Password",
+                    label: Text(l.password),
+                    hintText: l.password,
                     obscureText: true,
                   ),
 
@@ -144,7 +147,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
                   /// Register Button
                   AppButtonFilled(
-                    text: "Register",
+                    text: l.register,
                     onClick: () {
                       ref.read(userProvider.notifier).loginUser();
                       context.go(AppRoutes.tabs);
@@ -156,8 +159,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
                   /// Log in to your account section
                   AuthRedirectionText(
-                    staticText: "Do you have an account?",
-                    clickableText: "log in",
+                    staticText: l.doYouHaveAccount,
+                    clickableText: l.logIn,
                     redirectionRouteName: AppRoutes.login,
                   ),
 

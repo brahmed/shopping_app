@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../config/images.dart';
 import '../../../navigation/app_router.dart';
@@ -62,8 +63,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: const PageAppBar(title: "Login"),
+      appBar: PageAppBar(title: l.login),
       body: SafeArea(
         child: AppPageContainer(
           child: SingleChildScrollView(
@@ -84,8 +87,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     key: _emailFieldKey,
                     controller: _emailController,
                     focusNode: _emailFocusNode,
-                    label: const Text("Email"),
-                    hintText: "Email",
+                    label: Text(l.email),
+                    hintText: l.email,
                     keyboardType: TextInputType.emailAddress,
                   ),
 
@@ -97,8 +100,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     key: _passwordFieldKey,
                     controller: _passwordController,
                     focusNode: _passwordFocusNode,
-                    label: const Text("Password"),
-                    hintText: "Password",
+                    label: Text(l.password),
+                    hintText: l.password,
                     obscureText: true,
                   ),
 
@@ -107,7 +110,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
                   /// Forget password text
                   GestureTextRiverpod(
-                    text: "Forgot your password ?",
+                    text: l.forgotPassword,
                     onTap: () => context.go(AppRoutes.register),
                   ),
 
@@ -116,7 +119,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
                   /// Login Button
                   AppButtonFilled(
-                    text: "Login",
+                    text: l.login,
                     onClick: () {
                       ref.read(userProvider.notifier).loginUser();
                       context.go(AppRoutes.tabs);
@@ -128,8 +131,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
                   /// Create a new account section
                   AuthRedirectionTextRiverpod(
-                    staticText: "New on this App?",
-                    clickableText: "Create an account",
+                    staticText: l.newOnThisApp,
+                    clickableText: l.createAccount,
                     redirectionRoute: AppRoutes.register,
                   ),
 
@@ -145,7 +148,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   /// Login with Facebook
                   AppButtonOutlined(
                     onClick: () {},
-                    text: "Continue with Facebook",
+                    text: l.continueWithFacebook,
                     icon: CachedNetworkImage(
                       imageUrl: facebookLogo,
                       errorWidget: (context, url, error) =>
@@ -159,7 +162,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   /// Login with Google
                   AppButtonOutlined(
                     onClick: () {},
-                    text: "Continue with Google",
+                    text: l.continueWithGoogle,
                     icon: CachedNetworkImage(
                       imageUrl: googleLogo,
                       errorWidget: (context, url, error) =>
@@ -176,29 +179,32 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   /// Divider widget
-  Widget dividerRow() => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          Expanded(
-            child: Divider(
-              color: Colors.grey,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              "or",
-              style: TextStyle(
+  Widget dividerRow() {
+    final l = AppLocalizations.of(context)!;
+    return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Expanded(
+              child: Divider(
                 color: Colors.grey,
               ),
             ),
-          ),
-          Expanded(
-            child: Divider(
-              color: Colors.grey,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Text(
+                l.or,
+                style: const TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
             ),
-          ),
-        ],
-      );
+            const Expanded(
+              child: Divider(
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        );
+  }
 }
