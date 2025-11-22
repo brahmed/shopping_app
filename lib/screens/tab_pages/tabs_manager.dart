@@ -37,16 +37,30 @@ class _TabsManagerState extends ConsumerState<TabsManager> {
     Icons.person_outline
   ];
 
+  final List<String> _loggedUserTabsLabels = [
+    'Home',
+    'Search',
+    'Bookmarks',
+    'Profile'
+  ];
+
   /// Logged in user Tab pages
   final List<Widget> _unLoggedUserTabsPages = [
     const HomePage(),
     const SearchPage(),
     const ProfilePage()
   ];
+
   final List<IconData> _unLoggedUserTabsIcons = [
     Icons.home_outlined,
     Icons.search,
     Icons.person_outline
+  ];
+
+  final List<String> _unLoggedUserTabsLabels = [
+    'Home',
+    'Search',
+    'Profile'
   ];
 
   /// On Item Tapped Handler
@@ -67,34 +81,48 @@ class _TabsManagerState extends ConsumerState<TabsManager> {
           ? tabsPageView(_loggedUserTabsPages)
           : tabsPageView(_unLoggedUserTabsPages),
       bottomNavigationBar: isUserLogged
-          ? tabsNavigationBar(_loggedUserTabsIcons)
-          : tabsNavigationBar(_unLoggedUserTabsIcons),
+          ? tabsNavigationBar(_loggedUserTabsIcons, _loggedUserTabsLabels)
+          : tabsNavigationBar(_unLoggedUserTabsIcons, _unLoggedUserTabsLabels),
     );
   }
 
-  Widget tabsPageView(List<Widget> pages) => PageView.builder(
-        itemBuilder: (context, index) => pages.elementAt(index),
-        onPageChanged: _onItemTapped,
-        itemCount: pages.length,
-        controller: _pageController,
+  Widget tabsPageView(List<Widget> pages) => Semantics(
+        label: 'Main content area',
+        child: PageView.builder(
+          itemBuilder: (context, index) => pages.elementAt(index),
+          onPageChanged: _onItemTapped,
+          itemCount: pages.length,
+          controller: _pageController,
+        ),
       );
 
-  Widget tabsNavigationBar(List<IconData> tabsIcons) => AppBottomNavigationBar(
+  Widget tabsNavigationBar(List<IconData> tabsIcons, List<String> tabsLabels) =>
+      AppBottomNavigationBar(
         navigationItems: List.generate(
           tabsIcons.length,
-          (index) => Container(
-            decoration: BoxDecoration(
-              color: _selectedIndex == index
-                  ? Theme.of(context).primaryColor
-                  : null,
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            child: IconButton(
-              onPressed: () => _onItemTapped(index),
-              icon: Icon(
-                tabsIcons.elementAt(index),
-                color: _selectedIndex == index ? Colors.white : Colors.grey,
-                size: 30,
+          (index) => Semantics(
+            label: '${tabsLabels[index]} tab',
+            hint: _selectedIndex == index
+                ? 'Selected, ${tabsLabels[index]} tab'
+                : 'Double tap to switch to ${tabsLabels[index]} tab',
+            selected: _selectedIndex == index,
+            button: true,
+            child: Container(
+              decoration: BoxDecoration(
+                color: _selectedIndex == index
+                    ? Theme.of(context).primaryColor
+                    : null,
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child: IconButton(
+                onPressed: () => _onItemTapped(index),
+                icon: ExcludeSemantics(
+                  child: Icon(
+                    tabsIcons.elementAt(index),
+                    color: _selectedIndex == index ? Colors.white : Colors.grey,
+                    size: 30,
+                  ),
+                ),
               ),
             ),
           ),
