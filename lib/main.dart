@@ -61,10 +61,12 @@ class MyApp extends ConsumerWidget {
       // Accessibility features
       builder: (context, child) {
         // Ensure text scaling is supported up to 2.0x
+        final mediaQuery = MediaQuery.of(context);
+        final scale = mediaQuery.textScaler.scale(1.0).clamp(1.0, 2.0);
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(
+          data: mediaQuery.copyWith(
             // Respect system text scale factor but limit to reasonable max
-            textScaleFactor: MediaQuery.of(context).textScaleFactor.clamp(1.0, 2.0),
+            textScaler: TextScaler.linear(scale),
           ),
           child: child!,
         );

@@ -109,7 +109,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                               header: true,
                               child: Text(
                                 l.categories,
-                                style: Theme.of(context).textTheme.headline2,
+                                style: Theme.of(context).textTheme.displayMedium,
                               ),
                             ),
                           ),
@@ -166,7 +166,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                           selectedCategory != null
                               ? l.filteredProducts
                               : l.allProducts,
-                          style: Theme.of(context).textTheme.headline2,
+                          style: Theme.of(context).textTheme.displayMedium,
                         ),
                       ),
                       if (selectedCategory != null)

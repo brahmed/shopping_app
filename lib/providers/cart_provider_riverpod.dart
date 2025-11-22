@@ -84,7 +84,9 @@ class CartNotifier extends StateNotifier<CartState> {
     );
 
     if (existingIndex >= 0) {
-      items[existingIndex].quantity++;
+      items[existingIndex] = items[existingIndex].copyWith(
+        quantity: items[existingIndex].quantity + 1,
+      );
     } else {
       items.add(CartItem(
         product: product,
@@ -117,7 +119,7 @@ class CartNotifier extends StateNotifier<CartState> {
       if (quantity <= 0) {
         items.removeAt(index);
       } else {
-        items[index].quantity = quantity;
+        items[index] = items[index].copyWith(quantity: quantity);
       }
       state = state.copyWith(items: items);
       _saveCart();

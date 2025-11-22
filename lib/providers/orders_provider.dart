@@ -48,14 +48,14 @@ class OrdersState {
   OrdersState copyWith({
     List<OrderEnhanced>? orders,
     bool? isLoading,
-    String? error,
+    String? Function()? error,
     bool? isOfflineMode,
     int? pendingSyncCount,
   }) {
     return OrdersState(
       orders: orders ?? this.orders,
       isLoading: isLoading ?? this.isLoading,
-      error: error,
+      error: error != null ? error() : this.error,
       isOfflineMode: isOfflineMode ?? this.isOfflineMode,
       pendingSyncCount: pendingSyncCount ?? this.pendingSyncCount,
     );
@@ -78,7 +78,7 @@ class OrdersNotifier extends StateNotifier<OrdersState> {
 
   /// Load orders with online-first strategy
   Future<void> _loadOrders() async {
-    state = state.copyWith(isLoading: true, error: null);
+    state = state.copyWith(isLoading: true, error: () => null);
 
     try {
       final orders = await _repository.getOrders(_userId);
@@ -91,30 +91,30 @@ class OrdersNotifier extends StateNotifier<OrdersState> {
     } on OfflineException catch (e) {
       state = state.copyWith(
         isLoading: false,
-        error: e.message,
+        error: () => e.message,
         isOfflineMode: true,
       );
     } on NetworkException catch (e) {
       state = state.copyWith(
         isLoading: false,
-        error: 'Network error: ${e.message}',
+        error: () => 'Network error: ${e.message}',
         isOfflineMode: true,
       );
     } on TimeoutException catch (e) {
       state = state.copyWith(
         isLoading: false,
-        error: 'Request timeout: ${e.message}',
+        error: () => 'Request timeout: ${e.message}',
         isOfflineMode: true,
       );
     } on ServerException catch (e) {
       state = state.copyWith(
         isLoading: false,
-        error: 'Server error: ${e.message}',
+        error: () => 'Server error: ${e.message}',
       );
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
-        error: 'Error loading orders: ${e.toString()}',
+        error: () => 'Error loading orders: ${e.toString()}',
       );
     }
   }
@@ -137,7 +137,7 @@ class OrdersNotifier extends StateNotifier<OrdersState> {
       }
     } catch (e) {
       state = state.copyWith(
-        error: 'Failed to create order: ${e.toString()}',
+        error: () => 'Failed to create order: ${e.toString()}',
       );
       rethrow;
     }
@@ -168,7 +168,7 @@ class OrdersNotifier extends StateNotifier<OrdersState> {
       }
     } catch (e) {
       state = state.copyWith(
-        error: 'Failed to update order status: ${e.toString()}',
+        error: () => 'Failed to update order status: ${e.toString()}',
       );
       rethrow;
     }
@@ -198,7 +198,7 @@ class OrdersNotifier extends StateNotifier<OrdersState> {
       }
     } catch (e) {
       state = state.copyWith(
-        error: 'Failed to cancel order: ${e.toString()}',
+        error: () => 'Failed to cancel order: ${e.toString()}',
       );
       rethrow;
     }
@@ -229,7 +229,7 @@ class OrdersNotifier extends StateNotifier<OrdersState> {
       }
     } catch (e) {
       state = state.copyWith(
-        error: 'Failed to return order: ${e.toString()}',
+        error: () => 'Failed to return order: ${e.toString()}',
       );
       rethrow;
     }

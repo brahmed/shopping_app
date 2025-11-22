@@ -8,8 +8,11 @@ class AppTheme {
       brightness: Brightness.light,
       primarySwatch: appPrimarySwatchColorLight,
       primaryColor: appPrimaryColorLight,
-      backgroundColor: appContainersBackgroundColorLight,
       scaffoldBackgroundColor: appBackgroundColorLight,
+      colorScheme: ColorScheme.light(
+        primary: appPrimaryColorLight,
+        surface: appContainersBackgroundColorLight,
+      ),
       appBarTheme: const AppBarTheme(
         elevation: 0,
         foregroundColor: appBackgroundColorDark,
@@ -26,8 +29,11 @@ class AppTheme {
       brightness: Brightness.dark,
       primarySwatch: appPrimarySwatchColorDark,
       primaryColor: appContainersBackgroundColorDark,
-      backgroundColor: appContainersBackgroundColorDark,
       scaffoldBackgroundColor: appBackgroundColorDark,
+      colorScheme: ColorScheme.dark(
+        primary: appContainersBackgroundColorDark,
+        surface: appContainersBackgroundColorDark,
+      ),
       appBarTheme: const AppBarTheme(
         elevation: 0,
         foregroundColor: appBackgroundColorLight,
