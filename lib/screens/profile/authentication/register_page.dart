@@ -74,96 +74,121 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const PageAppBar(title: "Register"),
-      body: SafeArea(
-        child: AppPageContainer(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(18.0),
+    return Semantics(
+      label: 'Register screen',
+      child: Scaffold(
+        appBar: const PageAppBar(title: "Register"),
+        body: SafeArea(
+          child: AppPageContainer(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(18.0),
 
-            /// Login Form
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  /// App Logo
-                  const AppLogo(),
+              /// Registration Form
+              child: Semantics(
+                label: 'Registration form',
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      /// App Logo
+                      const ExcludeSemantics(child: AppLogo()),
 
-                  /// FirstName textField
-                  AppTextField(
-                    key: _firstNameFieldKey,
-                    controller: _firstNameController,
-                    focusNode: _firstNameFocusNode,
-                    label: const Text("First Name"),
-                    hintText: "First Name",
+                      /// FirstName textField
+                      AppTextField(
+                        key: _firstNameFieldKey,
+                        controller: _firstNameController,
+                        focusNode: _firstNameFocusNode,
+                        label: const Text("First Name"),
+                        hintText: "First Name",
+                        semanticLabel: 'First name',
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          _lastNameFocusNode.requestFocus();
+                        },
+                      ),
+
+                      /// Spacing
+                      const SizedBox(height: 20),
+
+                      /// LastName textField (Fixed obscureText bug)
+                      AppTextField(
+                        key: _lastNameFieldKey,
+                        controller: _lastNameController,
+                        focusNode: _lastNameFocusNode,
+                        label: const Text("Last Name"),
+                        hintText: "Last Name",
+                        semanticLabel: 'Last name',
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          _emailFocusNode.requestFocus();
+                        },
+                      ),
+
+                      /// Spacing
+                      const SizedBox(height: 20),
+
+                      /// Email textField
+                      AppTextField(
+                        key: _emailFieldKey,
+                        controller: _emailController,
+                        focusNode: _emailFocusNode,
+                        label: const Text("Email"),
+                        hintText: "Email",
+                        keyboardType: TextInputType.emailAddress,
+                        semanticLabel: 'Email address',
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          _passwordFocusNode.requestFocus();
+                        },
+                      ),
+
+                      /// Spacing
+                      const SizedBox(height: 20),
+
+                      /// Password textField
+                      AppTextField(
+                        key: _passwordFieldKey,
+                        controller: _passwordController,
+                        focusNode: _passwordFocusNode,
+                        label: const Text("Password"),
+                        hintText: "Password",
+                        obscureText: true,
+                        semanticLabel: 'Password',
+                        textInputAction: TextInputAction.done,
+                      ),
+
+                      /// Spacing
+                      const SizedBox(height: 20),
+
+                      /// Register Button
+                      AppButtonFilled(
+                        text: "Register",
+                        semanticLabel: "Register button",
+                        semanticHint:
+                            "Double tap to create account with provided information",
+                        onClick: () {
+                          ref.read(userProvider.notifier).loginUser();
+                          context.go(AppRoutes.tabs);
+                        },
+                      ),
+
+                      /// Spacing
+                      const SizedBox(height: 20),
+
+                      /// Log in to your account section
+                      AuthRedirectionText(
+                        staticText: "Do you have an account?",
+                        clickableText: "log in",
+                        redirectionRouteName: AppRoutes.login,
+                      ),
+
+                      /// Spacing
+                      const SizedBox(height: 20),
+                    ],
                   ),
-
-                  /// Spacing
-                  const SizedBox(height: 20),
-
-                  /// LastName textField
-                  AppTextField(
-                    key: _lastNameFieldKey,
-                    controller: _lastNameController,
-                    focusNode: _lastNameFocusNode,
-                    label: const Text("Last Name"),
-                    hintText: "Last Name",
-                    obscureText: true,
-                  ),
-
-                  /// Spacing
-                  const SizedBox(height: 20),
-
-                  /// Email textField
-                  AppTextField(
-                    key: _emailFieldKey,
-                    controller: _emailController,
-                    focusNode: _emailFocusNode,
-                    label: const Text("Email"),
-                    hintText: "Email",
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-
-                  /// Spacing
-                  const SizedBox(height: 20),
-
-                  /// Password textField
-                  AppTextField(
-                    key: _passwordFieldKey,
-                    controller: _passwordController,
-                    focusNode: _passwordFocusNode,
-                    label: const Text("Password"),
-                    hintText: "Password",
-                    obscureText: true,
-                  ),
-
-                  /// Spacing
-                  const SizedBox(height: 20),
-
-                  /// Register Button
-                  AppButtonFilled(
-                    text: "Register",
-                    onClick: () {
-                      ref.read(userProvider.notifier).loginUser();
-                      context.go(AppRoutes.tabs);
-                    },
-                  ),
-
-                  /// Spacing
-                  const SizedBox(height: 20),
-
-                  /// Log in to your account section
-                  AuthRedirectionText(
-                    staticText: "Do you have an account?",
-                    clickableText: "log in",
-                    redirectionRouteName: AppRoutes.login,
-                  ),
-
-                  /// Spacing
-                  const SizedBox(height: 20),
-                ],
+                ),
               ),
             ),
           ),

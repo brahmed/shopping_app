@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// App Filled Button custom widget
+/// App Filled Button custom widget with full accessibility support
 class AppButtonFilled extends StatelessWidget {
   final double height;
   final double width;
@@ -12,6 +12,9 @@ class AppButtonFilled extends StatelessWidget {
   final String text;
   final TextStyle? textStyle;
   final VoidCallback onClick;
+  final bool enabled;
+  final String? semanticLabel;
+  final String? semanticHint;
 
   const AppButtonFilled({
     Key? key,
@@ -25,37 +28,54 @@ class AppButtonFilled extends StatelessWidget {
     this.text = "",
     this.textStyle,
     required this.onClick,
+    this.enabled = true,
+    this.semanticLabel,
+    this.semanticHint,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onClick,
-      child: Container(
-        height: height,
-        width: width,
-        padding: EdgeInsets.symmetric(horizontal: padding),
-        margin: EdgeInsets.symmetric(horizontal: margin),
-        decoration: BoxDecoration(
-          color: fillColor ?? Theme.of(context).iconTheme.color,
-          borderRadius: BorderRadius.circular(radius),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (icon != null) icon!,
-            if (icon != null) const SizedBox(width: 2),
-            Text(
-              text,
-              style: textStyle ??
-                  const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-            ),
-          ],
+    return Semantics(
+      label: semanticLabel ?? text,
+      hint: semanticHint ?? 'Double tap to activate',
+      button: true,
+      enabled: enabled,
+      child: GestureDetector(
+        onTap: enabled ? onClick : null,
+        child: Container(
+          height: height,
+          width: width,
+          padding: EdgeInsets.symmetric(horizontal: padding),
+          margin: EdgeInsets.symmetric(horizontal: margin),
+          decoration: BoxDecoration(
+            color: enabled
+                ? (fillColor ?? Theme.of(context).iconTheme.color)
+                : Colors.grey,
+            borderRadius: BorderRadius.circular(radius),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (icon != null)
+                ExcludeSemantics(
+                  child: icon!,
+                ),
+              if (icon != null) const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: textStyle ??
+                      TextStyle(
+                        color: enabled ? Colors.white : Colors.white70,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
