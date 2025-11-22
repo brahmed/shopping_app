@@ -1,20 +1,24 @@
-import 'dart:convert';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/order_model_enhanced.dart';
+import '../repositories/orders_repository.dart';
+import '../data/remote/api_client.dart';
+import '../services/connectivity_service.dart';
 
 // Orders State
 class OrdersState {
   final List<OrderEnhanced> orders;
   final bool isLoading;
   final String? error;
+  final bool isOfflineMode;
+  final int pendingSyncCount;
 
   const OrdersState({
     this.orders = const [],
     this.isLoading = false,
     this.error,
+    this.isOfflineMode = false,
+    this.pendingSyncCount = 0,
   });
 
   List<OrderEnhanced> get activeOrders {
@@ -45,97 +49,195 @@ class OrdersState {
     List<OrderEnhanced>? orders,
     bool? isLoading,
     String? error,
+    bool? isOfflineMode,
+    int? pendingSyncCount,
   }) {
     return OrdersState(
       orders: orders ?? this.orders,
       isLoading: isLoading ?? this.isLoading,
       error: error,
+      isOfflineMode: isOfflineMode ?? this.isOfflineMode,
+      pendingSyncCount: pendingSyncCount ?? this.pendingSyncCount,
     );
   }
 }
 
-// Orders Notifier
+// Orders Notifier with online-first and offline queue support
 class OrdersNotifier extends StateNotifier<OrdersState> {
-  static const String _ordersKey = 'user_orders';
+  final OrdersRepository _repository;
+  final ConnectivityService _connectivityService;
+  final String _userId; // TODO: Get from auth service
 
-  OrdersNotifier() : super(const OrdersState()) {
+  OrdersNotifier(
+    this._repository,
+    this._connectivityService, [
+    this._userId = 'user123',
+  ]) : super(const OrdersState()) {
     _loadOrders();
   }
 
+  /// Load orders with online-first strategy
   Future<void> _loadOrders() async {
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(isLoading: true, error: null);
+
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final ordersData = prefs.getString(_ordersKey);
-      if (ordersData != null) {
-        final List<dynamic> decodedData = json.decode(ordersData);
-        final orders = decodedData.map((order) => OrderEnhanced.fromJson(order)).toList();
-        // Sort by order date, newest first
-        orders.sort((a, b) => b.orderDate.compareTo(a.orderDate));
-        state = OrdersState(orders: orders, isLoading: false);
-      } else {
-        state = state.copyWith(isLoading: false);
-      }
+      final orders = await _repository.getOrders(_userId);
+
+      state = OrdersState(
+        orders: orders,
+        isLoading: false,
+        isOfflineMode: !_connectivityService.isOnline,
+      );
+    } on OfflineException catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.message,
+        isOfflineMode: true,
+      );
+    } on NetworkException catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Network error: ${e.message}',
+        isOfflineMode: true,
+      );
+    } on TimeoutException catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Request timeout: ${e.message}',
+        isOfflineMode: true,
+      );
+    } on ServerException catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Server error: ${e.message}',
+      );
     } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Error loading orders: ${e.toString()}',
+      );
     }
   }
 
-  Future<void> _saveOrders() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final ordersData = json.encode(state.orders.map((order) => order.toJson()).toList());
-      await prefs.setString(_ordersKey, ordersData);
-    } catch (e) {
-      // Handle error
-    }
-  }
-
+  /// Add new order (with offline queue support)
   Future<void> addOrder(OrderEnhanced order) async {
-    final orders = [order, ...state.orders];
-    state = state.copyWith(orders: orders);
-    await _saveOrders();
+    try {
+      final createdOrder = await _repository.createOrder(order);
+
+      // Add to state
+      final orders = [createdOrder, ...state.orders];
+      state = state.copyWith(
+        orders: orders,
+        isOfflineMode: !_connectivityService.isOnline,
+      );
+
+      // If offline, increment pending sync count
+      if (!_connectivityService.isOnline) {
+        state = state.copyWith(pendingSyncCount: state.pendingSyncCount + 1);
+      }
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to create order: ${e.toString()}',
+      );
+      rethrow;
+    }
   }
 
+  /// Update order status (with offline queue support)
   Future<void> updateOrderStatus(String orderId, OrderStatus newStatus) async {
-    final orders = state.orders.map((order) {
-      if (order.id == orderId) {
-        final statusUpdate = OrderStatusUpdate(
-          status: newStatus,
-          timestamp: DateTime.now(),
-        );
-        final updates = [...order.statusUpdates, statusUpdate];
-        return order.copyWith(
-          status: newStatus,
-          statusUpdates: updates,
-          deliveryDate: newStatus == OrderStatus.delivered ? DateTime.now() : order.deliveryDate,
-        );
-      }
-      return order;
-    }).toList();
+    try {
+      final updatedOrder =
+          await _repository.updateOrderStatus(_userId, orderId, newStatus);
 
-    state = state.copyWith(orders: orders);
-    await _saveOrders();
+      // Update in state
+      final orders = state.orders.map((order) {
+        if (order.id == orderId) {
+          return updatedOrder;
+        }
+        return order;
+      }).toList();
+
+      state = state.copyWith(
+        orders: orders,
+        isOfflineMode: !_connectivityService.isOnline,
+      );
+
+      // If offline, increment pending sync count
+      if (!_connectivityService.isOnline) {
+        state = state.copyWith(pendingSyncCount: state.pendingSyncCount + 1);
+      }
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to update order status: ${e.toString()}',
+      );
+      rethrow;
+    }
   }
 
+  /// Cancel order (with offline queue support)
   Future<void> cancelOrder(String orderId, {String? reason}) async {
-    await updateOrderStatus(orderId, OrderStatus.cancelled);
-  }
+    try {
+      final cancelledOrder = await _repository.cancelOrder(_userId, orderId);
 
-  Future<void> returnOrder(String orderId, {String? reason}) async {
-    await updateOrderStatus(orderId, OrderStatus.returned);
-  }
+      // Update in state
+      final orders = state.orders.map((order) {
+        if (order.id == orderId) {
+          return cancelledOrder;
+        }
+        return order;
+      }).toList();
 
-  Future<void> updateTrackingNumber(String orderId, String trackingNumber) async {
-    final orders = state.orders.map((order) {
-      if (order.id == orderId) {
-        return order.copyWith(trackingNumber: trackingNumber);
+      state = state.copyWith(
+        orders: orders,
+        isOfflineMode: !_connectivityService.isOnline,
+      );
+
+      // If offline, increment pending sync count
+      if (!_connectivityService.isOnline) {
+        state = state.copyWith(pendingSyncCount: state.pendingSyncCount + 1);
       }
-      return order;
-    }).toList();
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to cancel order: ${e.toString()}',
+      );
+      rethrow;
+    }
+  }
 
-    state = state.copyWith(orders: orders);
-    await _saveOrders();
+  /// Return order (with offline queue support)
+  Future<void> returnOrder(String orderId, {String? reason}) async {
+    try {
+      final returnedOrder =
+          await _repository.returnOrder(_userId, orderId, reason ?? 'Customer request');
+
+      // Update in state
+      final orders = state.orders.map((order) {
+        if (order.id == orderId) {
+          return returnedOrder;
+        }
+        return order;
+      }).toList();
+
+      state = state.copyWith(
+        orders: orders,
+        isOfflineMode: !_connectivityService.isOnline,
+      );
+
+      // If offline, increment pending sync count
+      if (!_connectivityService.isOnline) {
+        state = state.copyWith(pendingSyncCount: state.pendingSyncCount + 1);
+      }
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to return order: ${e.toString()}',
+      );
+      rethrow;
+    }
+  }
+
+  /// Refresh orders (manual sync)
+  Future<void> refresh() async {
+    await _loadOrders();
   }
 
   OrderEnhanced? getOrderById(String orderId) {
@@ -150,13 +252,16 @@ class OrdersNotifier extends StateNotifier<OrdersState> {
     return state.orders.where((order) => order.status == status).toList();
   }
 
+  /// Clear all orders from cache
   Future<void> clearOrders() async {
+    await _repository.clearCache();
     state = const OrdersState(orders: []);
-    await _saveOrders();
   }
 }
 
-// Provider
+// Provider with repository injection
 final ordersProvider = StateNotifierProvider<OrdersNotifier, OrdersState>((ref) {
-  return OrdersNotifier();
+  final repository = ref.watch(ordersRepositoryProvider);
+  final connectivityService = ref.watch(connectivityServiceProvider);
+  return OrdersNotifier(repository, connectivityService);
 });
