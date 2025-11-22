@@ -77,96 +77,121 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      appBar: PageAppBar(title: l.register),
-      body: SafeArea(
-        child: AppPageContainer(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(18.0),
+    return Semantics(
+      label: 'Register screen',
+      child: Scaffold(
+        appBar: PageAppBar(title: l.register),
+        body: SafeArea(
+          child: AppPageContainer(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(18.0),
 
-            /// Login Form
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  /// App Logo
-                  const AppLogo(),
+              /// Registration Form
+              child: Semantics(
+                label: 'Registration form',
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      /// App Logo
+                      const ExcludeSemantics(child: AppLogo()),
 
-                  /// FirstName textField
-                  AppTextField(
-                    key: _firstNameFieldKey,
-                    controller: _firstNameController,
-                    focusNode: _firstNameFocusNode,
-                    label: Text(l.firstName),
-                    hintText: l.firstName,
+                      /// FirstName textField
+                      AppTextField(
+                        key: _firstNameFieldKey,
+                        controller: _firstNameController,
+                        focusNode: _firstNameFocusNode,
+                        label: Text(l.firstName),
+                        hintText: l.firstName,
+                        semanticLabel: 'First name',
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          _lastNameFocusNode.requestFocus();
+                        },
+                      ),
+
+                      /// Spacing
+                      const SizedBox(height: 20),
+
+                      /// LastName textField
+                      AppTextField(
+                        key: _lastNameFieldKey,
+                        controller: _lastNameController,
+                        focusNode: _lastNameFocusNode,
+                        label: Text(l.lastName),
+                        hintText: l.lastName,
+                        semanticLabel: 'Last name',
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          _emailFocusNode.requestFocus();
+                        },
+                      ),
+
+                      /// Spacing
+                      const SizedBox(height: 20),
+
+                      /// Email textField
+                      AppTextField(
+                        key: _emailFieldKey,
+                        controller: _emailController,
+                        focusNode: _emailFocusNode,
+                        label: Text(l.email),
+                        hintText: l.email,
+                        keyboardType: TextInputType.emailAddress,
+                        semanticLabel: 'Email address',
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          _passwordFocusNode.requestFocus();
+                        },
+                      ),
+
+                      /// Spacing
+                      const SizedBox(height: 20),
+
+                      /// Password textField
+                      AppTextField(
+                        key: _passwordFieldKey,
+                        controller: _passwordController,
+                        focusNode: _passwordFocusNode,
+                        label: Text(l.password),
+                        hintText: l.password,
+                        obscureText: true,
+                        semanticLabel: 'Password',
+                        textInputAction: TextInputAction.done,
+                      ),
+
+                      /// Spacing
+                      const SizedBox(height: 20),
+
+                      /// Register Button
+                      AppButtonFilled(
+                        text: l.register,
+                        semanticLabel: "Register button",
+                        semanticHint:
+                            "Double tap to create account with provided information",
+                        onClick: () {
+                          ref.read(userProvider.notifier).loginUser();
+                          context.go(AppRoutes.tabs);
+                        },
+                      ),
+
+                      /// Spacing
+                      const SizedBox(height: 20),
+
+                      /// Log in to your account section
+                      AuthRedirectionText(
+                        staticText: l.doYouHaveAccount,
+                        clickableText: l.logIn,
+                        redirectionRouteName: AppRoutes.login,
+                      ),
+
+                      /// Spacing
+                      const SizedBox(height: 20),
+                    ],
                   ),
-
-                  /// Spacing
-                  const SizedBox(height: 20),
-
-                  /// LastName textField
-                  AppTextField(
-                    key: _lastNameFieldKey,
-                    controller: _lastNameController,
-                    focusNode: _lastNameFocusNode,
-                    label: Text(l.lastName),
-                    hintText: l.lastName,
-                    obscureText: true,
-                  ),
-
-                  /// Spacing
-                  const SizedBox(height: 20),
-
-                  /// Email textField
-                  AppTextField(
-                    key: _emailFieldKey,
-                    controller: _emailController,
-                    focusNode: _emailFocusNode,
-                    label: Text(l.email),
-                    hintText: l.email,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-
-                  /// Spacing
-                  const SizedBox(height: 20),
-
-                  /// Password textField
-                  AppTextField(
-                    key: _passwordFieldKey,
-                    controller: _passwordController,
-                    focusNode: _passwordFocusNode,
-                    label: Text(l.password),
-                    hintText: l.password,
-                    obscureText: true,
-                  ),
-
-                  /// Spacing
-                  const SizedBox(height: 20),
-
-                  /// Register Button
-                  AppButtonFilled(
-                    text: l.register,
-                    onClick: () {
-                      ref.read(userProvider.notifier).loginUser();
-                      context.go(AppRoutes.tabs);
-                    },
-                  ),
-
-                  /// Spacing
-                  const SizedBox(height: 20),
-
-                  /// Log in to your account section
-                  AuthRedirectionText(
-                    staticText: l.doYouHaveAccount,
-                    clickableText: l.logIn,
-                    redirectionRouteName: AppRoutes.login,
-                  ),
-
-                  /// Spacing
-                  const SizedBox(height: 20),
-                ],
+                ),
               ),
             ),
           ),

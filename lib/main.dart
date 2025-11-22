@@ -25,8 +25,13 @@ class MyApp extends ConsumerWidget {
       theme: userState.isLightTheme ? AppTheme.light() : AppTheme.dark(),
       routerConfig: appRouter,
 
+      // Accessibility Settings
+      // Show semantic debugger in debug mode (can be toggled)
+      showSemanticsDebugger: false,
+
       // Current app locale
       locale: userState.currentLocale,
+
       // Localizations delegates
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -34,12 +39,14 @@ class MyApp extends ConsumerWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+
       // Supported Locales
       supportedLocales: const [
         Locale('fr', 'FR'),
         Locale('en', 'US'),
         Locale('ar', 'TN'),
       ],
+
       // fetch current language values
       localeResolutionCallback: (locale, supportedLocales) {
         for (var supportedLocaleLanguage in supportedLocales) {
@@ -49,6 +56,18 @@ class MyApp extends ConsumerWidget {
           }
         }
         return supportedLocales.first;
+      },
+
+      // Accessibility features
+      builder: (context, child) {
+        // Ensure text scaling is supported up to 2.0x
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            // Respect system text scale factor but limit to reasonable max
+            textScaleFactor: MediaQuery.of(context).textScaleFactor.clamp(1.0, 2.0),
+          ),
+          child: child!,
+        );
       },
     );
   }

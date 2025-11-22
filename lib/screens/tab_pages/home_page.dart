@@ -39,90 +39,112 @@ class _HomePageState extends ConsumerState<HomePage> {
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               elevation: 0,
               pinned: true,
-              flexibleSpace: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      appImage,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                  ),
-
-                  /// Cart icon
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: AppButtonFilled(
-                      height: 60,
-                      width: 60,
-                      radius: 15,
-                      icon: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.shopping_cart_sharp,
-                              color: appBackgroundColorLight),
-                          Text(
-                            "${cartState.totalItemsCount}",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge
-                                ?.copyWith(color: appBackgroundColorLight),
-                          ),
-                        ],
+              flexibleSpace: Semantics(
+                header: true,
+                label: 'Home page app bar',
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ExcludeSemantics(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(
+                          appImage,
+                          color: Theme.of(context).iconTheme.color,
+                        ),
                       ),
-                      onClick: () {
-                        context.push(AppRoutes.cart);
-                      },
                     ),
-                  )
-                ],
+
+                    /// Cart icon
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: AppButtonFilled(
+                        height: 60,
+                        width: 60,
+                        radius: 15,
+                        semanticLabel:
+                            'Shopping cart with ${cartState.totalItemsCount} ${cartState.totalItemsCount == 1 ? "item" : "items"}',
+                        semanticHint: 'Double tap to view shopping cart',
+                        icon: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.shopping_cart_sharp,
+                                color: appBackgroundColorLight),
+                            Text(
+                              "${cartState.totalItemsCount}",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(color: appBackgroundColorLight),
+                            ),
+                          ],
+                        ),
+                        onClick: () {
+                          context.push(AppRoutes.cart);
+                        },
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
 
-            const SliverToBoxAdapter(
-              child: Divider(),
+            SliverToBoxAdapter(
+              child: ExcludeSemantics(child: const Divider()),
             ),
 
             /// Categories
             SliverToBoxAdapter(
               child: productsState.categories.isEmpty
                   ? const SizedBox.shrink()
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(
-                            l.categories,
-                            style: Theme.of(context).textTheme.headline2,
+                  : Semantics(
+                      label: 'Product categories',
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Semantics(
+                              header: true,
+                              child: Text(
+                                l.categories,
+                                style: Theme.of(context).textTheme.headline2,
+                              ),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 110,
-                          child: ListView.builder(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: productsState.categories.length,
-                            itemBuilder: (context, index) {
-                              final category = productsState.categories[index];
-                              return CategoryCard(
-                                category: category,
-                                onTap: () {
-                                  setState(() {
-                                    selectedCategory =
-                                        selectedCategory == category.id
-                                            ? null
-                                            : category.id;
-                                  });
+                          Semantics(
+                            label: 'Horizontal scrollable list of categories',
+                            hint:
+                                'Swipe left or right to browse ${productsState.categories.length} categories',
+                            child: SizedBox(
+                              height: 110,
+                              child: ListView.builder(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: productsState.categories.length,
+                                itemBuilder: (context, index) {
+                                  final category =
+                                      productsState.categories[index];
+                                  return CategoryCard(
+                                    category: category,
+                                    onTap: () {
+                                      setState(() {
+                                        selectedCategory =
+                                            selectedCategory == category.id
+                                                ? null
+                                                : category.id;
+                                      });
+                                    },
+                                  );
                                 },
-                              );
-                            },
+                              ),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                      ],
+                          const SizedBox(height: 16),
+                        ],
+                      ),
                     ),
             ),
 
@@ -130,53 +152,86 @@ class _HomePageState extends ConsumerState<HomePage> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      selectedCategory != null
-                          ? l.filteredProducts
-                          : l.allProducts,
-                      style: Theme.of(context).textTheme.headline2,
-                    ),
-                    if (selectedCategory != null)
-                      TextButton(
-                        onPressed: () {
-                          setState(() {
-                            selectedCategory = null;
-                          });
-                        },
-                        child: Text(l.clearFilter),
+                child: Semantics(
+                  header: true,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Semantics(
+                        header: true,
+                        label: selectedCategory != null
+                            ? 'Filtered Products section'
+                            : 'All Products section',
+                        child: Text(
+                          selectedCategory != null
+                              ? l.filteredProducts
+                              : l.allProducts,
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
                       ),
-                  ],
+                      if (selectedCategory != null)
+                        Semantics(
+                          label: 'Clear category filter',
+                          hint: 'Double tap to show all products',
+                          button: true,
+                          child: TextButton(
+                            onPressed: () {
+                              setState(() {
+                                selectedCategory = null;
+                              });
+                            },
+                            child: Text(l.clearFilter),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),
 
             /// Products Grid
             if (productsState.isLoading)
-              const SliverFillRemaining(
-                child: Center(
-                  child: CircularProgressIndicator(),
+              SliverFillRemaining(
+                child: Semantics(
+                  label: 'Loading products',
+                  liveRegion: true,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               )
             else if (productsState.error != null)
               SliverFillRemaining(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.error_outline,
-                          size: 48, color: Colors.red),
-                      const SizedBox(height: 16),
-                      Text('${l.error}: ${productsState.error}'),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () =>
-                            ref.read(productsProvider.notifier).loadProducts(),
-                        child: Text(l.retry),
-                      ),
-                    ],
+                child: Semantics(
+                  label: 'Error loading products: ${productsState.error}',
+                  liveRegion: true,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ExcludeSemantics(
+                          child: const Icon(Icons.error_outline,
+                              size: 48, color: Colors.red),
+                        ),
+                        const SizedBox(height: 16),
+                        Semantics(
+                          label: '${l.error}: ${productsState.error}',
+                          child: Text('${l.error}: ${productsState.error}'),
+                        ),
+                        const SizedBox(height: 16),
+                        Semantics(
+                          label: 'Retry loading products',
+                          hint: 'Double tap to reload products',
+                          button: true,
+                          child: ElevatedButton(
+                            onPressed: () => ref
+                                .read(productsProvider.notifier)
+                                .loadProducts(),
+                            child: Text(l.retry),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               )
@@ -191,27 +246,38 @@ class _HomePageState extends ConsumerState<HomePage> {
 
                   if (products.isEmpty) {
                     return SliverFillRemaining(
-                      child: Center(
-                        child: Text(l.noProductsAvailable),
+                      child: Semantics(
+                        label: 'No products available',
+                        liveRegion: true,
+                        child: Center(
+                          child: Text(l.noProductsAvailable),
+                        ),
                       ),
                     );
                   }
 
                   return SliverPadding(
                     padding: const EdgeInsets.all(16),
-                    sliver: SliverGrid(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.65,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                      ),
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          return ProductCard(product: products[index]);
-                        },
-                        childCount: products.length,
+                    sliver: Semantics(
+                      label:
+                          'Products grid with ${products.length} ${products.length == 1 ? "product" : "products"}',
+                      child: SliverGrid(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.65,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            return Semantics(
+                              sortKey: OrdinalSortKey(index.toDouble()),
+                              child: ProductCard(product: products[index]),
+                            );
+                          },
+                          childCount: products.length,
+                        ),
                       ),
                     ),
                   );
