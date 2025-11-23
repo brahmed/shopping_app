@@ -83,11 +83,11 @@ void main() {
                             IconButton(
                               icon: const Icon(Icons.remove_circle_outline),
                               onPressed: () {},
-                              padding: EdgeInsets.zero,
+                              padding: const EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                             ),
                             const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 12),
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
                               child: Text(
                                 '2',
                                 style: TextStyle(
@@ -99,7 +99,7 @@ void main() {
                             IconButton(
                               icon: const Icon(Icons.add_circle_outline),
                               onPressed: () {},
-                              padding: EdgeInsets.zero,
+                              padding: const EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                             ),
                           ],
@@ -266,7 +266,7 @@ void main() {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircularProgressIndicator(),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text('Loading cart...'),
             ],
           ),

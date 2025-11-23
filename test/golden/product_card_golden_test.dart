@@ -296,7 +296,7 @@ void main() {
                   ),
                   child: const Text(
                     'OUT OF STOCK',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),

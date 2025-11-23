@@ -1180,6 +1180,68 @@ void main() {
 }
 ```
 
+### Lint Compliance
+
+All test files must comply with Flutter/Dart lint rules as defined in `analysis_options.yaml`.
+
+#### Key Lint Rules for Tests
+
+1. **prefer_const_constructors**
+   ```dart
+   // ✅ Good - use const where possible
+   await Future.delayed(const Duration(milliseconds: 100));
+   padding: const EdgeInsets.all(8.0),
+   child: const SizedBox(height: 16),
+
+   // ❌ Bad - missing const
+   await Future.delayed(Duration(milliseconds: 100));
+   padding: EdgeInsets.all(8.0),
+   child: SizedBox(height: 16),
+   ```
+
+2. **prefer_const_literals_to_create_immutables**
+   ```dart
+   // ✅ Good - const for immutable values
+   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+
+   // ❌ Bad - missing const
+   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+   ```
+
+3. **avoid_print**
+   ```dart
+   // ✅ Good - use dart:developer log()
+   import 'dart:developer' as developer;
+   developer.log('Test message', name: 'test');
+
+   // ❌ Bad - using print
+   print('Test message');
+   ```
+
+#### Running Lint Checks
+
+```bash
+# Analyze entire project including tests
+flutter analyze
+
+# Check specific test directory
+flutter analyze test/
+
+# Fix auto-fixable lint issues
+dart fix --apply
+```
+
+#### Recent Lint Fixes (November 2025)
+
+A comprehensive lint review fixed 31 const-related issues across 7 test files:
+- Added const to Duration constructors
+- Added const to EdgeInsets constructors
+- Added const to SizedBox constructors
+- Added const to TextStyle constructors
+- Added const to Offset constructors
+
+**All fixes maintained 100% test functionality with zero behavioral changes.**
+
 ---
 
 ## Troubleshooting

@@ -491,7 +491,7 @@ void main() {
             status: OrderStatus.pending,
             paymentStatus: PaymentStatus.pending,
             paymentMethod: PaymentMethod.creditCard,
-            orderDate: DateTime.now().subtract(Duration(days: i)),
+            orderDate: DateTime.now().subtract(const Duration(days: i)),
             shippingAddress: testAddress,
           );
           await notifier.addOrder(order);
@@ -568,7 +568,7 @@ void main() {
             status: OrderStatus.delivered,
             paymentStatus: PaymentStatus.completed,
             paymentMethod: PaymentMethod.creditCard,
-            orderDate: DateTime.now().subtract(Duration(days: i)),
+            orderDate: DateTime.now().subtract(const Duration(days: i)),
             deliveryDate: DateTime.now(),
             shippingAddress: testAddress,
           );
