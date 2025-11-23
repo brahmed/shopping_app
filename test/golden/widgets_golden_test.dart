@@ -169,7 +169,7 @@ void main() {
         ..addScenario(
           'Linear Progress',
           const Center(
-            child: SizedBox(
+            child: const SizedBox(
               width: 200,
               child: LinearProgressIndicator(),
             ),
@@ -181,7 +181,7 @@ void main() {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircularProgressIndicator(),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text('Loading products...'),
             ],
           ),
@@ -208,12 +208,12 @@ void main() {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.shopping_cart_outlined, size: 80, color: Colors.grey),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 'Your cart is empty',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text('Add items to get started'),
             ],
           ),
@@ -224,12 +224,12 @@ void main() {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.favorite_border, size: 80, color: Colors.grey),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 'No favorites yet',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text('Save your favorite items'),
             ],
           ),
@@ -240,12 +240,12 @@ void main() {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.search_off, size: 80, color: Colors.grey),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 'No results found',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text('Try different keywords'),
             ],
           ),
@@ -275,7 +275,7 @@ void main() {
               const SizedBox(height: 16),
               const Text(
                 'No Internet Connection',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               const Text('Please check your connection'),
@@ -296,7 +296,7 @@ void main() {
               const SizedBox(height: 16),
               const Text(
                 'Something went wrong',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               const Text('We could not complete your request'),
@@ -348,7 +348,7 @@ void main() {
             ),
             child: const Text(
               'NEW',
-              style: TextStyle(color: Colors.white, fontSize: 10),
+              style: const TextStyle(color: Colors.white, fontSize: 10),
             ),
           ),
         )
@@ -362,7 +362,7 @@ void main() {
             ),
             child: const Text(
               'SALE',
-              style: TextStyle(color: Colors.white, fontSize: 10),
+              style: const TextStyle(color: Colors.white, fontSize: 10),
             ),
           ),
         )
@@ -376,7 +376,7 @@ void main() {
             ),
             child: const Text(
               '-20%',
-              style: TextStyle(color: Colors.white, fontSize: 10),
+              style: const TextStyle(color: Colors.white, fontSize: 10),
             ),
           ),
         );
@@ -424,7 +424,7 @@ void main() {
             children: [
               const Icon(Icons.star, color: Colors.amber, size: 20),
               const SizedBox(width: 4),
-              const Text('4.5', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('4.5', style: const TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(width: 4),
               Text('(128 reviews)', style: TextStyle(color: Colors.grey[600])),
             ],

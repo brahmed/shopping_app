@@ -197,7 +197,7 @@ void main() {
               child: Column(
                 children: [
                   Text('Title'),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text('Description'),
                 ],
               ),

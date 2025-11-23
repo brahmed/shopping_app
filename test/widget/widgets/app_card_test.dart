@@ -185,7 +185,7 @@ void main() {
         color: Colors.red,
         blurRadius: 10.0,
         spreadRadius: 5.0,
-        offset: Offset(2.0, 2.0),
+        offset: const Offset(2.0, 2.0),
       );
 
       await tester.pumpWidget(
@@ -214,7 +214,7 @@ void main() {
               child: Column(
                 children: [
                   Text('Title'),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text('Description'),
                 ],
               ),
