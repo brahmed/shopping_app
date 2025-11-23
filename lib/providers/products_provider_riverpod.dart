@@ -1,14 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/category_model.dart';
-import '../models/product_model.dart';
+import '../models/category_model.dart' as models;
+import '../models/product_model.dart' as models;
 import '../repositories/products_repository.dart';
 import '../data/remote/api_client.dart';
 
 // Products State
 class ProductsState {
-  final List<Product> products;
-  final List<Category> categories;
+  final List<models.Product> products;
+  final List<models.Category> categories;
   final bool isLoading;
   final String? error;
   final bool isOfflineMode;
@@ -24,8 +24,8 @@ class ProductsState {
   });
 
   ProductsState copyWith({
-    List<Product>? products,
-    List<Category>? categories,
+    List<models.Product>? products,
+    List<models.Category>? categories,
     bool? isLoading,
     String? Function()? error,
     bool? isOfflineMode,
@@ -107,11 +107,11 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
     await loadProducts(forceRefresh: true);
   }
 
-  List<Product> getProductsByCategory(String categoryId) {
+  List<models.Product> getProductsByCategory(String categoryId) {
     return state.products.where((product) => product.category == categoryId).toList();
   }
 
-  Product? getProductById(String id) {
+  models.Product? getProductById(String id) {
     try {
       return state.products.firstWhere((product) => product.id == id);
     } catch (e) {
@@ -119,7 +119,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
     }
   }
 
-  List<Product> searchProducts(String query) {
+  List<models.Product> searchProducts(String query) {
     if (query.isEmpty) return state.products;
 
     final lowerQuery = query.toLowerCase();
@@ -131,7 +131,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
     }).toList();
   }
 
-  List<Product> filterProducts({
+  List<models.Product> filterProducts({
     String? category,
     double? minPrice,
     double? maxPrice,

@@ -54,12 +54,12 @@ void main() {
       expect(appBar.centerTitle, isTrue);
     });
 
-    testWidgets('should use theme headline1 for title style', (tester) async {
+    testWidgets('should use theme headlineLarge for title style', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
             textTheme: const TextTheme(
-              headline1: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              headlineLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
           home: const Scaffold(

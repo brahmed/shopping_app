@@ -402,7 +402,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                           ),
                         );
                       }
-                    : null,
+                    : () {},
               ),
             ),
           ),
