@@ -9,7 +9,7 @@ class AppTheme {
       primarySwatch: appPrimarySwatchColorLight,
       primaryColor: appPrimaryColorLight,
       scaffoldBackgroundColor: appBackgroundColorLight,
-      colorScheme: ColorScheme.light(
+      colorScheme: const ColorScheme.light(
         primary: appPrimaryColorLight,
         surface: appContainersBackgroundColorLight,
       ),
@@ -30,7 +30,7 @@ class AppTheme {
       primarySwatch: appPrimarySwatchColorDark,
       primaryColor: appContainersBackgroundColorDark,
       scaffoldBackgroundColor: appBackgroundColorDark,
-      colorScheme: ColorScheme.dark(
+      colorScheme: const ColorScheme.dark(
         primary: appContainersBackgroundColorDark,
         surface: appContainersBackgroundColorDark,
       ),

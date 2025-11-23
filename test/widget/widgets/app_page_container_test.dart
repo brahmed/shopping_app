@@ -136,7 +136,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            backgroundColor: testBackgroundColor,
+            colorScheme: const ColorScheme(surface: testBackgroundColor),
           ),
           home: const Scaffold(
             body: AppPageContainer(
@@ -191,11 +191,11 @@ void main() {
 
     testWidgets('should render complex child widgets', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: AppPageContainer(
               child: Column(
-                children: const [
+                children: [
                   Text('Title'),
                   SizedBox(height: 16),
                   Text('Description'),

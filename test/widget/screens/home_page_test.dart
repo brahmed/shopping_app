@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shopping_app/screens/tab_pages/home_page.dart';
-import 'package:shopping_app/widgets/cards/product_card.dart';
-import 'package:shopping_app/widgets/cards/category_card.dart';
 
 void main() {
   group('HomePage Tests', () {

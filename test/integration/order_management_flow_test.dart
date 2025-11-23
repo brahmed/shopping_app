@@ -23,8 +23,8 @@ void main() {
     testWidgets('Place order flow: Cart → Checkout → Order confirmation',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -108,8 +108,8 @@ void main() {
 
     testWidgets('View orders list', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();

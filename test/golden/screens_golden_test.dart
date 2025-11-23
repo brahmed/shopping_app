@@ -126,8 +126,8 @@ void main() {
       await loadAppFonts();
 
       await tester.pumpWidgetBuilder(
-        ProviderScope(
-          child: const CartPage(),
+        const ProviderScope(
+          child: CartPage(),
         ),
         wrapper: materialAppWrapper(
           theme: ThemeData.light(),
@@ -161,23 +161,23 @@ void main() {
       )
         ..addScenario(
           'English',
-          MaterialApp(
-            locale: const Locale('en', 'US'),
-            home: const SearchPage(),
+          const MaterialApp(
+            locale: Locale('en', 'US'),
+            home: SearchPage(),
           ),
         )
         ..addScenario(
           'French',
-          MaterialApp(
-            locale: const Locale('fr', 'FR'),
-            home: const SearchPage(),
+          const MaterialApp(
+            locale: Locale('fr', 'FR'),
+            home: SearchPage(),
           ),
         )
         ..addScenario(
           'Arabic',
-          MaterialApp(
-            locale: const Locale('ar', 'TN'),
-            home: const SearchPage(),
+          const MaterialApp(
+            locale: Locale('ar', 'TN'),
+            home: SearchPage(),
           ),
         );
 

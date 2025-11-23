@@ -161,10 +161,10 @@ void main() {
 
     testWidgets('should be usable as AppBar in Scaffold', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
-            appBar: const PageAppBar(title: 'My Page'),
-            body: const Text('Body Content'),
+            appBar: PageAppBar(title: 'My Page'),
+            body: Text('Body Content'),
           ),
         ),
       );

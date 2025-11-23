@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../data/local/database/app_database.dart';
 import '../data/local/products_local_data_source.dart';
 import '../data/remote/api_client.dart';
 import '../data/remote/products_remote_data_source.dart';

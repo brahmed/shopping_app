@@ -63,7 +63,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
 
     return Semantics(
       label: 'Login screen',
@@ -206,7 +206,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   /// Divider widget
   Widget dividerRow() {
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
 
     return Semantics(
       label: l.or,

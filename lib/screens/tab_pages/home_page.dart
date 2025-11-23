@@ -27,7 +27,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final cartState = ref.watch(cartProvider);
     final productsState = ref.watch(productsProvider);
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
 
     return Scaffold(
       body: SafeArea(
@@ -91,8 +91,8 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             ),
 
-            SliverToBoxAdapter(
-              child: ExcludeSemantics(child: const Divider()),
+            const SliverToBoxAdapter(
+              child: ExcludeSemantics(child: Divider()),
             ),
 
             /// Categories
@@ -210,8 +210,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ExcludeSemantics(
-                          child: const Icon(Icons.error_outline,
+                        const ExcludeSemantics(
+                          child: Icon(Icons.error_outline,
                               size: 48, color: Colors.red),
                         ),
                         const SizedBox(height: 16),

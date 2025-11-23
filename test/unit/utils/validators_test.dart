@@ -420,7 +420,7 @@ void main() {
       });
 
       test('should handle strings with only whitespace', () {
-        final whitespace = '     ';
+        const whitespace = '     ';
 
         expect(Validators.validateEmail(whitespace), isNotNull);
         expect(Validators.validatePassword(whitespace), isNotNull);
@@ -429,7 +429,7 @@ void main() {
       });
 
       test('should handle strings with newlines and tabs', () {
-        final stringWithNewlines = 'test\n\tvalue';
+        const stringWithNewlines = 'test\n\tvalue';
 
         expect(Validators.validateRequired(stringWithNewlines, 'Field'), isNull);
         expect(Validators.validateName(stringWithNewlines, 'Name'), isNull);

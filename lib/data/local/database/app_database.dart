@@ -340,8 +340,8 @@ class AppDatabase extends _$AppDatabase {
     await (update(pendingOperations)
           ..where((tbl) => tbl.id.equals(operationId)))
         .write(
-      PendingOperationsCompanion(
-        status: const Value('completed'),
+      const PendingOperationsCompanion(
+        status: Value('completed'),
       ),
     );
   }

@@ -17,7 +17,7 @@ class ProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userState = ref.watch(userProvider);
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
 
     return Scaffold(
       /// App Bar
@@ -59,7 +59,7 @@ class ProfilePage extends ConsumerWidget {
   }
 
   List<Widget> _userNotLoggedInProfile(BuildContext context) {
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
     return [
         // Log In
         AppButtonFilled(
@@ -119,7 +119,7 @@ class ProfilePage extends ConsumerWidget {
   }
 
   List<Widget> _userLoggedInProfile(BuildContext context, WidgetRef ref) {
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
     return [
         // User Info
         AppCard(

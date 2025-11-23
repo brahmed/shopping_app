@@ -213,7 +213,7 @@ void main() {
     });
 
     test('should return true for canReturn when delivered within 30 days', () {
-      final recentDelivery = DateTime.now().subtract(Duration(days: 10));
+      final recentDelivery = DateTime.now().subtract(const Duration(days: 10));
       final order = testOrder.copyWith(
         status: OrderStatus.delivered,
         deliveryDate: recentDelivery,
@@ -222,7 +222,7 @@ void main() {
     });
 
     test('should return false for canReturn when delivered over 30 days ago', () {
-      final oldDelivery = DateTime.now().subtract(Duration(days: 31));
+      final oldDelivery = DateTime.now().subtract(const Duration(days: 31));
       final order = testOrder.copyWith(
         status: OrderStatus.delivered,
         deliveryDate: oldDelivery,
@@ -560,7 +560,7 @@ void main() {
     });
 
     test('should handle all OrderStatus enum values', () {
-      final statuses = OrderStatus.values;
+      const statuses = OrderStatus.values;
 
       for (final status in statuses) {
         final order = testOrder.copyWith(status: status);
@@ -572,7 +572,7 @@ void main() {
     });
 
     test('should handle all PaymentMethod enum values', () {
-      final methods = PaymentMethod.values;
+      const methods = PaymentMethod.values;
 
       for (final method in methods) {
         final order = testOrder.copyWith(paymentMethod: method);
@@ -584,7 +584,7 @@ void main() {
     });
 
     test('should handle all PaymentStatus enum values', () {
-      final statuses = PaymentStatus.values;
+      const statuses = PaymentStatus.values;
 
       for (final status in statuses) {
         final order = testOrder.copyWith(paymentStatus: status);
@@ -681,7 +681,7 @@ void main() {
     });
 
     test('should handle all OrderStatus enum values', () {
-      final statuses = OrderStatus.values;
+      const statuses = OrderStatus.values;
 
       for (final status in statuses) {
         final update = OrderStatusUpdate(

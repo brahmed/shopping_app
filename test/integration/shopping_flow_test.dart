@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shopping_app/main.dart';
 import 'package:shopping_app/models/product_model.dart';
 import 'package:shopping_app/providers/cart_provider_riverpod.dart';
-import 'package:shopping_app/providers/products_provider_riverpod.dart';
 
 void main() {
   group('Shopping Flow Integration Tests', () {
@@ -21,8 +20,8 @@ void main() {
     testWidgets('Complete shopping flow: Browse → Add to Cart → Checkout',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -65,8 +64,8 @@ void main() {
 
     testWidgets('Shopping flow with multiple products', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -159,8 +158,8 @@ void main() {
 
     testWidgets('Navigate between product categories', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -212,8 +211,8 @@ void main() {
 
     testWidgets('Empty cart state handling', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();

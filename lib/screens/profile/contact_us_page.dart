@@ -8,12 +8,12 @@ class ContactUsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const PageAppBar(title: "Help"),
+    return const Scaffold(
+      appBar: PageAppBar(title: "Help"),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            children: const [
+            children: [
               /// Call us card
               AppListTile(
                 text: "Settings",

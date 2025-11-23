@@ -175,7 +175,7 @@ void main() {
 
       // Add first product
       final productCards = find.byType(GestureDetector);
-      if (productCards.evaluate().length > 0) {
+      if (productCards.evaluate().isNotEmpty) {
         await tester.tap(productCards.at(0));
         await tester.pumpAndSettle();
 
