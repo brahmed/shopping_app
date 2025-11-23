@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
-import 'package:shopping_app/models/order_model_enhanced.dart';
 
 void main() {
   group('Order Details Golden Tests', () {
@@ -245,23 +244,23 @@ void main() {
 
       final timeline = Column(
         children: [
-          ListTile(
-            leading: const Icon(Icons.check_circle, color: Colors.green),
-            title: const Text('Order Placed'),
-            subtitle: const Text('Jan 10, 2024 - 10:30 AM'),
-            trailing: const Icon(Icons.more_vert),
+          const ListTile(
+            leading: Icon(Icons.check_circle, color: Colors.green),
+            title: Text('Order Placed'),
+            subtitle: Text('Jan 10, 2024 - 10:30 AM'),
+            trailing: Icon(Icons.more_vert),
           ),
           const Divider(indent: 72),
-          ListTile(
-            leading: const Icon(Icons.check_circle, color: Colors.green),
-            title: const Text('Order Confirmed'),
-            subtitle: const Text('Jan 10, 2024 - 11:00 AM'),
+          const ListTile(
+            leading: Icon(Icons.check_circle, color: Colors.green),
+            title: Text('Order Confirmed'),
+            subtitle: Text('Jan 10, 2024 - 11:00 AM'),
           ),
           const Divider(indent: 72),
-          ListTile(
-            leading: const Icon(Icons.check_circle, color: Colors.green),
-            title: const Text('Order Shipped'),
-            subtitle: const Text('Jan 11, 2024 - 9:00 AM'),
+          const ListTile(
+            leading: Icon(Icons.check_circle, color: Colors.green),
+            title: Text('Order Shipped'),
+            subtitle: Text('Jan 11, 2024 - 9:00 AM'),
           ),
           const Divider(indent: 72),
           ListTile(

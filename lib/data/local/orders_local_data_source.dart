@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:drift/drift.dart';
+import '../../models/address_model.dart';
+import '../../models/cart_item_model.dart' as models;
 import '../../models/order_model_enhanced.dart';
 import 'database/app_database.dart';
 
@@ -193,7 +195,7 @@ class OrdersLocalDataSource {
       id: dbOrder.id,
       userId: dbOrder.userId,
       items: (jsonDecode(dbOrder.items) as List)
-          .map((json) => CartItem.fromJson(json))
+          .map((json) => models.CartItem.fromJson(json))
           .toList(),
       subtotal: dbOrder.subtotal,
       discount: dbOrder.discount,

@@ -283,8 +283,8 @@ class SyncButton extends ConsumerWidget {
     final isOnline = ref.watch(isOnlineProvider);
 
     if (!isOnline) {
-      return IconButton(
-        icon: const Icon(Icons.cloud_off),
+      return const IconButton(
+        icon: Icon(Icons.cloud_off),
         onPressed: null,
         tooltip: 'Offline',
       );

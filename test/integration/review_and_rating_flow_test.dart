@@ -19,8 +19,8 @@ void main() {
 
     testWidgets('View product reviews', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -410,8 +410,8 @@ void main() {
 
     testWidgets('Submit review form', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -457,7 +457,7 @@ void main() {
       final reviews = container
           .read(reviewsProvider.notifier)
           .getReviewsByProduct('prod-1');
-      expect(reviews.first.images?.length, 2);
+      expect(reviews.first.images.length, 2);
     });
   });
 }

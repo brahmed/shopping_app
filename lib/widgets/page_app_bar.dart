@@ -24,7 +24,7 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
         title: Semantics(
           label: title,
           header: true,
-          child: Text(title, style: Theme.of(context).textTheme.headline1),
+          child: Text(title, style: Theme.of(context).textTheme.headlineLarge),
         ),
         leading: Semantics(
           label: 'Back',

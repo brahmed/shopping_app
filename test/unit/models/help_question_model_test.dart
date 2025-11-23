@@ -186,7 +186,7 @@ void main() {
     });
 
     test('should be accessible as a static member', () {
-      final questions = QuestionBank.questions;
+      const questions = QuestionBank.questions;
       expect(questions, isNotNull);
       expect(questions, isA<List<HelpQuestionModel>>());
     });

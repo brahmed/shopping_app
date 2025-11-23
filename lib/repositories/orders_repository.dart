@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
-import '../data/local/database/app_database.dart';
 import '../data/local/orders_local_data_source.dart';
 import '../data/remote/api_client.dart';
 import '../data/remote/orders_remote_data_source.dart';

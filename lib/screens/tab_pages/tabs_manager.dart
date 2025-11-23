@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../config/colors.dart';
 import '../../providers/user_provider_riverpod.dart';
-import '../../screens/tab_pages/bookmarks_page_riverpod.dart';
-import '../../screens/tab_pages/home_page_riverpod.dart';
+import '../../screens/tab_pages/bookmarks_page.dart';
+import '../../screens/tab_pages/home_page.dart';
 import '../../screens/tab_pages/profile_page.dart';
-import '../../screens/tab_pages/search_page_riverpod.dart';
+import '../../screens/tab_pages/search_page.dart';
 
 class TabsManager extends ConsumerStatefulWidget {
   const TabsManager({Key? key}) : super(key: key);

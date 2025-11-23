@@ -20,8 +20,8 @@ void main() {
 
     testWidgets('Navigate to profile page', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -39,8 +39,8 @@ void main() {
 
     testWidgets('Change app theme', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -75,8 +75,8 @@ void main() {
 
     testWidgets('Change app language', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -121,7 +121,7 @@ void main() {
         userId: 'user-1',
         fullName: 'John Doe',
         phoneNumber: '+1234567890',
-        street: '123 Main St',
+        addressLine1: '123 Main St',
         city: 'New York',
         state: 'NY',
         zipCode: '10001',
@@ -143,7 +143,7 @@ void main() {
         userId: 'user-1',
         fullName: 'John Doe',
         phoneNumber: '+1234567890',
-        street: '123 Main St',
+        addressLine1: '123 Main St',
         city: 'New York',
         state: 'NY',
         zipCode: '10001',
@@ -154,7 +154,7 @@ void main() {
 
       // Update address
       final updatedAddress = address.copyWith(
-        street: '456 Park Ave',
+        addressLine1: '456 Park Ave',
         city: 'Los Angeles',
         state: 'CA',
       );
@@ -162,7 +162,7 @@ void main() {
       await container.read(addressesProvider.notifier).updateAddress(updatedAddress);
 
       final addresses = container.read(addressesProvider).addresses;
-      expect(addresses.first.street, '456 Park Ave');
+      expect(addresses.first.addressLine1, '456 Park Ave');
       expect(addresses.first.city, 'Los Angeles');
     });
 
@@ -172,7 +172,7 @@ void main() {
         userId: 'user-1',
         fullName: 'John Doe',
         phoneNumber: '+1234567890',
-        street: '123 Main St',
+        addressLine1: '123 Main St',
         city: 'New York',
         state: 'NY',
         zipCode: '10001',
@@ -193,7 +193,7 @@ void main() {
           userId: 'user-1',
           fullName: 'John Doe',
           phoneNumber: '+1234567890',
-          street: '123 Main St',
+          addressLine1: '123 Main St',
           city: 'New York',
           state: 'NY',
           zipCode: '10001',
@@ -205,7 +205,7 @@ void main() {
           userId: 'user-1',
           fullName: 'Jane Smith',
           phoneNumber: '+0987654321',
-          street: '456 Park Ave',
+          addressLine1: '456 Park Ave',
           city: 'Los Angeles',
           state: 'CA',
           zipCode: '90001',
@@ -233,8 +233,8 @@ void main() {
     testWidgets('View and edit profile information',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -259,8 +259,8 @@ void main() {
 
     testWidgets('Access settings page', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -286,8 +286,8 @@ void main() {
 
     testWidgets('Access notification settings', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -321,8 +321,8 @@ void main() {
 
     testWidgets('Access help page', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -347,8 +347,8 @@ void main() {
 
     testWidgets('Access contact us page', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -379,7 +379,7 @@ void main() {
           userId: 'user-1',
           fullName: 'User $index',
           phoneNumber: '+123456789$index',
-          street: '$index Main St',
+          addressLine1: '$index Main St',
           city: 'City $index',
           state: 'State $index',
           zipCode: '1000$index',
@@ -401,7 +401,7 @@ void main() {
         userId: 'user-1',
         fullName: 'John Doe',
         phoneNumber: '+1234567890',
-        street: '123 Main St',
+        addressLine1: '123 Main St',
         city: 'New York',
         state: 'NY',
         zipCode: '10001',

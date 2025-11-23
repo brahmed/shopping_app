@@ -82,7 +82,9 @@ class SaveForLaterNotifier extends StateNotifier<SaveForLaterState> {
     );
 
     if (existingIndex >= 0) {
-      items[existingIndex].quantity += quantity;
+      items[existingIndex] = items[existingIndex].copyWith(
+        quantity: items[existingIndex].quantity + quantity,
+      );
     } else {
       items.add(CartItem(
         product: product,
@@ -120,7 +122,7 @@ class SaveForLaterNotifier extends StateNotifier<SaveForLaterState> {
       if (quantity <= 0) {
         items.removeAt(index);
       } else {
-        items[index].quantity = quantity;
+        items[index] = items[index].copyWith(quantity: quantity);
       }
       state = state.copyWith(items: items);
       await _saveSaveForLater();

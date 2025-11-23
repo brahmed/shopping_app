@@ -21,7 +21,7 @@ class ConnectivityService {
   ConnectivityStatus _currentStatus = ConnectivityStatus.unknown;
 
   // Stream subscription
-  StreamSubscription<List<ConnectivityResult>>? _subscription;
+  StreamSubscription<ConnectivityResult>? _subscription;
 
   ConnectivityService() {
     _initialize();
@@ -30,13 +30,13 @@ class ConnectivityService {
   /// Initialize connectivity monitoring
   Future<void> _initialize() async {
     // Get initial status
-    final results = await _connectivity.checkConnectivity();
-    _updateStatus(results);
+    final result = await _connectivity.checkConnectivity();
+    _updateStatus([result]);
 
     // Listen to connectivity changes
     _subscription = _connectivity.onConnectivityChanged.listen(
-      (List<ConnectivityResult> results) {
-        _updateStatus(results);
+      (ConnectivityResult result) {
+        _updateStatus([result]);
       },
     );
   }
@@ -74,8 +74,8 @@ class ConnectivityService {
 
   /// Check connectivity (returns future)
   Future<bool> checkConnection() async {
-    final results = await _connectivity.checkConnectivity();
-    _updateStatus(results);
+    final result = await _connectivity.checkConnectivity();
+    _updateStatus([result]);
     return isOnline;
   }
 

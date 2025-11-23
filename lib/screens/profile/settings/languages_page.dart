@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../providers/user_provider_riverpod.dart';
 import '../../../widgets/cards/app_list_tile.dart';
@@ -11,7 +11,7 @@ class LanguagesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: PageAppBar(title: l.languages),

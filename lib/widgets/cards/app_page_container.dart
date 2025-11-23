@@ -20,7 +20,7 @@ class AppPageContainer extends StatelessWidget {
       height: height ?? MediaQuery.of(context).size.height,
       margin: EdgeInsets.only(top: marginTop),
       decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(borderRadius)),
         boxShadow: [
           BoxShadow(

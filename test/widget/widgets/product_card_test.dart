@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shopping_app/models/product_model.dart';
-import 'package:shopping_app/providers/favorites_provider_riverpod.dart';
 import 'package:shopping_app/widgets/cards/product_card.dart';
 
 void main() {

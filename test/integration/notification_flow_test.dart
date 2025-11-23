@@ -19,8 +19,8 @@ void main() {
 
     testWidgets('View notifications list', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -376,8 +376,8 @@ void main() {
     testWidgets('Show unread notification badge',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();

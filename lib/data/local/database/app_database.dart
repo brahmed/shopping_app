@@ -1,8 +1,5 @@
-import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
 
 part 'app_database.g.dart';
 
@@ -343,8 +340,8 @@ class AppDatabase extends _$AppDatabase {
     await (update(pendingOperations)
           ..where((tbl) => tbl.id.equals(operationId)))
         .write(
-      PendingOperationsCompanion(
-        status: const Value('completed'),
+      const PendingOperationsCompanion(
+        status: Value('completed'),
       ),
     );
   }

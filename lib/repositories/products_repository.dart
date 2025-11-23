@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../data/local/database/app_database.dart';
 import '../data/local/products_local_data_source.dart';
 import '../data/remote/api_client.dart';
 import '../data/remote/products_remote_data_source.dart';
-import '../models/product_model.dart';
-import '../models/category_model.dart';
+import '../models/product_model.dart' as models;
+import '../models/category_model.dart' as models;
 import '../services/connectivity_service.dart';
+import '../services/offline_queue_service.dart';
 
 /// Products repository with offline-first strategy
 class ProductsRepository {
@@ -24,7 +24,7 @@ class ProductsRepository {
 
   /// Get all products with offline-first strategy
   /// Strategy: Read from cache first, then refresh from remote if online
-  Future<List<Product>> getProducts({bool forceRefresh = false}) async {
+  Future<List<models.Product>> getProducts({bool forceRefresh = false}) async {
     try {
       // 1. Always return cached data first (if available)
       final cachedProducts = await _localDataSource.getAllProducts();
@@ -78,7 +78,7 @@ class ProductsRepository {
   }
 
   /// Get product by ID with offline-first strategy
-  Future<Product?> getProductById(String id) async {
+  Future<models.Product?> getProductById(String id) async {
     try {
       // 1. Try to get from local cache first
       final cachedProduct = await _localDataSource.getProductById(id);
@@ -114,7 +114,7 @@ class ProductsRepository {
   }
 
   /// Get products by category with offline-first strategy
-  Future<List<Product>> getProductsByCategory(String category) async {
+  Future<List<models.Product>> getProductsByCategory(String category) async {
     try {
       // 1. Get from cache first
       final cachedProducts =
@@ -155,7 +155,7 @@ class ProductsRepository {
   }
 
   /// Search products with offline-first strategy
-  Future<List<Product>> searchProducts(String query) async {
+  Future<List<models.Product>> searchProducts(String query) async {
     // Always search in local cache
     final localResults = await _localDataSource.searchProducts(query);
 
@@ -181,7 +181,7 @@ class ProductsRepository {
   }
 
   /// Get all categories with offline-first strategy
-  Future<List<Category>> getCategories({bool forceRefresh = false}) async {
+  Future<List<models.Category>> getCategories({bool forceRefresh = false}) async {
     try {
       // 1. Get from cache first
       final cachedCategories = await _localDataSource.getAllCategories();
@@ -243,12 +243,12 @@ class ProductsRepository {
   }
 
   /// Force refresh all products (manual sync)
-  Future<List<Product>> refreshProducts() async {
+  Future<List<models.Product>> refreshProducts() async {
     return getProducts(forceRefresh: true);
   }
 
   /// Force refresh categories (manual sync)
-  Future<List<Category>> refreshCategories() async {
+  Future<List<models.Category>> refreshCategories() async {
     return getCategories(forceRefresh: true);
   }
 

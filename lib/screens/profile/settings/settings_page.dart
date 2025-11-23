@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../navigation/app_router.dart';
 import '../../../providers/user_provider_riverpod.dart';
@@ -14,7 +14,7 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userState = ref.watch(userProvider);
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: PageAppBar(title: l.settings),

@@ -20,8 +20,8 @@ void main() {
     testWidgets('Login flow: Navigate to login → Enter credentials → Browse',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -114,8 +114,8 @@ void main() {
     testWidgets('Register flow: Navigate to register → Fill form → Submit',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -155,8 +155,8 @@ void main() {
 
       // Restart app - user should still be logged in
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -187,8 +187,8 @@ void main() {
     testWidgets('Protected routes redirect to login',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -223,8 +223,8 @@ void main() {
 
     testWidgets('Login form validation', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -255,8 +255,8 @@ void main() {
 
     testWidgets('Password visibility toggle', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();

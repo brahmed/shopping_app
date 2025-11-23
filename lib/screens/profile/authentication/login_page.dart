@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../config/images.dart';
 import '../../../navigation/app_router.dart';
@@ -63,7 +63,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
 
     return Semantics(
       label: 'Login screen',
@@ -206,7 +206,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   /// Divider widget
   Widget dividerRow() {
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
 
     return Semantics(
       label: l.or,

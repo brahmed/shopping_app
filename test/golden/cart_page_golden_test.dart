@@ -10,8 +10,8 @@ void main() {
       await loadAppFonts();
 
       await tester.pumpWidgetBuilder(
-        ProviderScope(
-          child: const CartPage(),
+        const ProviderScope(
+          child: CartPage(),
         ),
         wrapper: materialAppWrapper(theme: ThemeData.light()),
         surfaceSize: const Size(375, 667),
@@ -24,8 +24,8 @@ void main() {
       await loadAppFonts();
 
       await tester.pumpWidgetBuilder(
-        ProviderScope(
-          child: const CartPage(),
+        const ProviderScope(
+          child: CartPage(),
         ),
         wrapper: materialAppWrapper(theme: ThemeData.dark()),
         surfaceSize: const Size(375, 667),
@@ -291,16 +291,16 @@ void main() {
       )
         ..addScenario(
           'Light Theme',
-          ProviderScope(
-            child: const CartPage(),
+          const ProviderScope(
+            child: CartPage(),
           ),
         )
         ..addScenario(
           'Dark Theme',
           Theme(
             data: ThemeData.dark(),
-            child: ProviderScope(
-              child: const CartPage(),
+            child: const ProviderScope(
+              child: CartPage(),
             ),
           ),
         );

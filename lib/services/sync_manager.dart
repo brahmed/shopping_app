@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/local/database/app_database.dart';
+import '../data/remote/api_client.dart';
 import 'connectivity_service.dart';
 import 'offline_queue_service.dart';
 

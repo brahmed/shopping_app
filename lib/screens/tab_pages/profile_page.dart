@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../config/images.dart';
 import '../../navigation/app_router.dart';
@@ -17,7 +17,7 @@ class ProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userState = ref.watch(userProvider);
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
 
     return Scaffold(
       /// App Bar
@@ -31,7 +31,7 @@ class ProfilePage extends ConsumerWidget {
             Container(
               margin: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(l.myAccount,
-                  style: Theme.of(context).textTheme.headline1),
+                  style: Theme.of(context).textTheme.headlineLarge),
             ),
             Image.asset(
               appImage,
@@ -59,7 +59,7 @@ class ProfilePage extends ConsumerWidget {
   }
 
   List<Widget> _userNotLoggedInProfile(BuildContext context) {
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
     return [
         // Log In
         AppButtonFilled(
@@ -119,7 +119,7 @@ class ProfilePage extends ConsumerWidget {
   }
 
   List<Widget> _userLoggedInProfile(BuildContext context, WidgetRef ref) {
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
     return [
         // User Info
         AppCard(

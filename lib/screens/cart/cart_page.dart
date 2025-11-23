@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../config/images.dart';
 import '../../providers/cart_provider_riverpod.dart';
@@ -15,7 +15,7 @@ class CartPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cartState = ref.watch(cartProvider);
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(

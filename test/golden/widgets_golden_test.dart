@@ -326,16 +326,16 @@ void main() {
       )
         ..addScenario(
           'Cart Badge',
-          Badge(
-            label: const Text('3'),
-            child: const Icon(Icons.shopping_cart),
+          const Badge(
+            label: Text('3'),
+            child: Icon(Icons.shopping_cart),
           ),
         )
         ..addScenario(
           'Notification Badge',
-          Badge(
-            label: const Text('10'),
-            child: const Icon(Icons.notifications),
+          const Badge(
+            label: Text('10'),
+            child: Icon(Icons.notifications),
           ),
         )
         ..addScenario(

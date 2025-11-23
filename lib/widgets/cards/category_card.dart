@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../config/colors.dart';
 import '../../models/category_model.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -55,7 +54,7 @@ class CategoryCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Icon(
-                      _getIconFromName(category.iconName),
+                      _getIconFromName(category.iconName ?? 'category'),
                       size: 32,
                       color: Theme.of(context).primaryColor,
                     ),

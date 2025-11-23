@@ -1,7 +1,6 @@
 {
   "@@locale": "en",
 
-  "_AUTHENTICATION": "========== AUTHENTICATION ==========",
   "login": "Login",
   "email": "Email",
   "password": "Password",
@@ -21,7 +20,6 @@
   "or": "or",
   "logout": "Log out",
 
-  "_NAVIGATION": "========== NAVIGATION ==========",
   "home": "Home",
   "search": "Search",
   "bookmarks": "Bookmarks",
@@ -29,7 +27,6 @@
   "profile": "Profile",
   "myAccount": "My Account",
 
-  "_SHOPPING_CART": "========== SHOPPING CART ==========",
   "shoppingCart": "Shopping Cart",
   "clearAll": "Clear All",
   "clearCart": "Clear Cart",
@@ -65,7 +62,6 @@
     }
   },
 
-  "_PRODUCTS": "========== PRODUCTS ==========",
   "categories": "Categories",
   "filteredProducts": "Filtered Products",
   "allProducts": "All Products",
@@ -92,7 +88,6 @@
     }
   },
 
-  "_SEARCH": "========== SEARCH ==========",
   "searchProducts": "Search products...",
   "searchForProducts": "Search for products",
   "findWhatYouAreLookingFor": "Find exactly what you're looking for",
@@ -103,7 +98,6 @@
   "maxPrice": "Max Price",
   "applyFilters": "Apply Filters",
 
-  "_ORDERS": "========== ORDERS ==========",
   "myOrders": "My Orders",
   "orders": "Orders",
   "active": "Active",
@@ -135,7 +129,6 @@
   "orderStatusReturned": "Returned",
   "orderStatusRefunded": "Refunded",
 
-  "_PROFILE": "========== PROFILE ==========",
   "settings": "Settings",
   "contactUs": "Contact Us",
   "help": "Help",
@@ -146,13 +139,11 @@
   "notification": "Notification",
   "switchMode": "Switch mode",
 
-  "_LANGUAGES": "========== LANGUAGES ==========",
   "languages": "Languages",
   "english": "English",
   "french": "Français",
   "arabic": "العربية",
 
-  "_COMMON": "========== COMMON ==========",
   "welcome": "Hello",
   "welcomeMessage": "Welcome, {name}!",
   "@welcomeMessage": {
@@ -179,7 +170,7 @@
   "submit": "Submit",
   "confirm": "Confirm",
 
-  "_MESSAGES": "========== MESSAGES ==========",
+
   "messagesCount": "{count, plural, =0{No messages} =1{1 message} other{{count} messages}}",
   "@messagesCount": {
     "description": "Number of messages with plural support",
@@ -193,8 +184,7 @@
   "tryAgain": "Try again",
   "success": "Success",
 
-  "_FORMATTING": "========== FORMATTING EXAMPLES ==========",
-  "priceAmount": "\${amount}",
+  "priceAmount": "${amount}",
   "@priceAmount": {
     "description": "Currency format for USD",
     "placeholders": {

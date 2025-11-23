@@ -116,7 +116,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            key: ValueKey('minPrice_${_minPrice}'),
+                            key: ValueKey('minPrice_$_minPrice'),
                             initialValue: _minPrice?.toString() ?? '',
                             decoration: const InputDecoration(
                               labelText: 'Min Price',
@@ -134,7 +134,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                         const SizedBox(width: 16),
                         Expanded(
                           child: TextFormField(
-                            key: ValueKey('maxPrice_${_maxPrice}'),
+                            key: ValueKey('maxPrice_$_maxPrice'),
                             initialValue: _maxPrice?.toString() ?? '',
                             decoration: const InputDecoration(
                               labelText: 'Max Price',

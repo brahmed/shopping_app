@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:drift/drift.dart';
-import '../../models/product_model.dart';
-import '../../models/category_model.dart';
+import '../../models/product_model.dart' as models;
+import '../../models/category_model.dart' as models;
 import 'database/app_database.dart';
 
 /// Local data source for products
@@ -13,13 +13,13 @@ class ProductsLocalDataSource {
   // PRODUCTS
 
   /// Get all cached products
-  Future<List<Product>> getAllProducts() async {
+  Future<List<models.Product>> getAllProducts() async {
     final results = await _db.select(_db.products).get();
-    return results.map(_productFromDb).toList();
+    return results.map<models.Product>(_productFromDb).toList();
   }
 
   /// Get product by ID
-  Future<Product?> getProductById(String id) async {
+  Future<models.Product?> getProductById(String id) async {
     final result = await (_db.select(_db.products)
           ..where((tbl) => tbl.id.equals(id)))
         .getSingleOrNull();
@@ -29,15 +29,15 @@ class ProductsLocalDataSource {
   }
 
   /// Get products by category
-  Future<List<Product>> getProductsByCategory(String category) async {
+  Future<List<models.Product>> getProductsByCategory(String category) async {
     final results = await (_db.select(_db.products)
           ..where((tbl) => tbl.category.equals(category)))
         .get();
-    return results.map(_productFromDb).toList();
+    return results.map<models.Product>(_productFromDb).toList();
   }
 
   /// Search products
-  Future<List<Product>> searchProducts(String query) async {
+  Future<List<models.Product>> searchProducts(String query) async {
     final lowerQuery = query.toLowerCase();
     final results = await (_db.select(_db.products)
           ..where((tbl) =>
@@ -45,11 +45,11 @@ class ProductsLocalDataSource {
               tbl.description.lower().like('%$lowerQuery%') |
               tbl.brand.lower().like('%$lowerQuery%')))
         .get();
-    return results.map(_productFromDb).toList();
+    return results.map<models.Product>(_productFromDb).toList();
   }
 
   /// Cache single product
-  Future<void> cacheProduct(Product product) async {
+  Future<void> cacheProduct(models.Product product) async {
     await _db.into(_db.products).insertOnConflictUpdate(
           ProductsCompanion.insert(
             id: product.id,
@@ -72,7 +72,7 @@ class ProductsLocalDataSource {
   }
 
   /// Cache multiple products
-  Future<void> cacheProducts(List<Product> products) async {
+  Future<void> cacheProducts(List<models.Product> products) async {
     await _db.batch((batch) {
       for (final product in products) {
         batch.insert(
@@ -132,13 +132,13 @@ class ProductsLocalDataSource {
   // CATEGORIES
 
   /// Get all cached categories
-  Future<List<Category>> getAllCategories() async {
+  Future<List<models.Category>> getAllCategories() async {
     final results = await _db.select(_db.categories).get();
-    return results.map(_categoryFromDb).toList();
+    return results.map<models.Category>(_categoryFromDb).toList();
   }
 
   /// Get category by ID
-  Future<Category?> getCategoryById(String id) async {
+  Future<models.Category?> getCategoryById(String id) async {
     final result = await (_db.select(_db.categories)
           ..where((tbl) => tbl.id.equals(id)))
         .getSingleOrNull();
@@ -148,7 +148,7 @@ class ProductsLocalDataSource {
   }
 
   /// Cache categories
-  Future<void> cacheCategories(List<Category> categories) async {
+  Future<void> cacheCategories(List<models.Category> categories) async {
     await _db.batch((batch) {
       for (final category in categories) {
         batch.insert(
@@ -174,8 +174,8 @@ class ProductsLocalDataSource {
   // HELPER METHODS
 
   /// Convert database model to Product
-  Product _productFromDb(ProductEntry dbProduct) {
-    return Product(
+  models.Product _productFromDb(Product dbProduct) {
+    return models.Product(
       id: dbProduct.id,
       name: dbProduct.name,
       description: dbProduct.description,
@@ -189,13 +189,13 @@ class ProductsLocalDataSource {
       inStock: dbProduct.inStock,
       sizes: (jsonDecode(dbProduct.sizes) as List).cast<String>(),
       colors: (jsonDecode(dbProduct.colors) as List).cast<String>(),
-      brand: dbProduct.brand,
+      brand: dbProduct.brand ?? '',
     );
   }
 
   /// Convert database model to Category
-  Category _categoryFromDb(CategoryEntry dbCategory) {
-    return Category(
+  models.Category _categoryFromDb(Category dbCategory) {
+    return models.Category(
       id: dbCategory.id,
       name: dbCategory.name,
       iconName: dbCategory.iconName,

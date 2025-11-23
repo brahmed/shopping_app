@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shopping_app/main.dart';
 import 'package:shopping_app/models/product_model.dart';
 import 'package:shopping_app/providers/cart_provider_riverpod.dart';
-import 'package:shopping_app/providers/coupons_provider.dart';
 
 void main() {
   group('Cart Operations Integration Tests', () {
@@ -328,8 +327,8 @@ void main() {
     testWidgets('Increment and decrement quantity in cart UI',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -358,8 +357,8 @@ void main() {
 
     testWidgets('Remove item from cart UI', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -410,8 +409,8 @@ void main() {
 
     testWidgets('Display empty cart message', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MyApp(),
+        const ProviderScope(
+          child: MyApp(),
         ),
       );
       await tester.pumpAndSettle();

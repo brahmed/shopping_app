@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 const String prefUserTokenKey = 'token';
 
 /// Save user token when logged in
-void saveUserToken(String token) async {
+Future<void> saveUserToken(String token) async {
   final prefs = await SharedPreferences.getInstance();
   prefs.setString(prefUserTokenKey, token);
 }
@@ -16,7 +16,7 @@ Future<String?> getUserToken() async {
 }
 
 /// Delete user token
-void deleteUserToken() async {
+Future<void> deleteUserToken() async {
   final prefs = await SharedPreferences.getInstance();
   prefs.remove(prefUserTokenKey);
 }
